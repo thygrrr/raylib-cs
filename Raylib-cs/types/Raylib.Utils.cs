@@ -1372,7 +1372,7 @@ public static unsafe partial class Raylib
         }
     }
 
-    /// <summary>Draw a model (with texture if set)</summary>
+    /// <summary>Load model from files (meshes and materials)</summary>
     public static Model LoadModel(string fileName)
     {
         using AnsiBuffer str1 = fileName.ToAnsiBuffer();
