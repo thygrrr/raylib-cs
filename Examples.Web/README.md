@@ -91,9 +91,18 @@ Examples that load files (`resources/...`) also need those assets in the wasm vi
 uncomment the `WasmFilesToIncludeInFileSystem` item in `Examples.Web.csproj` to bundle
 `../Examples/resources/`.
 
-## Adapted so far (starter batch, asset-free)
+## Coverage
 
-Core: Basic Window, Input Keys, Input Mouse, Mouse Wheel · Shapes: Basic Shapes, Bouncing Ball,
-Following Eyes · Text: Writing Animation, Format Text.
+All 115 desktop examples are adapted and registered: **Core, Shapes, Models, Textures, Text,
+Audio, Shaders**. Asset examples load from the bundled `resources/`; audio plays after a user
+gesture (browser autoplay policy).
 
-The remaining desktop examples can be converted incrementally with the pattern above.
+Skipped (no browser equivalent): `Core/DropFiles`, `Core/LoadingThread`, `Text/Unicode`
+(also excluded from the desktop build). Drag-and-drop blocks inside otherwise-supported examples
+(e.g. `ModelLoading`, `FontFilters`) are no-ops.
+
+Shader examples are retargeted to `glsl100` (raylib's WebGL build uses GLSL ES 1.00). Simple
+2D/screen-space shaders render fine; a few advanced ones need WebGL2-era features and likely
+won't render on WebGL1 — **SimpleMask** (missing `mask.vs`), **BasicPbr**, **MeshInstancing**,
+**HybridRender**, **WriteDepth**. They're still listed; the host catches a failing example so it
+can't break the page.
