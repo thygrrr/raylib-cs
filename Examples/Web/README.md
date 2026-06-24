@@ -1,14 +1,15 @@
-# Examples.Web — raylib-cs in the browser (WebAssembly)
+# Examples/Web — raylib-cs in the browser (WebAssembly)
 
 A small browser app that runs raylib examples in the browser via WebAssembly, with a dropdown to
 switch between them. It exists to **prove the `Raylib-cs` NuGet package's `browser-wasm` support
 works end-to-end**: the package's `buildTransitive/Raylib-cs.targets` automatically links the
 shipped `runtimes/browser-wasm/native/raylib.a` (and adds `-sUSE_GLFW=3`) into the .NET wasm
-runtime — this project just consumes the package and renders.
+runtime. The browser host lives in `Examples/Web`, while `Examples.csproj` remains the single
+examples project.
 
-This project is intentionally **not** part of `Raylib-cs.sln` (it hardcodes
-`RuntimeIdentifier=browser-wasm` and requires the `wasm-tools` workload, which would break the
-normal solution build). Build it on its own with `dotnet publish`.
+The browser-wasm configuration is enabled only when publishing `Examples` with
+`RuntimeIdentifier=browser-wasm`, so normal solution builds do not require the `wasm-tools`
+workload.
 
 ## Prerequisites
 
@@ -20,8 +21,8 @@ normal solution build). Build it on its own with `dotnet publish`.
 ## Build
 
 ```bash
-dotnet publish Examples.Web -c Release
-# -> Examples.Web/bin/Release/net10.0/browser-wasm/AppBundle/
+dotnet publish Examples -f net10.0 -r browser-wasm -c Release
+# -> Examples/bin/Release/net10.0/browser-wasm/AppBundle/
 ```
 
 ### Toolchain caveat (local Windows dev)
@@ -43,7 +44,7 @@ dotnet workload update
 Quick local workaround (skips the `wasm-opt` passes; produces an unoptimized but working bundle):
 
 ```bash
-dotnet publish Examples.Web -c Release \
+dotnet publish Examples -f net10.0 -r browser-wasm -c Release \
   -p:EmccLinkOptimizationFlag=-O0 -p:EmccCompileOptimizationFlag=-O0 \
   -p:WasmNativeStrip=false -p:WasmEmitSymbolMap=false
 ```
@@ -56,8 +57,8 @@ the optimized bundle with no extra flags.
 WebAssembly must be served over HTTP (not `file://`):
 
 ```bash
-dotnet serve -d Examples.Web/bin/Release/net10.0/browser-wasm/AppBundle    # dotnet tool install -g dotnet-serve
-# or:  npx http-server Examples.Web/bin/Release/net10.0/browser-wasm/AppBundle
+dotnet serve -d Examples/bin/Release/net10.0/browser-wasm/AppBundle    # dotnet tool install -g dotnet-serve
+# or:  npx http-server Examples/bin/Release/net10.0/browser-wasm/AppBundle
 ```
 
 Open the printed URL and use the **Example** dropdown to switch examples.
@@ -76,7 +77,8 @@ page), so frames are driven from JavaScript:
 
 ## Adding more examples
 
-Convert a desktop example (`../Examples/...`) by splitting its monolithic `Main`:
+Convert a desktop example (`../Core/...`, `../Shaders/...`, etc.) by splitting its monolithic
+`Main`:
 
 ```
 Main() { <setup>; while(!WindowShouldClose()){ <body> } <cleanup> }
@@ -87,9 +89,9 @@ Main() { <setup>; while(!WindowShouldClose()){ <body> } <cleanup> }
 
 Then add `new YourExample()` to the `Examples` list in `Host.cs`.
 
-Examples that load files (`resources/...`) also need those assets in the wasm virtual filesystem —
-uncomment the `WasmFilesToIncludeInFileSystem` item in `Examples.Web.csproj` to bundle
-`../Examples/resources/`.
+Examples that load files (`resources/...`) also need those assets in the wasm virtual filesystem.
+`Examples.csproj` bundles `../resources/` into the browser app when publishing with
+`RuntimeIdentifier=browser-wasm`.
 
 ## Coverage
 
