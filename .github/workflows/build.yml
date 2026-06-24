@@ -5,7 +5,7 @@ name: .NET
 
 on:
   push:
-    branches: ["master"]
+    branches: ["main"]
   pull_request:
     branches: ["*"]
     paths-ignore:
@@ -19,15 +19,18 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - name: Setup .NET
-        uses: actions/setup-dotnet@v4
+        uses: actions/setup-dotnet@v5
         with:
           dotnet-version: |
             8.0.x
             9.0.x
             10.0.x
+
+      - name: Prepare local NuGet source
+        run: mkdir -p nuget
 
       - name: Create NuGet Package
         run: dotnet pack Raylib-cs -c Release --output nuget
@@ -42,12 +45,12 @@ jobs:
           dotnet test --verbosity normal
 
       - name: upload NuGet Package As Artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           path: nuget/*
 
       - name: upload NuGet Package As Release
-        uses: softprops/action-gh-release@v1
+        uses: softprops/action-gh-release@v3
         if: startsWith(github.ref, 'refs/tags/')
         with:
           files: nuget/*
