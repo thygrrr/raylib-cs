@@ -14,7 +14,6 @@
 
     <PropertyGroup>
         <PackageId>Raylib-cs</PackageId>
-        <Version>8.0.0</Version>
         <Description>C# bindings for raylib</Description>
         <RepositoryUrl>https://github.com/raylib-cs/raylib-cs/</RepositoryUrl>
         <Authors>raylib-cs</Authors>
