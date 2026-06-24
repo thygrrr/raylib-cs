@@ -4,7 +4,7 @@ using System;
 
 namespace Examples.Web;
 
-public class ShadersBasicLighting : IWebExample
+public unsafe class ShadersBasicLighting : IWebExample
 {
     public string Name => "Shaders / Basic Lighting";
 

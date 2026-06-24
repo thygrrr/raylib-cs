@@ -5,7 +5,7 @@ using static Raylib_cs.Raymath;
 
 namespace Examples.Web;
 
-public class ShadersFog : IWebExample
+public unsafe class ShadersFog : IWebExample
 {
     public string Name => "Shaders / Fog";
 
