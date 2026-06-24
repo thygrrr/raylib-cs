@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <title>raylib-cs — browser examples</title>
+    <link rel="modulepreload" href="./main.js"/>
+    <link rel="modulepreload" href="./_framework/dotnet.js"/>
+    <style>
+        body { font-family: system-ui, sans-serif; margin: 1rem; background: #1d1d1d; color: #eaeaea; }
+        h1 { font-size: 1.1rem; font-weight: 600; }
+        #toolbar { margin-bottom: .5rem; }
+        #examples { font-size: 1rem; padding: .3rem .5rem; }
+        canvas { border: 1px solid #444; display: block; image-rendering: pixelated; }
+        #status { color: #888; font-size: .85rem; margin-top: .5rem; }
+    </style>
+</head>
+<body>
+    <h1>raylib-cs running in the browser (WebAssembly)</h1>
+    <div id="toolbar">
+        <label for="examples">Example:&nbsp;</label>
+        <select id="examples"><option>loading…</option></select>
+    </div>
+    <canvas id="canvas" width="960" height="540" oncontextmenu="event.preventDefault()" tabindex="-1"></canvas>
+    <div id="status">Initializing .NET + raylib…</div>
+
+    <script type="module" src="./main.js"></script>
+</body>
+</html>
