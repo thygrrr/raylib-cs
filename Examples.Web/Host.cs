@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices.JavaScript;
 
@@ -13,37 +14,40 @@ public partial class Host
     public const int ScreenWidth = 960;
     public const int ScreenHeight = 540;
 
-    // Adapted examples (asset-free). Add more here as they are converted to IWebExample.
+    // Adapted examples. Add more here as they are converted to IWebExample.
     private static readonly List<IWebExample> Examples = new()
     {
         // Core
-        new CoreBasicWindow(),
         new CoreBasicScreenManager(),
+        new CoreBasicWindow(),
         new CoreCamera2dDemo(),
         new CoreCamera2dPlatformer(),
-        new CoreCamera3dMode(),
-        new CoreCamera3dFree(),
         new CoreCamera3dFirstPerson(),
-        new CorePicking3d(),
-        new CoreWorldScreen(),
-        new CoreDeltaTime(),
-        new CoreRandomValues(),
-        new CoreScissorTest(),
-        new CoreStorageValues(),
-        new CoreWindowFlags(),
+        new CoreCamera3dFree(),
+        new CoreCamera3dMode(),
         new CoreCustomLogging(),
+        new CoreDeltaTime(),
+        new CoreInputGamepad(),
+        new CoreInputGestures(),
+        new CoreInputGesturesTestBed(),
         new CoreInputKeys(),
         new CoreInputMouse(),
         new CoreInputMouseWheel(),
         new CoreInputMultitouch(),
-        new CoreInputGestures(),
-        new CoreInputGesturesTestBed(),
         new CoreInputVirtualControls(),
+        new CorePicking3d(),
+        new CoreRandomValues(),
+        new CoreScissorTest(),
+        new CoreSmoothPixelperfect(),
+        new CoreSplitScreen(),
+        new CoreStorageValues(),
+        new CoreWindowFlags(),
+        new CoreWindowLetterbox(),
+        new CoreWorldScreen(),
 
         // Shapes
         new ShapesBasicShapes(),
         new ShapesBouncingBall(),
-        new ShapesFollowingEyes(),
         new ShapesCollisionArea(),
         new ShapesColorsPalette(),
         new ShapesDrawCircleSector(),
@@ -52,23 +56,70 @@ public partial class Host
         new ShapesEasingsBallAnim(),
         new ShapesEasingsBoxAnim(),
         new ShapesEasingsRectangleArray(),
+        new ShapesFollowingEyes(),
         new ShapesLinesBezier(),
         new ShapesLogoRaylibAnim(),
         new ShapesLogoRaylibShape(),
         new ShapesRectangleScaling(),
 
-        // Models (procedural 3D, no assets)
+        // Models
+        new ModelsBillboardDemo(),
         new ModelsBoxCollisions(),
+        new ModelsCubicmapDemo(),
+        new ModelsDynamicMesh(),
+        new ModelsFirstPersonMaze(),
         new ModelsGeometricShapes(),
+        new ModelsHeightmapDemo(),
+        new ModelsLoadingGltf(),
+        new ModelsLoadingIqm(),
+        new ModelsMeshDemo(),
+        new ModelsMeshGeneration(),
+        new ModelsMeshPicking(),
+        new ModelsModelCubeTexture(),
+        new ModelsModelLoading(),
         new ModelsOrthographicProjection(),
         new ModelsSolarSystem(),
         new ModelsWavingCubes(),
+        new ModelsYawPitchRoll(),
+
+        // Textures
+        new TexturesBackgroundScrolling(),
+        new TexturesBlendModes(),
+        new TexturesBunnymark(),
+        new TexturesCurvePoint(),
+        new TexturesDrawTiled(),
+        new TexturesImageDrawing(),
+        new TexturesImageGeneration(),
+        new TexturesImageLoading(),
+        new TexturesImageProcessing(),
+        new TexturesImageText(),
+        new TexturesLogoRaylibTexture(),
+        new TexturesMousePainting(),
+        new TexturesNpatchDrawing(),
+        new TexturesParticlesBlending(),
+        new TexturesPolygon(),
+        new TexturesRawData(),
+        new TexturesSpriteAnim(),
+        new TexturesSpriteButton(),
+        new TexturesSpriteExplosion(),
+        new TexturesSrcRecDstRec(),
+        new TexturesToImage(),
 
         // Text
+        new TextCodepointsLoading(),
+        new TextFontFilters(),
+        new TextFontLoading(),
+        new TextFontSpritefont(),
         new TextFormatText(),
-        new TextWritingAnim(),
         new TextInputBox(),
+        new TextRaylibFonts(),
         new TextRectangleBounds(),
+        new TextWritingAnim(),
+
+        // Audio
+        new AudioModulePlaying(),
+        new AudioMusicStreamDemo(),
+        new AudioSoundLoading(),
     };
 
     private static IWebExample _current;

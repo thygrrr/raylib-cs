@@ -33,12 +33,10 @@
     <ItemGroup>
         <WasmExtraFilesToDeploy Include="index.html"/>
         <WasmExtraFilesToDeploy Include="main.js"/>
-        <!-- Asset-using examples (not in the starter batch) need the resources bundled into the
-             wasm virtual FS. Left off for now to keep the asset-free proof lean/fast; uncomment
-             to add examples that load from resources/:
+        <!-- Bundle the example assets into the wasm virtual filesystem at /resources/... so
+             examples that load from "resources/..." work unchanged. -->
         <WasmFilesToIncludeInFileSystem Include="..\Examples\resources\**\*.*"
                                         TargetPath="resources\%(RecursiveDir)%(Filename)%(Extension)"/>
-        -->
     </ItemGroup>
 
     <!-- raylib.a NativeFileReference + "-sUSE_GLFW=3" are injected by the Raylib-cs package's
