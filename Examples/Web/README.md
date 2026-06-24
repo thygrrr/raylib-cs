@@ -25,7 +25,7 @@ dotnet publish Examples -f net10.0 -r browser-wasm -c Release
 # -> Examples/bin/Release/net10.0/browser-wasm/AppBundle/
 ```
 
-### Toolchain caveat (local Windows dev)
+### Toolchain caveat
 
 If the link step fails with:
 
@@ -41,16 +41,9 @@ or a conflicting system EMSDK on PATH/`$EMSDK`). Proper fix:
 dotnet workload update
 ```
 
-Quick local workaround (skips the `wasm-opt` passes; produces an unoptimized but working bundle):
-
-```bash
-dotnet publish Examples -f net10.0 -r browser-wasm -c Release \
-  -p:EmccLinkOptimizationFlag=-O0 -p:EmccCompileOptimizationFlag=-O0 \
-  -p:WasmNativeStrip=false -p:WasmEmitSymbolMap=false
-```
-
-These flags are **not** committed to the csproj on purpose — a correct toolchain (e.g. CI) builds
-the optimized bundle with no extra flags.
+`Examples.csproj` defaults browser-wasm publishes to unoptimized native linking so the standard
+publish command works on affected local toolchains. A fully optimized publish can override those
+MSBuild properties after updating the workload/toolchain.
 
 ## Run
 

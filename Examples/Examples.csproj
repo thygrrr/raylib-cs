@@ -23,6 +23,11 @@
         <WasmAllowUndefinedSymbols>true</WasmAllowUndefinedSymbols>
         <InvariantGlobalization>true</InvariantGlobalization>
         <EmccFlags>$(EmccFlags) -sALLOW_MEMORY_GROWTH=1 -sINITIAL_MEMORY=64MB</EmccFlags>
+        <!-- Avoid wasm-opt on SDK/workload combinations where Binaryen rejects bulk-memory-opt. -->
+        <EmccLinkOptimizationFlag Condition="'$(EmccLinkOptimizationFlag)' == ''">-O0</EmccLinkOptimizationFlag>
+        <EmccCompileOptimizationFlag Condition="'$(EmccCompileOptimizationFlag)' == ''">-O0</EmccCompileOptimizationFlag>
+        <WasmNativeStrip Condition="'$(WasmNativeStrip)' == ''">false</WasmNativeStrip>
+        <WasmEmitSymbolMap Condition="'$(WasmEmitSymbolMap)' == ''">false</WasmEmitSymbolMap>
     </PropertyGroup>
 
     <ItemGroup>
