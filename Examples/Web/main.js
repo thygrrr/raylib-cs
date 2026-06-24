@@ -2,8 +2,29 @@ import { dotnet } from './_framework/dotnet.js'
 
 const status = document.getElementById('status');
 const select = document.getElementById('examples');
-const viewport = document.getElementById('viewport');
 const canvas = document.getElementById('canvas');
+const CANVAS_WIDTH = 960;
+const CANVAS_HEIGHT = 540;
+
+function enforceCanvasSize() {
+    if (canvas.width !== CANVAS_WIDTH) {
+        canvas.width = CANVAS_WIDTH;
+    }
+    if (canvas.height !== CANVAS_HEIGHT) {
+        canvas.height = CANVAS_HEIGHT;
+    }
+
+    const widthPx = `${CANVAS_WIDTH}px`;
+    const heightPx = `${CANVAS_HEIGHT}px`;
+    if (canvas.style.width !== widthPx) {
+        canvas.style.width = widthPx;
+    }
+    if (canvas.style.height !== heightPx) {
+        canvas.style.height = heightPx;
+    }
+}
+
+enforceCanvasSize();
 
 const { getAssemblyExports, getConfig, runMain } = await dotnet
     .withDiagnosticTracing(false)
@@ -18,6 +39,7 @@ dotnet.instance.Module['canvas'] = canvas;
 
 // Runs Host.Main() -> InitWindow + default example Init(). Must come after the canvas is bound.
 await runMain();
+enforceCanvasSize();
 
 // Populate the navigation dropdown from the registered examples.
 select.innerHTML = '';
@@ -31,35 +53,9 @@ select.addEventListener('change', () => Host.SetExample(select.value));
 
 status.textContent = 'Running. Use the dropdown to switch examples.';
 
-function fitCanvasToViewport() {
-    const width = viewport.clientWidth;
-    const height = viewport.clientHeight;
-    if (width <= 0 || height <= 0) {
-        return;
-    }
-
-    const aspect = 960 / 540;
-    let targetWidth = width;
-    let targetHeight = Math.floor(targetWidth / aspect);
-
-    if (targetHeight > height) {
-        targetHeight = height;
-        targetWidth = Math.floor(targetHeight * aspect);
-    }
-
-    canvas.style.width = `${targetWidth}px`;
-    canvas.style.height = `${targetHeight}px`;
-}
-
-fitCanvasToViewport();
-window.addEventListener('resize', fitCanvasToViewport);
-if (typeof ResizeObserver !== 'undefined') {
-    const resizeObserver = new ResizeObserver(fitCanvasToViewport);
-    resizeObserver.observe(viewport);
-}
-
 // Drive raylib one frame per animation tick (never block the browser).
 function mainLoop() {
+    enforceCanvasSize();
     Host.UpdateFrame();
     requestAnimationFrame(mainLoop);
 }
