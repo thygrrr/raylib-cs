@@ -57,6 +57,7 @@
     <ItemGroup Condition="'$(RuntimeIdentifier)' == 'browser-wasm'">
         <WasmExtraFilesToDeploy Include="Web/index.html" TargetPath="index.html"/>
         <WasmExtraFilesToDeploy Include="Web/main.js" TargetPath="main.js"/>
+        <WasmExtraFilesToDeploy Include="Web/scaleUtils.js" TargetPath="scaleUtils.js"/>
         <!-- Bundle the example assets into the wasm virtual filesystem at /resources/... so
              examples that load from "resources/..." work unchanged. -->
         <WasmFilesToIncludeInFileSystem Include="resources\**\*.*"

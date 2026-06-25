@@ -147,6 +147,11 @@ public partial class Host
         new global::Examples.Shaders.WriteDepth(),
     };
 
+    static Host()
+    {
+        ExampleRegistry.ValidateBrowserCount(Examples.Count);
+    }
+
     private static IExample _current;
 
     public static void Main()
