@@ -56,6 +56,36 @@ dotnet serve -d Examples/bin/Release/net10.0/browser-wasm/AppBundle    # dotnet 
 
 Open the printed URL and use the **Example** dropdown to switch examples.
 
+## Canvas scaling modes
+
+The browser host keeps raylib's internal render buffer fixed to `800x450` and applies display
+scaling in CSS. Use the **Scale** dropdown (or `?scale=` query param) to choose behavior:
+
+- `native` (default): exact `800x450` CSS pixels (1x), no resizing.
+- `integer`: largest whole-number multiple that fits the viewport, centered with letterboxing.
+  Best for pixel-perfect presentation.
+- `fit`: fills available viewport while preserving aspect ratio (can be fractional, less crisp on
+  some DPI/zoom combinations).
+
+Scaling is computed in **device pixels first** and then converted back to CSS pixels using current
+`devicePixelRatio`, which decouples the modes from needing a specific browser zoom level on
+125%/150% OS scale displays.
+
+`main.js` also shows runtime diagnostics in the status bar (`DPR`, CSS size, backing size, scale)
+to help debug OS scaling / browser zoom behavior across monitors.
+
+### Manual validation matrix (expected behavior)
+
+- OS scale `100%`, browser zoom `100%`: `integer` should appear crisp and stable (`Scale 1.00` or
+  higher if viewport allows).
+- OS scale `125%` and `150%`, browser zoom `100%`: `integer` should stay crisp (no subpixel CSS
+  scaling); perceived physical size changes with OS scale are expected.
+- Browser zoom `80%`, `100%`, `125%`: `integer` should continue using whole-number scaling;
+  `fit` may show softening at non-integer effective scales.
+- `native` mode should always report `CSS 800x450` and `Scale 1.00`.
+- During window resize, there should be no frame-by-frame jitter because scale updates run on
+  resize/mode changes, not per animation frame.
+
 ## How it works
 
 A browser can't run raylib's blocking `while (!WindowShouldClose())` loop (it would freeze the
