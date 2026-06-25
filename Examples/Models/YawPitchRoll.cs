@@ -17,7 +17,7 @@ using static Raylib_cs.Raymath;
 
 namespace Examples.Models;
 
-public class YawPitchRoll
+public partial class YawPitchRoll
 {
     public unsafe static int Main()
     {

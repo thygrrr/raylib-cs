@@ -18,7 +18,7 @@ using static Raylib_cs.Raylib;
 
 namespace Examples.Core;
 
-public class InputKeys
+public partial class InputKeys
 {
     public static int Main()
     {

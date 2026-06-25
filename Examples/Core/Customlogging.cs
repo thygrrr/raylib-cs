@@ -17,7 +17,7 @@ using static Raylib_cs.Raylib;
 
 namespace Examples.Core;
 
-public unsafe class CustomLogging
+public unsafe partial class CustomLogging
 {
     [UnmanagedCallersOnly(CallConvs = new[] { typeof(System.Runtime.CompilerServices.CallConvCdecl) })]
     private static void LogCustom(int logLevel, sbyte* text, sbyte* args)

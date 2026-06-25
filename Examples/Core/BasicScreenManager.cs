@@ -31,7 +31,7 @@ enum GameScreen
     Ending
 }
 
-public class BasicScreenManager
+public partial class BasicScreenManager
 {
     public static int Main()
     {

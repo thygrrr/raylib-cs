@@ -32,7 +32,7 @@ using Examples.Shared;
 
 namespace Examples.Shaders;
 
-public class Fog
+public partial class Fog
 {
     public unsafe static int Main()
     {

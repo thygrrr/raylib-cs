@@ -17,7 +17,7 @@ using static Raylib_cs.Raylib;
 
 namespace Examples.Models;
 
-public class SolarSystem
+public partial class SolarSystem
 {
     public static int Main()
     {

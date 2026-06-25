@@ -17,7 +17,7 @@ using static Raylib_cs.Raylib;
 
 namespace Examples.Core;
 
-public class WindowLetterbox
+public partial class WindowLetterbox
 {
     public static int Main()
     {

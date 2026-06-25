@@ -25,7 +25,7 @@ using static Raylib_cs.Raylib;
 
 namespace Examples.Models;
 
-public class LoadingGltf
+public partial class LoadingGltf
 {
     public static int Main()
     {

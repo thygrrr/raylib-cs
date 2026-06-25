@@ -18,7 +18,7 @@ using static Raylib_cs.Raylib;
 
 namespace Examples.Core;
 
-public static class SmoothPixelPerfect
+public partial class SmoothPixelPerfect
 {
     public static int Main()
     {

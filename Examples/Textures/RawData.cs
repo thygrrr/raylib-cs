@@ -15,7 +15,7 @@ using static Raylib_cs.Raylib;
 
 namespace Examples.Textures;
 
-public class RawData
+public partial class RawData
 {
     public unsafe static int Main()
     {

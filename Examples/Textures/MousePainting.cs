@@ -16,7 +16,7 @@ using static Raylib_cs.Raylib;
 
 namespace Examples.Textures;
 
-public class MousePainting
+public partial class MousePainting
 {
     public static int Main()
     {

@@ -32,7 +32,7 @@ public enum PadButton
     BUTTON_MAX
 }
 
-public class InputVirtualControls
+public partial class InputVirtualControls
 {
     public static int Main()
     {

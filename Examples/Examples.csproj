@@ -17,6 +17,7 @@
         <Nullable>disable</Nullable>
         <!-- [JSExport] is browser-only by design; these files only compile for browser-wasm. -->
         <NoWarn>$(NoWarn);CA1416</NoWarn>
+        <DefineConstants>$(DefineConstants);BROWSER</DefineConstants>
 
         <!-- Link the native raylib.a (shipped by the Raylib-cs package) into the wasm module. -->
         <WasmBuildNative>true</WasmBuildNative>
@@ -41,14 +42,6 @@
 
     <ItemGroup Condition="'$(RuntimeIdentifier)' == 'browser-wasm'">
         <Compile Remove="Program.cs"/>
-        <Compile Remove="Audio/**/*.cs"/>
-        <Compile Remove="Core/**/*.cs"/>
-        <Compile Remove="Models/**/*.cs"/>
-        <Compile Remove="Shapes/**/*.cs"/>
-        <Compile Remove="Shaders/**/*.cs"/>
-        <Compile Remove="Shared/**/*.cs"/>
-        <Compile Remove="Text/**/*.cs"/>
-        <Compile Remove="Textures/**/*.cs"/>
     </ItemGroup>
 
     <ItemGroup>

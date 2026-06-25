@@ -14,7 +14,7 @@ using static Raylib_cs.Raylib;
 
 namespace Examples.Core;
 
-public class WorldScreen
+public partial class WorldScreen
 {
     public static int Main()
     {

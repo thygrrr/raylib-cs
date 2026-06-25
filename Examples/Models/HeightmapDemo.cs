@@ -14,7 +14,7 @@ using static Raylib_cs.Raylib;
 
 namespace Examples.Models;
 
-public class HeightmapDemo
+public partial class HeightmapDemo
 {
     public static int Main()
     {

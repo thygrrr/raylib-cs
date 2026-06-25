@@ -31,7 +31,7 @@ using Examples.Shared;
 
 namespace Examples.Shaders;
 
-public class BasicLighting
+public partial class BasicLighting
 {
     const int GLSL_VERSION = 330;
 

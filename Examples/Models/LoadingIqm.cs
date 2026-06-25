@@ -25,7 +25,7 @@ using static Raylib_cs.Raylib;
 
 namespace Examples.Models;
 
-public class LoadingIqm
+public partial class LoadingIqm
 {
     public unsafe static int Main()
     {

@@ -21,7 +21,7 @@ namespace Examples.Core;
 
 using static Raylib_cs.Raylib;
 
-public class DeltaTime
+public partial class DeltaTime
 {
     public static int Main()
     {

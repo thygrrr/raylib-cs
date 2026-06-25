@@ -18,7 +18,7 @@ using static Raylib_cs.Raylib;
 
 namespace Examples.Shaders;
 
-public class WriteDepth
+public partial class WriteDepth
 {
     const int GLSL_VERSION = 330;
 

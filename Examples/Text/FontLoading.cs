@@ -23,7 +23,7 @@ using static Raylib_cs.Raylib;
 
 namespace Examples.Text;
 
-public class FontLoading
+public partial class FontLoading
 {
     public static int Main()
     {

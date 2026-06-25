@@ -19,7 +19,7 @@ using static Raylib_cs.Raylib;
 
 namespace Examples.Textures;
 
-public class NpatchDrawing
+public partial class NpatchDrawing
 {
     public static int Main()
     {

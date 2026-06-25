@@ -18,7 +18,7 @@ using static Raylib_cs.Raylib;
 
 namespace Examples.Text;
 
-public class FontFilters
+public partial class FontFilters
 {
     public static int Main()
     {

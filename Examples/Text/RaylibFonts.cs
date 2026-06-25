@@ -17,7 +17,7 @@ using static Raylib_cs.Raylib;
 
 namespace Examples.Text;
 
-public class RaylibFonts
+public partial class RaylibFonts
 {
     public const int MaxFonts = 8;
 

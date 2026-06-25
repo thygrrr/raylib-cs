@@ -16,7 +16,7 @@ using static Raylib_cs.Raylib;
 
 namespace Examples.Core;
 
-public unsafe class SplitScreen
+public unsafe partial class SplitScreen
 {
     static Texture2D TextureGrid;
     static Camera3D CameraPlayer1;

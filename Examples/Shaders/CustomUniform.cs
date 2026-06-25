@@ -21,7 +21,7 @@ using static Raylib_cs.Raylib;
 
 namespace Examples.Shaders;
 
-public class CustomUniform
+public partial class CustomUniform
 {
     public static int Main()
     {

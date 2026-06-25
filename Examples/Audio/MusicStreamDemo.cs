@@ -15,7 +15,7 @@ using static Raylib_cs.Raylib;
 
 namespace Examples.Audio;
 
-public class MusicStreamDemo
+public partial class MusicStreamDemo
 {
     public static int Main()
     {

@@ -24,7 +24,7 @@ using static Raylib_cs.Raymath;
 
 namespace Examples.Shaders;
 
-public class SimpleMask
+public partial class SimpleMask
 {
     public unsafe static int Main()
     {

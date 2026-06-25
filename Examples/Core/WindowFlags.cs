@@ -15,7 +15,7 @@ using static Raylib_cs.ConfigFlags;
 
 namespace Examples.Core;
 
-public class WindowFlags
+public partial class WindowFlags
 {
     public static int Main()
     {

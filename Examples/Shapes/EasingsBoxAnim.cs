@@ -15,7 +15,7 @@ using Examples.Shared;
 
 namespace Examples.Shapes;
 
-public class EasingsBoxAnim
+public partial class EasingsBoxAnim
 {
     public static int Main()
     {

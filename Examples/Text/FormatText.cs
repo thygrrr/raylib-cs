@@ -13,7 +13,7 @@ using static Raylib_cs.Raylib;
 
 namespace Examples.Text;
 
-public class FormatText
+public partial class FormatText
 {
     public static int Main()
     {

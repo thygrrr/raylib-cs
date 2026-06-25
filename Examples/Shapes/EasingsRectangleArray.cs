@@ -18,7 +18,7 @@ using Examples.Shared;
 
 namespace Examples.Shapes;
 
-public class EasingsRectangleArray
+public partial class EasingsRectangleArray
 {
     public const int RecsWidth = 50;
     public const int RecsHeight = 50;

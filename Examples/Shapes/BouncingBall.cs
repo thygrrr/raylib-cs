@@ -14,7 +14,7 @@ using static Raylib_cs.Raylib;
 
 namespace Examples.Shapes;
 
-public class BouncingBall
+public partial class BouncingBall
 {
     public static int Main()
     {

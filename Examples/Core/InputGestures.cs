@@ -18,7 +18,7 @@ using static Raylib_cs.Raylib;
 
 namespace Examples.Core;
 
-public class InputGestures
+public partial class InputGestures
 {
     public const int MaxGestureStrings = 20;
 

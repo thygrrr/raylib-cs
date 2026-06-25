@@ -13,7 +13,7 @@ using static Raylib_cs.Raylib;
 
 namespace Examples.Textures;
 
-public class ImageGeneration
+public partial class ImageGeneration
 {
     public const int NumTextures = 6;
 

@@ -13,7 +13,7 @@ using static Raylib_cs.Raylib;
 
 namespace Examples.Shapes;
 
-public class CollisionArea
+public partial class CollisionArea
 {
     public static int Main()
     {

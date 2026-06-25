@@ -20,7 +20,7 @@ using static Raylib_cs.Raylib;
 
 namespace Examples.Shaders;
 
-public class MultiSample2d
+public partial class MultiSample2d
 {
     public static int Main()
     {

@@ -13,7 +13,7 @@ using static Raylib_cs.Raylib;
 
 namespace Examples.Text;
 
-public class InputBox
+public partial class InputBox
 {
     public const int MaxInputChars = 9;
 

@@ -14,7 +14,7 @@ using static Raylib_cs.Raylib;
 
 namespace Examples.Shapes;
 
-public class LinesBezier
+public partial class LinesBezier
 {
     public static int Main()
     {

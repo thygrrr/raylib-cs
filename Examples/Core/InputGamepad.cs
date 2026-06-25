@@ -25,7 +25,7 @@ using static Raylib_cs.Raylib;
 
 namespace Examples.Core;
 
-public class InputGamepad
+public partial class InputGamepad
 {
     // NOTE: Gamepad name ID depends on drivers and OS
     // These are some possible names the gamepads could have.

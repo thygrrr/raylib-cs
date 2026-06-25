@@ -3,7 +3,7 @@ using static Raylib_cs.Raylib;
 
 namespace Examples.Text;
 
-public class RectangleBounds
+public partial class RectangleBounds
 {
     public static int Main()
     {

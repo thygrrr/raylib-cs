@@ -15,7 +15,7 @@ using static Raylib_cs.Raylib;
 
 namespace Examples.Shapes;
 
-public class DrawRectangleRounded
+public partial class DrawRectangleRounded
 {
     public static int Main()
     {

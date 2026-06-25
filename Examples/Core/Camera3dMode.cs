@@ -14,7 +14,7 @@ using static Raylib_cs.Raylib;
 
 namespace Examples.Core;
 
-public class Camera3dMode
+public partial class Camera3dMode
 {
     public static int Main()
     {

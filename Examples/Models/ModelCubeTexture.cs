@@ -16,7 +16,7 @@ using static Raylib_cs.Raylib;
 
 namespace Examples.Models;
 
-public class ModelCubeTexture
+public partial class ModelCubeTexture
 {
     public static int Main()
     {

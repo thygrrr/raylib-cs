@@ -3,7 +3,7 @@ using static Raylib_cs.Raylib;
 
 namespace Examples.Models;
 
-public class DynamicMesh
+public partial class DynamicMesh
 {
     public unsafe static int Main()
     {

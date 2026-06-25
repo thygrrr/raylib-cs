@@ -17,7 +17,7 @@ using static Raylib_cs.Raylib;
 
 namespace Examples.Shaders;
 
-public class TextureDrawing
+public partial class TextureDrawing
 {
     const int GlslVersion = 330;
 

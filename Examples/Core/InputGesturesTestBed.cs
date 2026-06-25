@@ -21,7 +21,7 @@ namespace Examples.Core;
 
 using static Raylib_cs.Raylib;
 
-public class InputGesturesTestBed
+public partial class InputGesturesTestBed
 {
     public const int GESTURE_LOG_SIZE = 20;
     public const int MAX_TOUCH_COUNT = 32;

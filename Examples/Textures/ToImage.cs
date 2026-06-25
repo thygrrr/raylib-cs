@@ -15,7 +15,7 @@ using static Raylib_cs.Raylib;
 
 namespace Examples.Textures;
 
-public class ToImage
+public partial class ToImage
 {
     public static int Main()
     {

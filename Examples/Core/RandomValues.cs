@@ -13,7 +13,7 @@ using static Raylib_cs.Raylib;
 
 namespace Examples.Core;
 
-public class RandomValues
+public partial class RandomValues
 {
     public static int Main()
     {

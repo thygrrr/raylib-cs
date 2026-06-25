@@ -17,7 +17,7 @@ using static Raylib_cs.Raylib;
 
 namespace Examples.Shaders;
 
-public class TextureOutline
+public partial class TextureOutline
 {
     const int GLSL_VERSION = 330;
 

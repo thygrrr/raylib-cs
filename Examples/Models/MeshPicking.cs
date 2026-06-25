@@ -16,7 +16,7 @@ using static Raylib_cs.Raymath;
 
 namespace Examples.Models;
 
-public class MeshPicking
+public partial class MeshPicking
 {
     public unsafe static int Main()
     {

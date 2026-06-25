@@ -15,7 +15,7 @@ using static Raylib_cs.Raylib;
 
 namespace Examples.Textures;
 
-public class ImageProcessing
+public partial class ImageProcessing
 {
     public const int NumProcesses = 9;
 

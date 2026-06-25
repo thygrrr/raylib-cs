@@ -14,7 +14,7 @@ using static Raylib_cs.Raylib;
 
 namespace Examples.Shapes;
 
-public class BasicShapes
+public partial class BasicShapes
 {
     public static int Main()
     {

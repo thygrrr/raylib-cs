@@ -15,7 +15,7 @@ using static Raylib_cs.Raylib;
 
 namespace Examples.Textures;
 
-public class Polygon
+public partial class Polygon
 {
     public static int Main()
     {

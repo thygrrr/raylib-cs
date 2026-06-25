@@ -14,7 +14,7 @@ using static Raylib_cs.Raylib;
 
 namespace Examples.Textures;
 
-public class ImageText
+public partial class ImageText
 {
     public static int Main()
     {

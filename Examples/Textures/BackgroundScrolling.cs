@@ -14,7 +14,7 @@ using static Raylib_cs.Raylib;
 
 namespace Examples.Textures;
 
-public class BackgroundScrolling
+public partial class BackgroundScrolling
 {
     public static int Main()
     {

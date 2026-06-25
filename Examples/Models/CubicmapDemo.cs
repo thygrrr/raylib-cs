@@ -14,7 +14,7 @@ using static Raylib_cs.Raylib;
 
 namespace Examples.Models;
 
-public class CubicmapDemo
+public partial class CubicmapDemo
 {
     public static int Main()
     {

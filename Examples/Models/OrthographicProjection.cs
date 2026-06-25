@@ -16,7 +16,7 @@ using static Raylib_cs.Raylib;
 
 namespace Examples.Models;
 
-public class OrthographicProjection
+public partial class OrthographicProjection
 {
     public const float FOVY_PERSPECTIVE = 45.0f;
     public const float WIDTH_ORTHOGRAPHIC = 10.0f;

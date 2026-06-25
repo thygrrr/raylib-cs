@@ -19,7 +19,7 @@ using static Raylib_cs.Raylib;
 
 namespace Examples.Shaders;
 
-public class HybridRender
+public partial class HybridRender
 {
     struct RayLocs
     {

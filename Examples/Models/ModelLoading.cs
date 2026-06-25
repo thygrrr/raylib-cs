@@ -23,7 +23,7 @@ using static Raylib_cs.Raylib;
 
 namespace Examples.Models;
 
-public class ModelLoading
+public partial class ModelLoading
 {
     public unsafe static int Main()
     {

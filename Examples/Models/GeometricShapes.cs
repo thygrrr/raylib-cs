@@ -14,7 +14,7 @@ using static Raylib_cs.Raylib;
 
 namespace Examples.Models;
 
-public class GeometricShapes
+public partial class GeometricShapes
 {
     public static int Main()
     {

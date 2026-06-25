@@ -65,13 +65,14 @@ page), so frames are driven from JavaScript:
   `runMain()`).
 - `main.js` binds the page `<canvas>` to the runtime, then calls `Host.UpdateFrame()` every
   `requestAnimationFrame` tick. `UpdateFrame`, `SetExample`, and `GetExampleNames` are `[JSExport]`.
-- Each example implements `IWebExample` (`Init` / `Update` / `Unload`). The host owns the window;
+- Each base example implements `IExample` (`Init` / `Update` / `Unload`) in `#if BROWSER` partials.
+  The host owns the window;
   examples never call `InitWindow`/`CloseWindow`.
 
 ## Adding more examples
 
-Convert a desktop example (`../Core/...`, `../Shaders/...`, etc.) by splitting its monolithic
-`Main`:
+For a new desktop example (`../Core/...`, `../Shaders/...`, etc.), add a browser partial
+(`*.Browser.cs`) that implements `IExample` and mirrors the split of its monolithic `Main`:
 
 ```
 Main() { <setup>; while(!WindowShouldClose()){ <body> } <cleanup> }

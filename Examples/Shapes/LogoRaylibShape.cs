@@ -13,7 +13,7 @@ using static Raylib_cs.Raylib;
 
 namespace Examples.Shapes;
 
-public class LogoRaylibShape
+public partial class LogoRaylibShape
 {
     public static int Main()
     {
