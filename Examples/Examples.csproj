@@ -46,9 +46,6 @@
 
     <ItemGroup>
         <Using Include="Raylib_cs"/>
-    </ItemGroup>
-
-    <ItemGroup Condition="'$(RuntimeIdentifier)' == 'browser-wasm'">
         <Using Include="Raylib_cs.Raylib" Static="true"/>
         <Using Include="System.Numerics"/>
     </ItemGroup>

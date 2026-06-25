@@ -11,10 +11,11 @@ namespace Examples;
 
 public class ExampleInfo
 {
-    public ExampleInfo(string name, Func<int> main)
+    public ExampleInfo(string name, Func<object> create, Func<int> run)
     {
         this.Name = name;
-        this.Main = main;
+        this.Create = create;
+        this.Run = run;
     }
 
     public string Name
@@ -22,7 +23,12 @@ public class ExampleInfo
         get; set;
     }
 
-    public Func<int> Main
+    public Func<object> Create
+    {
+        get; set;
+    }
+
+    public Func<int> Run
     {
         get; set;
     }
@@ -33,132 +39,132 @@ public class ExampleList
     public static ExampleInfo[] AllExamples = new[]
     {
         // Core
-        new ExampleInfo("DeltaTime", DeltaTime.Main),
-        new ExampleInfo("InputGesturesTestBed", InputGesturesTestBed.Main),
-        new ExampleInfo("InputVirtualControls", InputVirtualControls.Main),
-        new ExampleInfo("Camera2dPlatformer", Camera2dPlatformer.Main),
-        new ExampleInfo("Camera2dDemo", Camera2dDemo.Main),
-        new ExampleInfo("Camera3dFirstPerson", Camera3dFirstPerson.Main),
-        new ExampleInfo("Camera3dFree", Camera3dFree.Main),
-        new ExampleInfo("Camera3dMode", Camera3dMode.Main),
-        new ExampleInfo("Picking3d", Picking3d.Main),
-        new ExampleInfo("BasicScreenManager", BasicScreenManager.Main),
-        new ExampleInfo("BasicWindow", BasicWindow.Main),
-        new ExampleInfo("CustomLogging", CustomLogging.Main),
-        new ExampleInfo("DropFiles", DropFiles.Main),
-        new ExampleInfo("InputGamepad", InputGamepad.Main),
-        new ExampleInfo("InputGestures", InputGestures.Main),
-        new ExampleInfo("InputKeys", InputKeys.Main),
-        new ExampleInfo("InputMouseWheel", InputMouseWheel.Main),
-        new ExampleInfo("InputMouse", InputMouse.Main),
-        new ExampleInfo("InputMultitouch", InputMultitouch.Main),
-        new ExampleInfo("RandomValues", RandomValues.Main),
-        new ExampleInfo("ScissorTest", ScissorTest.Main),
-        new ExampleInfo("SmoothPixelPerfect", SmoothPixelPerfect.Main),
-        new ExampleInfo("SplitScreen", SplitScreen.Main),
-        new ExampleInfo("StorageValues", StorageValues.Main),
-        new ExampleInfo("VrSimulator", VrSimulator.Main),
-        new ExampleInfo("WindowFlags", WindowFlags.Main),
-        new ExampleInfo("WindowLetterbox", WindowLetterbox.Main),
-        new ExampleInfo("WorldScreen", WorldScreen.Main),
+        new ExampleInfo("DeltaTime", () => new DeltaTime(), DeltaTime.Main),
+        new ExampleInfo("InputGesturesTestBed", () => new InputGesturesTestBed(), InputGesturesTestBed.Main),
+        new ExampleInfo("InputVirtualControls", () => new InputVirtualControls(), InputVirtualControls.Main),
+        new ExampleInfo("Camera2dPlatformer", () => new Camera2dPlatformer(), Camera2dPlatformer.Main),
+        new ExampleInfo("Camera2dDemo", () => new Camera2dDemo(), Camera2dDemo.Main),
+        new ExampleInfo("Camera3dFirstPerson", () => new Camera3dFirstPerson(), Camera3dFirstPerson.Main),
+        new ExampleInfo("Camera3dFree", () => new Camera3dFree(), Camera3dFree.Main),
+        new ExampleInfo("Camera3dMode", () => new Camera3dMode(), Camera3dMode.Main),
+        new ExampleInfo("Picking3d", () => new Picking3d(), Picking3d.Main),
+        new ExampleInfo("BasicScreenManager", () => new BasicScreenManager(), BasicScreenManager.Main),
+        new ExampleInfo("BasicWindow", () => new BasicWindow(), BasicWindow.Main),
+        new ExampleInfo("CustomLogging", () => new CustomLogging(), CustomLogging.Main),
+        new ExampleInfo("DropFiles", () => new DropFiles(), DropFiles.Main),
+        new ExampleInfo("InputGamepad", () => new InputGamepad(), InputGamepad.Main),
+        new ExampleInfo("InputGestures", () => new InputGestures(), InputGestures.Main),
+        new ExampleInfo("InputKeys", () => new InputKeys(), InputKeys.Main),
+        new ExampleInfo("InputMouseWheel", () => new InputMouseWheel(), InputMouseWheel.Main),
+        new ExampleInfo("InputMouse", () => new InputMouse(), InputMouse.Main),
+        new ExampleInfo("InputMultitouch", () => new InputMultitouch(), InputMultitouch.Main),
+        new ExampleInfo("RandomValues", () => new RandomValues(), RandomValues.Main),
+        new ExampleInfo("ScissorTest", () => new ScissorTest(), ScissorTest.Main),
+        new ExampleInfo("SmoothPixelPerfect", () => new SmoothPixelPerfect(), SmoothPixelPerfect.Main),
+        new ExampleInfo("SplitScreen", () => new SplitScreen(), SplitScreen.Main),
+        new ExampleInfo("StorageValues", () => new StorageValues(), StorageValues.Main),
+        new ExampleInfo("VrSimulator", () => new VrSimulator(), VrSimulator.Main),
+        new ExampleInfo("WindowFlags", () => new WindowFlags(), WindowFlags.Main),
+        new ExampleInfo("WindowLetterbox", () => new WindowLetterbox(), WindowLetterbox.Main),
+        new ExampleInfo("WorldScreen", () => new WorldScreen(), WorldScreen.Main),
 
         // Shapes
-        new ExampleInfo("BasicShapes", BasicShapes.Main),
-        new ExampleInfo("BouncingBall", BouncingBall.Main),
-        new ExampleInfo("CollisionArea", CollisionArea.Main),
-        new ExampleInfo("ColorsPalette", ColorsPalette.Main),
-        new ExampleInfo("EasingsBallAnim", EasingsBallAnim.Main),
-        new ExampleInfo("EasingsBoxAnim", EasingsBoxAnim.Main),
-        new ExampleInfo("EasingsRectangleArray", EasingsRectangleArray.Main),
-        new ExampleInfo("FollowingEyes", FollowingEyes.Main),
-        new ExampleInfo("LinesBezier", LinesBezier.Main),
-        new ExampleInfo("LogoRaylibAnim", LogoRaylibAnim.Main),
-        new ExampleInfo("LogoRaylibShape", LogoRaylibShape.Main),
-        new ExampleInfo("RectangleScaling", RectangleScaling.Main),
+        new ExampleInfo("BasicShapes", () => new BasicShapes(), BasicShapes.Main),
+        new ExampleInfo("BouncingBall", () => new BouncingBall(), BouncingBall.Main),
+        new ExampleInfo("CollisionArea", () => new CollisionArea(), CollisionArea.Main),
+        new ExampleInfo("ColorsPalette", () => new ColorsPalette(), ColorsPalette.Main),
+        new ExampleInfo("EasingsBallAnim", () => new EasingsBallAnim(), EasingsBallAnim.Main),
+        new ExampleInfo("EasingsBoxAnim", () => new EasingsBoxAnim(), EasingsBoxAnim.Main),
+        new ExampleInfo("EasingsRectangleArray", () => new EasingsRectangleArray(), EasingsRectangleArray.Main),
+        new ExampleInfo("FollowingEyes", () => new FollowingEyes(), FollowingEyes.Main),
+        new ExampleInfo("LinesBezier", () => new LinesBezier(), LinesBezier.Main),
+        new ExampleInfo("LogoRaylibAnim", () => new LogoRaylibAnim(), LogoRaylibAnim.Main),
+        new ExampleInfo("LogoRaylibShape", () => new LogoRaylibShape(), LogoRaylibShape.Main),
+        new ExampleInfo("RectangleScaling", () => new RectangleScaling(), RectangleScaling.Main),
 
         // Textures
-        new ExampleInfo("BackgroundScrolling", BackgroundScrolling.Main),
-        new ExampleInfo("BlendModes", BlendModes.Main),
-        new ExampleInfo("Bunnymark", Bunnymark.Main),
-        new ExampleInfo("DrawTiled", DrawTiled.Main),
-        new ExampleInfo("ImageDrawing", ImageDrawing.Main),
-        new ExampleInfo("ImageGeneration", ImageGeneration.Main),
-        new ExampleInfo("ImageLoading", ImageLoading.Main),
-        new ExampleInfo("ImageProcessing", ImageProcessing.Main),
-        new ExampleInfo("ImageText", ImageText.Main),
-        new ExampleInfo("LogoRaylibTexture", LogoRaylibTexture.Main),
-        new ExampleInfo("MousePainting", MousePainting.Main),
-        new ExampleInfo("NpatchDrawing", NpatchDrawing.Main),
-        new ExampleInfo("ParticlesBlending", ParticlesBlending.Main),
-        new ExampleInfo("TexturedCurve", TexturedCurve.Main),
-        new ExampleInfo("Polygon", Polygon.Main),
-        new ExampleInfo("RawData", RawData.Main),
-        new ExampleInfo("SpriteAnim", SpriteAnim.Main),
-        new ExampleInfo("SpriteButton", SpriteButton.Main),
-        new ExampleInfo("SpriteExplosion", SpriteExplosion.Main),
-        new ExampleInfo("SrcRecDstRec", SrcRecDstRec.Main),
-        new ExampleInfo("ToImage", ToImage.Main),
+        new ExampleInfo("BackgroundScrolling", () => new BackgroundScrolling(), BackgroundScrolling.Main),
+        new ExampleInfo("BlendModes", () => new BlendModes(), BlendModes.Main),
+        new ExampleInfo("Bunnymark", () => new Bunnymark(), Bunnymark.Main),
+        new ExampleInfo("DrawTiled", () => new DrawTiled(), DrawTiled.Main),
+        new ExampleInfo("ImageDrawing", () => new ImageDrawing(), ImageDrawing.Main),
+        new ExampleInfo("ImageGeneration", () => new ImageGeneration(), ImageGeneration.Main),
+        new ExampleInfo("ImageLoading", () => new ImageLoading(), ImageLoading.Main),
+        new ExampleInfo("ImageProcessing", () => new ImageProcessing(), ImageProcessing.Main),
+        new ExampleInfo("ImageText", () => new ImageText(), ImageText.Main),
+        new ExampleInfo("LogoRaylibTexture", () => new LogoRaylibTexture(), LogoRaylibTexture.Main),
+        new ExampleInfo("MousePainting", () => new MousePainting(), MousePainting.Main),
+        new ExampleInfo("NpatchDrawing", () => new NpatchDrawing(), NpatchDrawing.Main),
+        new ExampleInfo("ParticlesBlending", () => new ParticlesBlending(), ParticlesBlending.Main),
+        new ExampleInfo("TexturedCurve", () => new TexturedCurve(), TexturedCurve.Main),
+        new ExampleInfo("Polygon", () => new Polygon(), Polygon.Main),
+        new ExampleInfo("RawData", () => new RawData(), RawData.Main),
+        new ExampleInfo("SpriteAnim", () => new SpriteAnim(), SpriteAnim.Main),
+        new ExampleInfo("SpriteButton", () => new SpriteButton(), SpriteButton.Main),
+        new ExampleInfo("SpriteExplosion", () => new SpriteExplosion(), SpriteExplosion.Main),
+        new ExampleInfo("SrcRecDstRec", () => new SrcRecDstRec(), SrcRecDstRec.Main),
+        new ExampleInfo("ToImage", () => new ToImage(), ToImage.Main),
 
         // Text
-        new ExampleInfo("CodepointsLoading", CodepointsLoading.Main),
-        new ExampleInfo("FontFilters", FontFilters.Main),
-        new ExampleInfo("FontLoading", FontLoading.Main),
-        new ExampleInfo("FontSdf", FontSdf.Main),
-        new ExampleInfo("FontSpritefont", FontSpritefont.Main),
-        new ExampleInfo("FormatText", FormatText.Main),
-        new ExampleInfo("InputBox", InputBox.Main),
-        new ExampleInfo("RaylibFonts", RaylibFonts.Main),
-        new ExampleInfo("RectangleBounds", RectangleBounds.Main),
-        new ExampleInfo("WritingAnim", WritingAnim.Main),
+        new ExampleInfo("CodepointsLoading", () => new CodepointsLoading(), CodepointsLoading.Main),
+        new ExampleInfo("FontFilters", () => new FontFilters(), FontFilters.Main),
+        new ExampleInfo("FontLoading", () => new FontLoading(), FontLoading.Main),
+        new ExampleInfo("FontSdf", () => new FontSdf(), FontSdf.Main),
+        new ExampleInfo("FontSpritefont", () => new FontSpritefont(), FontSpritefont.Main),
+        new ExampleInfo("FormatText", () => new FormatText(), FormatText.Main),
+        new ExampleInfo("InputBox", () => new InputBox(), InputBox.Main),
+        new ExampleInfo("RaylibFonts", () => new RaylibFonts(), RaylibFonts.Main),
+        new ExampleInfo("RectangleBounds", () => new RectangleBounds(), RectangleBounds.Main),
+        new ExampleInfo("WritingAnim", () => new WritingAnim(), WritingAnim.Main),
 
         // Models
-        new ExampleInfo("LoadingIqm", LoadingIqm.Main),
-        new ExampleInfo("LoadingGltf", LoadingGltf.Main),
-        new ExampleInfo("BillboardDemo", BillboardDemo.Main),
-        new ExampleInfo("BoxCollisions", BoxCollisions.Main),
-        new ExampleInfo("CubicmapDemo", CubicmapDemo.Main),
-        new ExampleInfo("ModelCubeTexture", ModelCubeTexture.Main),
-        new ExampleInfo("FirstPersonMaze", FirstPersonMaze.Main),
-        new ExampleInfo("GeometricShapes", GeometricShapes.Main),
-        new ExampleInfo("HeightmapDemo", HeightmapDemo.Main),
-        new ExampleInfo("MeshDemo", MeshDemo.Main),
-        new ExampleInfo("ModelLoading", ModelLoading.Main),
-        new ExampleInfo("MeshGeneration", MeshGeneration.Main),
-        new ExampleInfo("MeshPicking", MeshPicking.Main),
-        new ExampleInfo("OrthographicProjection", OrthographicProjection.Main),
-        new ExampleInfo("SolarSystem", SolarSystem.Main),
-        new ExampleInfo("SkyboxDemo", SkyboxDemo.Main),
-        new ExampleInfo("WavingCubes", WavingCubes.Main),
-        new ExampleInfo("YawPitchRoll", YawPitchRoll.Main),
-        new ExampleInfo("DynamicMesh", DynamicMesh.Main),
+        new ExampleInfo("LoadingIqm", () => new LoadingIqm(), LoadingIqm.Main),
+        new ExampleInfo("LoadingGltf", () => new LoadingGltf(), LoadingGltf.Main),
+        new ExampleInfo("BillboardDemo", () => new BillboardDemo(), BillboardDemo.Main),
+        new ExampleInfo("BoxCollisions", () => new BoxCollisions(), BoxCollisions.Main),
+        new ExampleInfo("CubicmapDemo", () => new CubicmapDemo(), CubicmapDemo.Main),
+        new ExampleInfo("ModelCubeTexture", () => new ModelCubeTexture(), ModelCubeTexture.Main),
+        new ExampleInfo("FirstPersonMaze", () => new FirstPersonMaze(), FirstPersonMaze.Main),
+        new ExampleInfo("GeometricShapes", () => new GeometricShapes(), GeometricShapes.Main),
+        new ExampleInfo("HeightmapDemo", () => new HeightmapDemo(), HeightmapDemo.Main),
+        new ExampleInfo("MeshDemo", () => new MeshDemo(), MeshDemo.Main),
+        new ExampleInfo("ModelLoading", () => new ModelLoading(), ModelLoading.Main),
+        new ExampleInfo("MeshGeneration", () => new MeshGeneration(), MeshGeneration.Main),
+        new ExampleInfo("MeshPicking", () => new MeshPicking(), MeshPicking.Main),
+        new ExampleInfo("OrthographicProjection", () => new OrthographicProjection(), OrthographicProjection.Main),
+        new ExampleInfo("SolarSystem", () => new SolarSystem(), SolarSystem.Main),
+        new ExampleInfo("SkyboxDemo", () => new SkyboxDemo(), SkyboxDemo.Main),
+        new ExampleInfo("WavingCubes", () => new WavingCubes(), WavingCubes.Main),
+        new ExampleInfo("YawPitchRoll", () => new YawPitchRoll(), YawPitchRoll.Main),
+        new ExampleInfo("DynamicMesh", () => new DynamicMesh(), DynamicMesh.Main),
 
         // Shaders
-        new ExampleInfo("BasicLighting", BasicLighting.Main),
-        new ExampleInfo("BasicPbr", BasicPbr.Main),
-        new ExampleInfo("CustomUniform", CustomUniform.Main),
-        new ExampleInfo("Eratosthenes", Eratosthenes.Main),
-        new ExampleInfo("Fog", Fog.Main),
-        new ExampleInfo("HotReloading", HotReloading.Main),
-        new ExampleInfo("HybridRender", HybridRender.Main),
-        new ExampleInfo("JuliaSet", JuliaSet.Main),
-        new ExampleInfo("ModelShader", ModelShader.Main),
-        new ExampleInfo("MultiSample2d", MultiSample2d.Main),
-        new ExampleInfo("PaletteSwitch", PaletteSwitch.Main),
-        new ExampleInfo("PostProcessing", PostProcessing.Main),
-        new ExampleInfo("Raymarching", Raymarching.Main),
-        new ExampleInfo("MeshInstancing", MeshInstancing.Main),
-        new ExampleInfo("ShapesTextures", ShapesTextures.Main),
-        new ExampleInfo("SimpleMask", SimpleMask.Main),
-        new ExampleInfo("Spotlight", Spotlight.Main),
-        new ExampleInfo("TextureDrawing", TextureDrawing.Main),
-        new ExampleInfo("TextureOutline", TextureOutline.Main),
-        new ExampleInfo("TextureWaves", TextureWaves.Main),
-        new ExampleInfo("WriteDepth", WriteDepth.Main),
+        new ExampleInfo("BasicLighting", () => new BasicLighting(), BasicLighting.Main),
+        new ExampleInfo("BasicPbr", () => new BasicPbr(), BasicPbr.Main),
+        new ExampleInfo("CustomUniform", () => new CustomUniform(), CustomUniform.Main),
+        new ExampleInfo("Eratosthenes", () => new Eratosthenes(), Eratosthenes.Main),
+        new ExampleInfo("Fog", () => new Fog(), Fog.Main),
+        new ExampleInfo("HotReloading", () => new HotReloading(), HotReloading.Main),
+        new ExampleInfo("HybridRender", () => new HybridRender(), HybridRender.Main),
+        new ExampleInfo("JuliaSet", () => new JuliaSet(), JuliaSet.Main),
+        new ExampleInfo("ModelShader", () => new ModelShader(), ModelShader.Main),
+        new ExampleInfo("MultiSample2d", () => new MultiSample2d(), MultiSample2d.Main),
+        new ExampleInfo("PaletteSwitch", () => new PaletteSwitch(), PaletteSwitch.Main),
+        new ExampleInfo("PostProcessing", () => new PostProcessing(), PostProcessing.Main),
+        new ExampleInfo("Raymarching", () => new Raymarching(), Raymarching.Main),
+        new ExampleInfo("MeshInstancing", () => new MeshInstancing(), MeshInstancing.Main),
+        new ExampleInfo("ShapesTextures", () => new ShapesTextures(), ShapesTextures.Main),
+        new ExampleInfo("SimpleMask", () => new SimpleMask(), SimpleMask.Main),
+        new ExampleInfo("Spotlight", () => new Spotlight(), Spotlight.Main),
+        new ExampleInfo("TextureDrawing", () => new TextureDrawing(), TextureDrawing.Main),
+        new ExampleInfo("TextureOutline", () => new TextureOutline(), TextureOutline.Main),
+        new ExampleInfo("TextureWaves", () => new TextureWaves(), TextureWaves.Main),
+        new ExampleInfo("WriteDepth", () => new WriteDepth(), WriteDepth.Main),
 
         // Audio
-        new ExampleInfo("ModulePlaying", ModulePlaying.Main),
-        new ExampleInfo("MusicStreamDemo", MusicStreamDemo.Main),
-        new ExampleInfo("SoundLoading", SoundLoading.Main),
+        new ExampleInfo("ModulePlaying", () => new ModulePlaying(), ModulePlaying.Main),
+        new ExampleInfo("MusicStreamDemo", () => new MusicStreamDemo(), MusicStreamDemo.Main),
+        new ExampleInfo("SoundLoading", () => new SoundLoading(), SoundLoading.Main),
     };
 
     public static ExampleInfo GetExample(string name)
@@ -179,7 +185,7 @@ class Program
         if (args.Length > 0)
         {
             var example = ExampleList.GetExample(args[0]);
-            example?.Main?.Invoke();
+            example?.Run?.Invoke();
             return;
         }
 
