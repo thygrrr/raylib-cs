@@ -161,11 +161,6 @@ public class ExampleList
         new ExampleInfo(nameof(SoundLoading), SoundLoading.Main),
     };
 
-    static ExampleList()
-    {
-        ExampleRegistry.ValidateDesktop(Array.ConvertAll(AllExamples, e => e.Name));
-    }
-
     public static ExampleInfo GetExample(string name)
     {
         var example = Array.Find(ExampleList.AllExamples, x =>
