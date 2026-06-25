@@ -34,6 +34,7 @@ function writeScaleModeToQuery(mode) {
 }
 
 let scaleMode = readScaleModeFromQuery();
+let Host = null;
 
 function ensureBackingBufferSize() {
     if (canvas.width !== CANVAS_WIDTH) {
@@ -97,6 +98,23 @@ function updateScaleDiagnostics(displayScale, cssWidth, cssHeight, deviceWidth, 
         `Scale ${displayScale.toFixed(2)}`;
 }
 
+function syncMouseScale() {
+    if (!Host) {
+        return;
+    }
+
+    const cssWidth = canvas.clientWidth;
+    const cssHeight = canvas.clientHeight;
+    if (cssWidth <= 0 || cssHeight <= 0) {
+        return;
+    }
+
+    // Map CSS/display mouse coords to the fixed backing buffer (canvas.width/height).
+    const scaleX = canvas.width / cssWidth;
+    const scaleY = canvas.height / cssHeight;
+    Host.SetMouseScaleFromDisplay(scaleX, scaleY);
+}
+
 function applyDisplayScale() {
     ensureBackingBufferSize();
 
@@ -110,6 +128,8 @@ function applyDisplayScale() {
     // Center canvas inside viewport, leaving letterboxing around it.
     viewport.style.justifyContent = 'center';
     viewport.style.alignItems = 'center';
+
+    syncMouseScale();
 
     updateScaleDiagnostics(
         display.scale,
@@ -159,7 +179,7 @@ const { getAssemblyExports, getConfig, runMain } = await dotnet
 
 const config = getConfig();
 const exports = await getAssemblyExports(config.mainAssemblyName);
-const Host = exports.Examples.Web.Host;
+Host = exports.Examples.Web.Host;
 
 // raylib's GLFW/emscripten backend renders into this canvas.
 dotnet.instance.Module['canvas'] = canvas;

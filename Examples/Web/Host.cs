@@ -202,4 +202,15 @@ public partial class Host
     {
         return string.Join("\n", Examples.ConvertAll(e => e.Name));
     }
+
+    /// <summary>
+    /// Map browser CSS mouse coordinates to the fixed 800x450 framebuffer when the canvas
+    /// is CSS-scaled (integer/fit/native display modes in main.js).
+    /// </summary>
+    [JSExport]
+    public static void SetMouseScaleFromDisplay(float scaleX, float scaleY)
+    {
+        SetMouseOffset(0, 0);
+        SetMouseScale(scaleX, scaleY);
+    }
 }
