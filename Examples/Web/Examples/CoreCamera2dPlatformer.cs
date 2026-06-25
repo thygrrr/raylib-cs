@@ -7,8 +7,8 @@ public class CoreCamera2dPlatformer : IWebExample
 {
     public string Name => "Core / 2D Camera Platformer";
 
-    private const int ScreenWidth = 800;
-    private const int ScreenHeight = 450;
+    private const int screenWidth = 800;
+    private const int screenHeight = 450;
 
     private const int G = 400;
     private const float PlayerJumpSpeed = 350.0f;
@@ -70,7 +70,7 @@ public class CoreCamera2dPlatformer : IWebExample
 
         _camera = new();
         _camera.Target = _player.Position;
-        _camera.Offset = new Vector2(ScreenWidth / 2, ScreenHeight / 2);
+        _camera.Offset = new Vector2(screenWidth / 2, screenHeight / 2);
         _camera.Rotation = 0.0f;
         _camera.Zoom = 1.0f;
 
@@ -126,7 +126,7 @@ public class CoreCamera2dPlatformer : IWebExample
         }
 
         // Call update camera function by its pointer
-        _cameraUpdaters[_cameraOption](ref _camera, ref _player, _envItems, deltaTime, ScreenWidth, ScreenHeight);
+        _cameraUpdaters[_cameraOption](ref _camera, ref _player, _envItems, deltaTime, screenWidth, screenHeight);
 
         BeginDrawing();
         ClearBackground(Color.LightGray);

@@ -5,8 +5,8 @@ public class TextFontSpritefont : IWebExample
 {
     public string Name => "Text / Font Spritefont";
 
-    private const int screenWidth = 960;
-    private const int screenHeight = 540;
+    private const int screenWidth = 800;
+    private const int screenHeight = 450;
 
     private const string Msg1 = "THIS IS A custom SPRITE FONT...";
     private const string Msg2 = "...and this is ANOTHER CUSTOM font...";

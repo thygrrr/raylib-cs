@@ -6,8 +6,8 @@ public class CoreInputGestures : IWebExample
     public string Name => "Core / Input Gestures";
 
     private const int MaxGestureStrings = 20;
-    private const int ScreenWidth = 800;
-    private const int ScreenHeight = 450;
+    private const int screenWidth = 800;
+    private const int screenHeight = 450;
 
     private Vector2 _touchPosition;
     private Rectangle _touchArea;
@@ -19,7 +19,7 @@ public class CoreInputGestures : IWebExample
     public void Init()
     {
         _touchPosition = new Vector2(0, 0);
-        _touchArea = new Rectangle(220, 10, ScreenWidth - 230, ScreenHeight - 20);
+        _touchArea = new Rectangle(220, 10, screenWidth - 230, screenHeight - 20);
 
         _gesturesCount = 0;
         _gestureStrings = new string[MaxGestureStrings];
@@ -95,9 +95,9 @@ public class CoreInputGestures : IWebExample
         ClearBackground(Color.RayWhite);
 
         DrawRectangleRec(_touchArea, Color.Gray);
-        DrawRectangle(225, 15, ScreenWidth - 240, ScreenHeight - 30, Color.RayWhite);
+        DrawRectangle(225, 15, screenWidth - 240, screenHeight - 30, Color.RayWhite);
 
-        DrawText("GESTURES TEST AREA", ScreenWidth - 270, ScreenHeight - 40, 20, ColorAlpha(Color.Gray, 0.5f));
+        DrawText("GESTURES TEST AREA", screenWidth - 270, screenHeight - 40, 20, ColorAlpha(Color.Gray, 0.5f));
 
         for (int i = 0; i < _gesturesCount; i++)
         {
@@ -120,7 +120,7 @@ public class CoreInputGestures : IWebExample
             }
         }
 
-        DrawRectangleLines(10, 29, 200, ScreenHeight - 50, Color.Gray);
+        DrawRectangleLines(10, 29, 200, screenHeight - 50, Color.Gray);
         DrawText("DETECTED GESTURES", 50, 15, 10, Color.Gray);
 
         if (_currentGesture != Gesture.None)

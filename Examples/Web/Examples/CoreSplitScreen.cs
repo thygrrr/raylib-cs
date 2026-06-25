@@ -5,8 +5,8 @@ public class CoreSplitScreen : IWebExample
 {
     public string Name => "Core / Split Screen";
 
-    private const int screenWidth = 960;
-    private const int screenHeight = 540;
+    private const int screenWidth = 800;
+    private const int screenHeight = 450;
 
     private Texture2D _textureGrid;
     private Camera3D _cameraPlayer1;

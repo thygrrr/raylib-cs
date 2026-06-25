@@ -5,8 +5,8 @@ public class TextFontFilters : IWebExample
 {
     public string Name => "Text / Font Filters";
 
-    private const int screenWidth = 960;
-    private const int screenHeight = 540;
+    private const int screenWidth = 800;
+    private const int screenHeight = 450;
 
     private const string Msg = "Loaded Font";
 

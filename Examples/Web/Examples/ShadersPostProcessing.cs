@@ -8,8 +8,8 @@ public class ShadersPostProcessing : IWebExample
 
     private const int GLSL_VERSION = 100;
 
-    private const int screenWidth = 960;
-    private const int screenHeight = 540;
+    private const int screenWidth = 800;
+    private const int screenHeight = 450;
 
     private enum PostproShader
     {

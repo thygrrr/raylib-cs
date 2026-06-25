@@ -7,8 +7,8 @@ public unsafe class ModelsYawPitchRoll : IWebExample
 {
     public string Name => "Models / Yaw Pitch Roll";
 
-    private const int screenWidth = 960;
-    private const int screenHeight = 540;
+    private const int screenWidth = 800;
+    private const int screenHeight = 450;
 
     private Camera3D _camera;
 

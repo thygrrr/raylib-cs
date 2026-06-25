@@ -5,13 +5,13 @@ public class CoreSmoothPixelperfect : IWebExample
 {
     public string Name => "Core / Smooth Pixelperfect";
 
-    private const int screenWidth = 960;
-    private const int screenHeight = 540;
+    private const int screenWidth = 800;
+    private const int screenHeight = 450;
 
-    private const int virtualScreenWidth = 160;
-    private const int virtualScreenHeight = 90;
+    private const int virtualscreenWidth = 160;
+    private const int virtualscreenHeight = 90;
 
-    private const float virtualRatio = (float)screenWidth / (float)virtualScreenWidth;
+    private const float virtualRatio = (float)screenWidth / (float)virtualscreenWidth;
 
     private Camera2D _worldSpaceCamera;
     private Camera2D _screenSpaceCamera;
@@ -40,7 +40,7 @@ public class CoreSmoothPixelperfect : IWebExample
         _screenSpaceCamera.Zoom = 1.0f;
 
         // This is where we'll draw all our objects.
-        _target = LoadRenderTexture(virtualScreenWidth, virtualScreenHeight);
+        _target = LoadRenderTexture(virtualscreenWidth, virtualscreenHeight);
 
         _rec01 = new(70.0f, 35.0f, 20.0f, 20.0f);
         _rec02 = new(90.0f, 55.0f, 30.0f, 10.0f);
@@ -107,7 +107,7 @@ public class CoreSmoothPixelperfect : IWebExample
         EndMode2D();
 
         DrawText($"Screen resolution: {screenWidth}x{screenHeight}", 10, 10, 20, Color.DarkBlue);
-        DrawText($"World resolution: {virtualScreenWidth}x{virtualScreenHeight}", 10, 40, 20, Color.DarkGreen);
+        DrawText($"World resolution: {virtualscreenWidth}x{virtualscreenHeight}", 10, 40, 20, Color.DarkGreen);
         DrawFPS(GetScreenWidth() - 95, 10);
         EndDrawing();
     }

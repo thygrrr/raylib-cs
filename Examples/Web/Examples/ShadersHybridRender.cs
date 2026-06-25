@@ -13,8 +13,8 @@ public unsafe class ShadersHybridRender : IWebExample
 
     private const int GLSL_VERSION = 100;
 
-    private const int screenWidth = 960;
-    private const int screenHeight = 540;
+    private const int screenWidth = 800;
+    private const int screenHeight = 450;
 
     private struct RayLocs
     {

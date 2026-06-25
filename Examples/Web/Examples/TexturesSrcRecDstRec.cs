@@ -5,8 +5,8 @@ public class TexturesSrcRecDstRec : IWebExample
 {
     public string Name => "Textures / Src and Dst Rectangles";
 
-    private const int ScreenWidth = 960;
-    private const int ScreenHeight = 540;
+    private const int screenWidth = 800;
+    private const int screenHeight = 450;
 
     private Texture2D _scarfy;
     private Rectangle _sourceRec;
@@ -26,7 +26,7 @@ public class TexturesSrcRecDstRec : IWebExample
         _sourceRec = new(0, 0, frameWidth, frameHeight);
 
         // NOTE: Destination rectangle (screen rectangle where drawing part of texture)
-        _destRec = new(ScreenWidth / 2, ScreenHeight / 2, frameWidth * 2, frameHeight * 2);
+        _destRec = new(screenWidth / 2, screenHeight / 2, frameWidth * 2, frameHeight * 2);
 
         // NOTE: Origin of the texture (rotation/scale point), it's relative to destination rectangle size
         _origin = new(frameWidth, frameHeight);
@@ -48,10 +48,10 @@ public class TexturesSrcRecDstRec : IWebExample
         // rotation defines the texture rotation (using origin as rotation point)
         DrawTexturePro(_scarfy, _sourceRec, _destRec, _origin, _rotation, Color.White);
 
-        DrawLine((int)_destRec.X, 0, (int)_destRec.X, ScreenHeight, Color.Gray);
-        DrawLine(0, (int)_destRec.Y, ScreenWidth, (int)_destRec.Y, Color.Gray);
+        DrawLine((int)_destRec.X, 0, (int)_destRec.X, screenHeight, Color.Gray);
+        DrawLine(0, (int)_destRec.Y, screenWidth, (int)_destRec.Y, Color.Gray);
 
-        DrawText("(c) Scarfy sprite by Eiden Marsal", ScreenWidth - 200, ScreenHeight - 20, 10, Color.Gray);
+        DrawText("(c) Scarfy sprite by Eiden Marsal", screenWidth - 200, screenHeight - 20, 10, Color.Gray);
 
         EndDrawing();
     }

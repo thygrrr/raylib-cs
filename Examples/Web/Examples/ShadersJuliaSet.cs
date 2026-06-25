@@ -8,8 +8,8 @@ public class ShadersJuliaSet : IWebExample
     // NOTE: raylib's web build uses GLSL ES 1.00 (WebGL1), so we target glsl100
     private const int GlslVersion = 100;
 
-    private const int screenWidth = 960;
-    private const int screenHeight = 540;
+    private const int screenWidth = 800;
+    private const int screenHeight = 450;
     private const float zoomSpeed = 1.01f;
     private const float offsetSpeedMul = 2.0f;
     private const float startingZoom = 0.75f;

@@ -6,8 +6,8 @@ public class ShadersModelShader : IWebExample
 {
     public string Name => "Shaders / Model Shader";
 
-    private const int screenWidth = 960;
-    private const int screenHeight = 540;
+    private const int screenWidth = 800;
+    private const int screenHeight = 450;
 
     private Camera3D _camera;
     private Model _model;

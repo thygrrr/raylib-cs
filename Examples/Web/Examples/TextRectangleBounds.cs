@@ -5,14 +5,14 @@ public class TextRectangleBounds : IWebExample
 {
     public string Name => "Text / Rectangle Bounds";
 
-    private const int ScreenWidth = 800;
-    private const int ScreenHeight = 450;
+    private const int screenWidth = 800;
+    private const int screenHeight = 450;
 
     // Minimum width and heigh for the container rectangle
     private const int MinWidth = 60;
     private const int MinHeight = 60;
-    private const int MaxWidth = ScreenWidth - 50;
-    private const int MaxHeight = ScreenHeight - 160;
+    private const int MaxWidth = screenWidth - 50;
+    private const int MaxHeight = screenHeight - 160;
 
     private string _text;
     private bool _resizing;
@@ -35,7 +35,7 @@ public class TextRectangleBounds : IWebExample
         _resizing = false;
         _wordWrap = true;
 
-        _container = new(25, 25, ScreenWidth - 50, ScreenHeight - 250);
+        _container = new(25, 25, screenWidth - 50, screenHeight - 250);
         _resizer = new(
             _container.X + _container.Width - 17,
             _container.Y + _container.Height - 17,
@@ -116,22 +116,22 @@ public class TextRectangleBounds : IWebExample
         DrawRectangleRec(_resizer, _borderColor);
 
         // Draw bottom info
-        DrawRectangle(0, ScreenHeight - 54, ScreenWidth, 54, Color.Gray);
-        DrawRectangleRec(new Rectangle(382, ScreenHeight - 34, 12, 12), Color.Maroon);
+        DrawRectangle(0, screenHeight - 54, screenWidth, 54, Color.Gray);
+        DrawRectangleRec(new Rectangle(382, screenHeight - 34, 12, 12), Color.Maroon);
 
-        DrawText("Word Wrap: ", 313, ScreenHeight - 115, 20, Color.Black);
+        DrawText("Word Wrap: ", 313, screenHeight - 115, 20, Color.Black);
 
         if (_wordWrap)
         {
-            DrawText("ON", 447, ScreenHeight - 115, 20, Color.Red);
+            DrawText("ON", 447, screenHeight - 115, 20, Color.Red);
         }
         else
         {
-            DrawText("OFF", 447, ScreenHeight - 115, 20, Color.Black);
+            DrawText("OFF", 447, screenHeight - 115, 20, Color.Black);
         }
 
-        DrawText("Press [SPACE] to toggle word wrap", 218, ScreenHeight - 86, 20, Color.Gray);
-        DrawText("Click hold & drag the    to resize the container", 155, ScreenHeight - 38, 20, Color.RayWhite);
+        DrawText("Press [SPACE] to toggle word wrap", 218, screenHeight - 86, 20, Color.Gray);
+        DrawText("Click hold & drag the    to resize the container", 155, screenHeight - 38, 20, Color.RayWhite);
 
         EndDrawing();
     }

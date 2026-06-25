@@ -6,7 +6,7 @@ public class TexturesParticlesBlending : IWebExample
     public string Name => "Textures / Particles Blending";
 
     private const int MaxParticles = 200;
-    private const int ScreenHeight = 540;
+    private const int screenHeight = 450;
 
     // Particle structure with basic data
     private struct Particle
@@ -128,11 +128,11 @@ public class TexturesParticlesBlending : IWebExample
 
         if (_blending == BlendMode.Alpha)
         {
-            DrawText("ALPHA BLENDING", 290, ScreenHeight - 40, 20, Color.Black);
+            DrawText("ALPHA BLENDING", 290, screenHeight - 40, 20, Color.Black);
         }
         else
         {
-            DrawText("ADDITIVE BLENDING", 280, ScreenHeight - 40, 20, Color.RayWhite);
+            DrawText("ADDITIVE BLENDING", 280, screenHeight - 40, 20, Color.RayWhite);
         }
 
         EndDrawing();

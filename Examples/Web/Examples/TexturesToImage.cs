@@ -5,8 +5,8 @@ public class TexturesToImage : IWebExample
 {
     public string Name => "Textures / Texture to Image";
 
-    private const int ScreenWidth = 960;
-    private const int ScreenHeight = 540;
+    private const int screenWidth = 800;
+    private const int screenHeight = 450;
 
     private Texture2D _texture;
 
@@ -30,8 +30,8 @@ public class TexturesToImage : IWebExample
         BeginDrawing();
         ClearBackground(Color.RayWhite);
 
-        int x = ScreenWidth / 2 - _texture.Width / 2;
-        int y = ScreenHeight / 2 - _texture.Height / 2;
+        int x = screenWidth / 2 - _texture.Width / 2;
+        int y = screenHeight / 2 - _texture.Height / 2;
         DrawTexture(_texture, x, y, Color.White);
 
         DrawText("this IS a texture loaded from an image!", 300, 370, 10, Color.Gray);

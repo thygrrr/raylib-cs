@@ -9,8 +9,8 @@ public class TexturesSpriteAnim : IWebExample
 
     private const int MaxFrameSpeed = 15;
     private const int MinFrameSpeed = 1;
-    private const int ScreenWidth = 960;
-    private const int ScreenHeight = 540;
+    private const int screenWidth = 800;
+    private const int screenHeight = 450;
 
     private Texture2D _scarfy;
     private Vector2 _position;
@@ -90,7 +90,7 @@ public class TexturesSpriteAnim : IWebExample
 
         // Draw part of the texture
         DrawTextureRec(_scarfy, _frameRec, _position, Color.White);
-        DrawText("(c) Scarfy sprite by Eiden Marsal", ScreenWidth - 200, ScreenHeight - 20, 10, Color.Gray);
+        DrawText("(c) Scarfy sprite by Eiden Marsal", screenWidth - 200, screenHeight - 20, 10, Color.Gray);
 
         EndDrawing();
     }

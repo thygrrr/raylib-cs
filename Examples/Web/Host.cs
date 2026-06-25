@@ -11,8 +11,8 @@ namespace Examples.Web;
 /// </summary>
 public partial class Host
 {
-    public const int ScreenWidth = 960;
-    public const int ScreenHeight = 540;
+    public const int screenWidth = 800;
+    public const int screenHeight = 450;
 
     // Adapted examples. Add more here as they are converted to IWebExample.
     private static readonly List<IWebExample> Examples = new()
@@ -151,7 +151,7 @@ public partial class Host
 
     public static void Main()
     {
-        InitWindow(ScreenWidth, ScreenHeight, "raylib-cs web examples");
+        InitWindow(screenWidth, screenHeight, "raylib-cs web examples");
         SetTargetFPS(60);
 
         SetExample(Examples[0].Name);

@@ -7,8 +7,8 @@ public class TexturesSpriteButton : IWebExample
 
     // Number of frames (rectangles) for the button sprite texture
     private const int NumFrames = 3;
-    private const int ScreenWidth = 960;
-    private const int ScreenHeight = 540;
+    private const int screenWidth = 800;
+    private const int screenHeight = 450;
 
     private Sound _fxButton;
     private Texture2D _button;
@@ -32,8 +32,8 @@ public class TexturesSpriteButton : IWebExample
 
         // Define button bounds on screen
         _btnBounds = new(
-            ScreenWidth / 2 - _button.Width / 2,
-            ScreenHeight / 2 - _button.Height / NumFrames / 2,
+            screenWidth / 2 - _button.Width / 2,
+            screenHeight / 2 - _button.Height / NumFrames / 2,
             _button.Width,
             _frameHeight
         );

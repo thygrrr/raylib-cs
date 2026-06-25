@@ -5,8 +5,8 @@ public class CoreInputVirtualControls : IWebExample
 {
     public string Name => "Core / Input Virtual Controls";
 
-    private const int ScreenWidth = 800;
-    private const int ScreenHeight = 450;
+    private const int screenWidth = 800;
+    private const int screenHeight = 450;
 
     private enum PadButton
     {
@@ -112,7 +112,7 @@ public class CoreInputVirtualControls : IWebExample
         _pressedButton = (int)PadButton.BUTTON_NONE;
         _inputPosition = new Vector2(0, 0);
 
-        _playerPosition = new Vector2((float)ScreenWidth / 2, (float)ScreenHeight / 2);
+        _playerPosition = new Vector2((float)screenWidth / 2, (float)screenHeight / 2);
         _playerSpeed = 75f;
     }
 

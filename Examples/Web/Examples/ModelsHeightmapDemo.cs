@@ -5,7 +5,7 @@ public class ModelsHeightmapDemo : IWebExample
 {
     public string Name => "Models / Heightmap Demo";
 
-    private const int screenWidth = 960;
+    private const int screenWidth = 800;
 
     private Camera3D _camera;
 

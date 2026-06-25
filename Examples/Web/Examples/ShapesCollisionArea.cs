@@ -5,7 +5,7 @@ public class ShapesCollisionArea : IWebExample
 {
     public string Name => "Shapes / Collision Area";
 
-    private const int screenWidth = 960;
+    private const int screenWidth = 800;
 
     private Rectangle _boxA;
     private int _boxASpeedX;

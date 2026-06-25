@@ -5,8 +5,8 @@ public class TexturesPolygon : IWebExample
 {
     public string Name => "Textures / Textured Polygon";
 
-    private const int ScreenWidth = 960;
-    private const int ScreenHeight = 540;
+    private const int screenWidth = 800;
+    private const int screenHeight = 450;
 
     private Texture2D _texture;
     private Vector2[] _texcoords;
@@ -66,7 +66,7 @@ public class TexturesPolygon : IWebExample
         ClearBackground(Color.RayWhite);
 
         DrawText("Textured Polygon", 20, 20, 20, Color.DarkGray);
-        Vector2 center = new(ScreenWidth / 2, ScreenHeight / 2);
+        Vector2 center = new(screenWidth / 2, screenHeight / 2);
         DrawTexturePoly(_texture, center, _positions, _texcoords, _positions.Length, Color.White);
 
         EndDrawing();

@@ -8,8 +8,8 @@ public class ShadersHotReloading : IWebExample
 {
     public string Name => "Shaders / Hot Reloading";
 
-    private const int screenWidth = 960;
-    private const int screenHeight = 540;
+    private const int screenWidth = 800;
+    private const int screenHeight = 450;
 
     private Shader _shader;
     private int _resolutionLoc;

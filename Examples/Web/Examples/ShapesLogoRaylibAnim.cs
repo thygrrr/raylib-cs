@@ -5,8 +5,8 @@ public class ShapesLogoRaylibAnim : IWebExample
 {
     public string Name => "Shapes / Logo Raylib Anim";
 
-    private const int screenWidth = 960;
-    private const int screenHeight = 540;
+    private const int screenWidth = 800;
+    private const int screenHeight = 450;
 
     private int _logoPositionX;
     private int _logoPositionY;

@@ -5,8 +5,8 @@ public class ModelsCubicmapDemo : IWebExample
 {
     public string Name => "Models / Cubicmap Demo";
 
-    private const int screenWidth = 960;
-    private const int screenHeight = 540;
+    private const int screenWidth = 800;
+    private const int screenHeight = 450;
 
     private Camera3D _camera;
 

@@ -5,8 +5,8 @@ public class ShadersCustomUniform : IWebExample
 {
     public string Name => "Shaders / Custom Uniform";
 
-    private const int screenWidth = 960;
-    private const int screenHeight = 540;
+    private const int screenWidth = 800;
+    private const int screenHeight = 450;
 
     // NOTE: The original example enables MSAA 4x via SetConfigFlags before InitWindow.
     // The host owns the window, so we cannot set config flags here.

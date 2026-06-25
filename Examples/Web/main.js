@@ -3,17 +3,18 @@ import { dotnet } from './_framework/dotnet.js'
 const status = document.getElementById('status');
 const select = document.getElementById('examples');
 const canvas = document.getElementById('canvas');
-const CANVAS_WIDTH = 960;
-const CANVAS_HEIGHT = 540;
+const CANVAS_WIDTH = 800;
+const CANVAS_HEIGHT = 450;
 
 function enforceCanvasSize() {
+    /*
     if (canvas.width !== CANVAS_WIDTH) {
         canvas.width = CANVAS_WIDTH;
     }
     if (canvas.height !== CANVAS_HEIGHT) {
         canvas.height = CANVAS_HEIGHT;
     }
-
+    */
     const widthPx = `${CANVAS_WIDTH}px`;
     const heightPx = `${CANVAS_HEIGHT}px`;
     if (canvas.style.width !== widthPx) {
@@ -22,6 +23,7 @@ function enforceCanvasSize() {
     if (canvas.style.height !== heightPx) {
         canvas.style.height = heightPx;
     }
+
 }
 
 enforceCanvasSize();

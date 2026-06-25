@@ -9,7 +9,7 @@ public class ShadersPaletteSwitch : IWebExample
     private const int GlslVersion = 100;
     private const int ColorsPerPalette = 8;
     private const int VALUES_PER_COLOR = 3;
-    private const int screenHeight = 540;
+    private const int screenHeight = 450;
 
     private static readonly int[][] Palettes = new int[][] {
             // 3-BIT RGB

@@ -5,8 +5,8 @@ public class CorePicking3d : IWebExample
 {
     public string Name => "Core / Picking 3D";
 
-    private const int ScreenWidth = 800;
-    private const int ScreenHeight = 450;
+    private const int screenWidth = 800;
+    private const int screenHeight = 450;
 
     private Camera3D _camera;
     private Vector3 _cubePosition;
@@ -84,8 +84,8 @@ public class CorePicking3d : IWebExample
 
         if (_collision.Hit)
         {
-            int posX = (ScreenWidth - MeasureText("BOX SELECTED", 30)) / 2;
-            DrawText("BOX SELECTED", posX, (int)(ScreenHeight * 0.1f), 30, Color.Green);
+            int posX = (screenWidth - MeasureText("BOX SELECTED", 30)) / 2;
+            DrawText("BOX SELECTED", posX, (int)(screenHeight * 0.1f), 30, Color.Green);
         }
 
         DrawFPS(10, 10);

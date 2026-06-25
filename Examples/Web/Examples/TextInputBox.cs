@@ -7,8 +7,8 @@ public class TextInputBox : IWebExample
 
     private const int MaxInputChars = 9;
 
-    private const int ScreenWidth = 800;
-    private const int ScreenHeight = 450;
+    private const int screenWidth = 800;
+    private const int screenHeight = 450;
 
     // NOTE: One extra space required for line ending char '\0'
     private char[] _name;
@@ -24,7 +24,7 @@ public class TextInputBox : IWebExample
         _name = new char[MaxInputChars];
         _letterCount = 0;
 
-        _textBox = new(ScreenWidth / 2 - 100, 180, 225, 50);
+        _textBox = new(screenWidth / 2 - 100, 180, 225, 50);
         _mouseOnText = false;
 
         _framesCounter = 0;

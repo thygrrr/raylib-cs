@@ -5,7 +5,7 @@ public class ShadersShapesTextures : IWebExample
 {
     public string Name => "Shaders / Shapes Textures";
 
-    private const int screenHeight = 540;
+    private const int screenHeight = 450;
 
     private Texture2D _fudesumi;
     private Shader _shader;
