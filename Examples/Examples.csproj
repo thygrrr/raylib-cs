@@ -57,6 +57,8 @@
         <WasmExtraFilesToDeploy Include="Web/index.html" TargetPath="index.html"/>
         <WasmExtraFilesToDeploy Include="Web/main.js" TargetPath="main.js"/>
         <WasmExtraFilesToDeploy Include="Web/scaleUtils.js" TargetPath="scaleUtils.js"/>
+        <!-- Serve the raylib-cs icon as the page favicon (avoids the /favicon.ico 404). -->
+        <WasmExtraFilesToDeploy Include="..\Raylib-cs\logo\raylib-cs.ico" TargetPath="favicon.ico"/>
         <!-- Bundle the example assets into the wasm virtual filesystem at /resources/... so
              examples that load from "resources/..." work unchanged. -->
         <WasmFilesToIncludeInFileSystem Include="resources\**\*.*"
