@@ -58,8 +58,6 @@ public partial class Camera3dFirstPerson : IExample
                 _positions[i] = new Vector3(GetRandomValue(-15, 15), _heights[i] / 2.0f, GetRandomValue(-15, 15));
                 _colors[i] = new Color(GetRandomValue(20, 255), GetRandomValue(10, 55), 30, 255);
             }
-
-            DisableCursor();
         }
 
         public void Update()

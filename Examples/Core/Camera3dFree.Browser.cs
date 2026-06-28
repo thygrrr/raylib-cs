@@ -41,8 +41,6 @@ public partial class Camera3dFree : IExample
             _camera.Projection = CameraProjection.Perspective;
 
             _cubePosition = new Vector3(0.0f, 0.0f, 0.0f);
-
-            DisableCursor();
         }
 
         public void Update()

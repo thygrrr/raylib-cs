@@ -65,8 +65,6 @@ public partial class Spotlight : IExample
 
         public void Init()
         {
-            HideCursor();
-
             _texRay = LoadTexture("resources/raysan.png");
 
             _stars = new Star[MaxStars];

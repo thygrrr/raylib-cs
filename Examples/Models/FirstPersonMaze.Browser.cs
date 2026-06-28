@@ -61,8 +61,6 @@ public partial class FirstPersonMaze : IExample
             UnloadImage(imMap);
 
             _mapPosition = new(-16.0f, 0.0f, -8.0f);
-
-            DisableCursor();
         }
 
         public void Update()
