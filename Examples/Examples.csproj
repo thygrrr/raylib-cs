@@ -1,8 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
         <OutputType>Exe</OutputType>
-        <TargetFrameworks Condition="'$(RuntimeIdentifier)' != 'browser-wasm'">net8.0;net10.0</TargetFrameworks>
-        <TargetFramework Condition="'$(RuntimeIdentifier)' == 'browser-wasm'">net10.0</TargetFramework>
+        <TargetFrameworks>net8.0;net10.0</TargetFrameworks>
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
         <StartupObject Condition="'$(RuntimeIdentifier)' != 'browser-wasm'">Examples.Program</StartupObject>
         <StartupObject Condition="'$(RuntimeIdentifier)' == 'browser-wasm'">Examples.Web.Host</StartupObject>

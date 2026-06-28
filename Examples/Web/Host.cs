@@ -15,7 +15,7 @@ public partial class Host
     public const int screenHeight = 450;
 
     // Base examples implementing IExample.
-    private static readonly List<IExample> Examples = new()
+    private static readonly List<IExample> _examples = new()
     {
         // Core
         new global::Examples.Core.BasicScreenManager(),
@@ -149,7 +149,7 @@ public partial class Host
 
     static Host()
     {
-        ExampleRegistry.ValidateBrowserCount(Examples.Count);
+        ExampleRegistry.ValidateBrowserCount(_examples.Count);
     }
 
     private static IExample _current;
@@ -159,7 +159,7 @@ public partial class Host
         InitWindow(screenWidth, screenHeight, "raylib-cs web examples");
         SetTargetFPS(60);
 
-        SetExample(Examples[0].Name);
+        SetExample(_examples[0].Name);
     }
 
     /// <summary>Render one frame of the current example (called every requestAnimationFrame tick).</summary>
@@ -182,7 +182,7 @@ public partial class Host
     [JSExport]
     public static void SetExample(string name)
     {
-        var next = Examples.Find(e => e.Name == name);
+        var next = _examples.Find(e => e.Name == name);
         if (next == null)
         {
             return;
@@ -205,7 +205,7 @@ public partial class Host
     [JSExport]
     public static string GetExampleNames()
     {
-        return string.Join("\n", Examples.ConvertAll(e => e.Name));
+        return string.Join("\n", _examples.ConvertAll(e => e.Name));
     }
 
     /// <summary>

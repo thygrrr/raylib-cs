@@ -1,6 +1,5 @@
 <Project>
-  <!-- Single source of truth for the Raylib-cs package version.
-       Auto-imported by every project in the repo; referenced via $(RaylibCsVersion). -->
+  <!-- Auto-imported by every project in the repo; referenced via $(RaylibCsVersion). -->
   <PropertyGroup>
     <RaylibCsVersion>9.0.0</RaylibCsVersion>
   </PropertyGroup>
