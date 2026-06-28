@@ -22,7 +22,7 @@ using static Raylib_cs.Raylib;
 
 namespace Examples.Shaders;
 
-public class TextureWaves
+public partial class TextureWaves
 {
     const int GlslVersion = 330;
 

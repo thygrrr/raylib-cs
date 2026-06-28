@@ -16,7 +16,7 @@ using static Raylib_cs.Raylib;
 
 namespace Examples.Audio;
 
-public class ModulePlaying
+public partial class ModulePlaying
 {
     const int MaxCircles = 64;
 

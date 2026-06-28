@@ -13,7 +13,7 @@ using static Raylib_cs.Raylib;
 
 namespace Examples.Core;
 
-public class StorageValues
+public partial class StorageValues
 {
     // NOTE: Storage positions must start with 0, directly related to file memory layout
     enum StorageData

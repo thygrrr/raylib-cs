@@ -17,7 +17,7 @@ using static Raylib_cs.Raylib;
 
 namespace Examples.Models;
 
-public class WavingCubes
+public partial class WavingCubes
 {
     public static int Main()
     {

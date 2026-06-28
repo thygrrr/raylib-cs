@@ -21,7 +21,7 @@ using static Raylib_cs.Raylib;
 
 namespace Examples.Shaders;
 
-public class ShapesTextures
+public partial class ShapesTextures
 {
     public static int Main()
     {

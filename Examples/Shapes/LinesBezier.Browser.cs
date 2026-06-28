@@ -1,0 +1,67 @@
+#if BROWSER
+using Examples;
+namespace Examples.Shapes;
+
+public partial class LinesBezier : IExample
+{
+    private readonly BrowserAdapter _browserAdapter = new();
+
+    public string Name => _browserAdapter.Name;
+
+    public void Init()
+    {
+        _browserAdapter.Init();
+    }
+
+    public void Update()
+    {
+        _browserAdapter.Update();
+    }
+
+    public void Unload()
+    {
+        _browserAdapter.Unload();
+    }
+
+    private sealed class BrowserAdapter : IExample
+    {
+        public string Name => "Shapes / Lines Bezier";
+
+        private const int screenWidth = 800;
+        private const int screenHeight = 450;
+
+        private Vector2 _start;
+        private Vector2 _end;
+
+        public void Init()
+        {
+            _start = new Vector2(0, 0);
+            _end = new Vector2(screenWidth, screenHeight);
+        }
+
+        public void Update()
+        {
+            if (IsMouseButtonDown(MouseButton.Left))
+            {
+                _start = GetMousePosition();
+            }
+            else if (IsMouseButtonDown(MouseButton.Right))
+            {
+                _end = GetMousePosition();
+            }
+
+            BeginDrawing();
+            ClearBackground(Color.RayWhite);
+
+            DrawText("USE MOUSE LEFT-RIGHT CLICK to DEFINE LINE START and END POINTS", 15, 20, 20, Color.Gray);
+            DrawLineBezier(_start, _end, 2.0f, Color.Red);
+
+            EndDrawing();
+        }
+
+        public void Unload()
+        {
+        }
+    }
+}
+#endif

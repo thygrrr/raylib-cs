@@ -18,7 +18,7 @@ using static Raylib_cs.Raymath;
 
 namespace Examples.Core;
 
-public class Camera2dPlatformer
+public partial class Camera2dPlatformer
 {
     const int G = 400;
     const float PlayerJumpSpeed = 350.0f;

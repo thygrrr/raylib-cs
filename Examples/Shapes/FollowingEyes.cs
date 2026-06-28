@@ -16,7 +16,7 @@ using static Raylib_cs.Raylib;
 
 namespace Examples.Shapes;
 
-public class FollowingEyes
+public partial class FollowingEyes
 {
     public static int Main()
     {

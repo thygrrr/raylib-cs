@@ -13,7 +13,7 @@ using static Raylib_cs.Raylib;
 
 namespace Examples.Textures;
 
-public class LogoRaylibTexture
+public partial class LogoRaylibTexture
 {
     public static int Main()
     {

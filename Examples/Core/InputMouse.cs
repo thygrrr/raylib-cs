@@ -19,7 +19,7 @@ using static Raylib_cs.Raylib;
 
 namespace Examples.Core;
 
-public class InputMouse
+public partial class InputMouse
 {
     public static int Main()
     {

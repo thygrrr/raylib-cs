@@ -23,7 +23,7 @@ using static Raylib_cs.Raylib;
 
 namespace Examples.Shaders;
 
-public class BasicPbr
+public partial class BasicPbr
 {
     private const int GLSL_VERSION = 330;
 

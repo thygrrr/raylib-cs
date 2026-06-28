@@ -28,7 +28,7 @@ using static Raylib_cs.Raylib;
 
 namespace Examples.Shaders;
 
-public class Eratosthenes
+public partial class Eratosthenes
 {
     const int GlslVersion = 330;
 

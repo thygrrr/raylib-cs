@@ -15,7 +15,7 @@ using static Raylib_cs.Raylib;
 
 namespace Examples.Audio;
 
-public class SoundLoading
+public partial class SoundLoading
 {
     public static int Main()
     {

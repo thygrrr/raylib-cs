@@ -16,7 +16,7 @@ using static Raylib_cs.Raylib;
 
 namespace Examples.Shapes;
 
-public class RectangleScaling
+public partial class RectangleScaling
 {
     public const int MOUSE_SCALE_MARK_SIZE = 12;
 

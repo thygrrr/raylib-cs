@@ -23,7 +23,7 @@ using static Raylib_cs.Raylib;
 
 namespace Examples.Text;
 
-public class FontSpritefont
+public partial class FontSpritefont
 {
     public static int Main()
     {

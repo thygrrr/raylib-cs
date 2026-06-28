@@ -14,7 +14,7 @@ using static Raylib_cs.Raylib;
 
 namespace Examples.Models;
 
-public class MeshGeneration
+public partial class MeshGeneration
 {
     public static int Main()
     {

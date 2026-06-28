@@ -14,7 +14,7 @@ using static Raylib_cs.Raylib;
 
 namespace Examples.Core;
 
-public class Picking3d
+public partial class Picking3d
 {
     public static int Main()
     {

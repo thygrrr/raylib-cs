@@ -20,7 +20,7 @@ using static Raylib_cs.Raylib;
 
 namespace Examples.Core;
 
-public class InputMultitouch
+public partial class InputMultitouch
 {
     public static int Main()
     {

@@ -16,7 +16,7 @@ using static Raylib_cs.Raylib;
 
 namespace Examples.Textures;
 
-public static class Bunnymark
+public partial class Bunnymark
 {
     // limits
     private const int MaxBunnies = 500_000;

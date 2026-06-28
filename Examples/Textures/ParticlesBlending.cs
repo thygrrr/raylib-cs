@@ -14,7 +14,7 @@ using static Raylib_cs.Raylib;
 
 namespace Examples.Textures;
 
-public class ParticlesBlending
+public partial class ParticlesBlending
 {
     public const int MaxParticles = 200;
 

@@ -17,7 +17,7 @@ using static Raylib_cs.Raylib;
 
 namespace Examples.Shapes;
 
-public class DrawCircleSector
+public partial class DrawCircleSector
 {
     public static int Main()
     {

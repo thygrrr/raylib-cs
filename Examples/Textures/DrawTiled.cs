@@ -14,7 +14,7 @@ using static Raylib_cs.Raylib;
 
 namespace Examples.Textures;
 
-public class DrawTiled
+public partial class DrawTiled
 {
     const int OptWidth = 220;
     const int MarginSize = 8;

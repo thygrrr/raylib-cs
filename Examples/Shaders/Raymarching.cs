@@ -22,7 +22,7 @@ using static Raylib_cs.ConfigFlags;
 
 namespace Examples.Shaders;
 
-public class Raymarching
+public partial class Raymarching
 {
     public const int GlslVersion = 330;
 

@@ -14,7 +14,7 @@ using static Raylib_cs.Raylib;
 
 namespace Examples.Models;
 
-public class BoxCollisions
+public partial class BoxCollisions
 {
     public static int Main()
     {

@@ -22,7 +22,7 @@ using static Raylib_cs.Raylib;
 
 namespace Examples.Shaders;
 
-public class PaletteSwitch
+public partial class PaletteSwitch
 {
     const int GlslVersion = 330;
     const int ColorsPerPalette = 8;

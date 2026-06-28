@@ -14,7 +14,7 @@ using static Raylib_cs.Raylib;
 
 namespace Examples.Textures;
 
-public class SpriteExplosion
+public partial class SpriteExplosion
 {
     const int NumFramesPerLine = 5;
     const int NumLines = 5;

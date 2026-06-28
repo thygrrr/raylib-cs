@@ -3,7 +3,7 @@ using static Raylib_cs.Raylib;
 
 namespace Examples.Models;
 
-public class MeshDemo
+public partial class MeshDemo
 {
     public unsafe static int Main()
     {

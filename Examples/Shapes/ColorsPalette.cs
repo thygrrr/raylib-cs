@@ -14,7 +14,7 @@ using static Raylib_cs.Raylib;
 
 namespace Examples.Shapes;
 
-public class ColorsPalette
+public partial class ColorsPalette
 {
     public static int Main()
     {

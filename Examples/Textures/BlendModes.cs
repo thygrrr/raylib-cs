@@ -17,7 +17,7 @@ using static Raylib_cs.Raylib;
 
 namespace Examples.Textures;
 
-public class BlendModes
+public partial class BlendModes
 {
     public static int Main()
     {

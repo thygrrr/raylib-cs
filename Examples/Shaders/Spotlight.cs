@@ -33,7 +33,7 @@ using static Raylib_cs.Raylib;
 
 namespace Examples.Shaders;
 
-public class Spotlight
+public partial class Spotlight
 {
     // NOTE: It must be the same as define in shader
     const int MaxSpots = 3;

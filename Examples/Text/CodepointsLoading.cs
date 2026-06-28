@@ -19,7 +19,7 @@ using static Raylib_cs.Raylib;
 
 namespace Examples.Text;
 
-class CodepointsLoading
+partial class CodepointsLoading
 {
     public unsafe static int Main()
     {

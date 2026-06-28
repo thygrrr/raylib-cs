@@ -15,7 +15,7 @@ using static Raylib_cs.Raylib;
 
 namespace Examples.Core;
 
-public class VrSimulator
+public partial class VrSimulator
 {
     public static int Main()
     {

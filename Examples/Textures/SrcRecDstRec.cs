@@ -14,7 +14,7 @@ using static Raylib_cs.Raylib;
 
 namespace Examples.Textures;
 
-public class SrcRecDstRec
+public partial class SrcRecDstRec
 {
     public static int Main()
     {

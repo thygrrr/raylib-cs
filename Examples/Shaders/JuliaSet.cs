@@ -21,7 +21,7 @@ using static Raylib_cs.Raylib;
 
 namespace Examples.Shaders;
 
-public class JuliaSet
+public partial class JuliaSet
 {
     const int GlslVersion = 330;
 

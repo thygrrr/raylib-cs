@@ -14,7 +14,7 @@ using static Raylib_cs.Raylib;
 
 namespace Examples.Core;
 
-public class Camera3dFirstPerson
+public partial class Camera3dFirstPerson
 {
     public const int MaxColumns = 20;
 

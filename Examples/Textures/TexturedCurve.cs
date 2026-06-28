@@ -4,7 +4,7 @@ using static Raylib_cs.Raylib;
 
 namespace Examples.Textures;
 
-public unsafe class TexturedCurve
+public unsafe partial class TexturedCurve
 {
     public class CurvePoint
     {

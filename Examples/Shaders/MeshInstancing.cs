@@ -19,7 +19,7 @@ using Examples.Shared;
 
 namespace Examples.Shaders;
 
-public class MeshInstancing
+public partial class MeshInstancing
 {
     public static int Main()
     {

@@ -17,7 +17,7 @@ using static Raylib_cs.Raylib;
 
 namespace Examples.Core;
 
-public class InputMouseWheel
+public partial class InputMouseWheel
 {
     public static int Main()
     {

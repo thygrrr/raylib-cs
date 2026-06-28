@@ -15,7 +15,7 @@ using static Raylib_cs.Raylib;
 
 namespace Examples.Textures;
 
-public class ImageLoading
+public partial class ImageLoading
 {
     public static int Main()
     {

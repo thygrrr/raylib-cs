@@ -18,7 +18,7 @@ using static Raylib_cs.Raylib;
 
 namespace Examples.Core;
 
-public class Camera2dDemo
+public partial class Camera2dDemo
 {
     public const int MaxBuildings = 100;
 

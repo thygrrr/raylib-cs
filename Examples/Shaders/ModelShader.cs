@@ -21,7 +21,7 @@ using static Raylib_cs.Raylib;
 
 namespace Examples.Shaders;
 
-public class ModelShader
+public partial class ModelShader
 {
     public static int Main()
     {

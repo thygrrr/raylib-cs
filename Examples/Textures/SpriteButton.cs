@@ -14,7 +14,7 @@ using static Raylib_cs.Raylib;
 
 namespace Examples.Textures;
 
-public class SpriteButton
+public partial class SpriteButton
 {
     // Number of frames (rectangles) for the button sprite texture
     public const int NumFrames = 3;

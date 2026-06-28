@@ -14,7 +14,7 @@ using static Raylib_cs.Raylib;
 
 namespace Examples.Models;
 
-public class BillboardDemo
+public partial class BillboardDemo
 {
     public static int Main()
     {

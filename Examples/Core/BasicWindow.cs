@@ -33,7 +33,7 @@ using static Raylib_cs.Raylib;
 
 namespace Examples.Core;
 
-public class BasicWindow
+public partial class BasicWindow
 {
     public static int Main()
     {

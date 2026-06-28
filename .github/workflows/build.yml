@@ -44,6 +44,9 @@ jobs:
         run: |
           dotnet test --verbosity normal
 
+      - name: Run Web scale utils tests
+        run: node --test Examples/Web/scaleUtils.test.js
+
       - name: upload NuGet Package As Artifact
         uses: actions/upload-artifact@v7
         with:

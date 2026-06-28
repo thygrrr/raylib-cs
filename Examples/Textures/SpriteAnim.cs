@@ -15,7 +15,7 @@ using static Raylib_cs.Raylib;
 
 namespace Examples.Textures;
 
-public class SpriteAnim
+public partial class SpriteAnim
 {
     public const int MaxFrameSpeed = 15;
     public const int MinFrameSpeed = 1;

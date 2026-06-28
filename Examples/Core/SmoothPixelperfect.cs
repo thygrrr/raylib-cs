@@ -18,7 +18,7 @@ using static Raylib_cs.Raylib;
 
 namespace Examples.Core;
 
-public static class SmoothPixelPerfect
+public partial class SmoothPixelPerfect
 {
     public static int Main()
     {
@@ -27,10 +27,10 @@ public static class SmoothPixelPerfect
         const int screenWidth = 800;
         const int screenHeight = 450;
 
-        const int virtualScreenWidth = 160;
-        const int virtualScreenHeight = 90;
+        const int virtualscreenWidth = 160;
+        const int virtualscreenHeight = 90;
 
-        const float virtualRatio = (float)screenWidth / (float)virtualScreenWidth;
+        const float virtualRatio = (float)screenWidth / (float)virtualscreenWidth;
 
         InitWindow(screenWidth, screenHeight, "raylib [core] example - smooth pixel-perfect camera");
 
@@ -43,7 +43,7 @@ public static class SmoothPixelPerfect
         screenSpaceCamera.Zoom = 1.0f;
 
         // This is where we'll draw all our objects.
-        RenderTexture2D target = LoadRenderTexture(virtualScreenWidth, virtualScreenHeight);
+        RenderTexture2D target = LoadRenderTexture(virtualscreenWidth, virtualscreenHeight);
 
         Rectangle rec01 = new(70.0f, 35.0f, 20.0f, 20.0f);
         Rectangle rec02 = new(90.0f, 55.0f, 30.0f, 10.0f);
@@ -118,7 +118,7 @@ public static class SmoothPixelPerfect
             EndMode2D();
 
             DrawText($"Screen resolution: {screenWidth}x{screenHeight}", 10, 10, 20, Color.DarkBlue);
-            DrawText($"World resolution: {virtualScreenWidth}x{virtualScreenHeight}", 10, 40, 20, Color.DarkGreen);
+            DrawText($"World resolution: {virtualscreenWidth}x{virtualscreenHeight}", 10, 40, 20, Color.DarkGreen);
             DrawFPS(GetScreenWidth() - 95, 10);
             EndDrawing();
             //----------------------------------------------------------------------------------

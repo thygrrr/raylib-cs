@@ -16,7 +16,7 @@ using static Raylib_cs.Raylib;
 
 namespace Examples.Text;
 
-public class FontSdf
+public partial class FontSdf
 {
     public unsafe static int Main()
     {

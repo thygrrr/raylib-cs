@@ -14,7 +14,7 @@ using static Raylib_cs.Raylib;
 
 namespace Examples.Models;
 
-public class FirstPersonMaze
+public partial class FirstPersonMaze
 {
     public unsafe static int Main()
     {

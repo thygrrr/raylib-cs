@@ -17,7 +17,7 @@ using static Raylib_cs.Raylib;
 
 namespace Examples.Core;
 
-public class WindowLetterbox
+public partial class WindowLetterbox
 {
     public static int Main()
     {
@@ -29,11 +29,11 @@ public class WindowLetterbox
         InitWindow(windowWidth, windowHeight, "raylib [core] example - window scale letterbox");
         SetWindowMinSize(320, 240);
 
-        int gameScreenWidth = 640;
-        int gameScreenHeight = 480;
+        int gamescreenWidth = 640;
+        int gamescreenHeight = 480;
 
         // Render texture initialization, used to hold the rendering result so we can easily resize it
-        RenderTexture2D target = LoadRenderTexture(gameScreenWidth, gameScreenHeight);
+        RenderTexture2D target = LoadRenderTexture(gamescreenWidth, gamescreenHeight);
         SetTextureFilter(target.Texture, TextureFilter.Bilinear);
 
         Color[] colors = new Color[10];
@@ -52,8 +52,8 @@ public class WindowLetterbox
             //----------------------------------------------------------------------------------
             // Compute required framebuffer scaling
             float scale = MathF.Min(
-                (float)GetScreenWidth() / gameScreenWidth,
-                (float)GetScreenHeight() / gameScreenHeight
+                (float)GetScreenWidth() / gamescreenWidth,
+                (float)GetScreenHeight() / gamescreenHeight
             );
 
             if (IsKeyPressed(KeyboardKey.Space))
@@ -73,10 +73,10 @@ public class WindowLetterbox
             // Update virtual mouse (clamped mouse value behind game screen)
             Vector2 mouse = GetMousePosition();
             Vector2 virtualMouse = Vector2.Zero;
-            virtualMouse.X = (mouse.X - (GetScreenWidth() - (gameScreenWidth * scale)) * 0.5f) / scale;
-            virtualMouse.Y = (mouse.Y - (GetScreenHeight() - (gameScreenHeight * scale)) * 0.5f) / scale;
+            virtualMouse.X = (mouse.X - (GetScreenWidth() - (gamescreenWidth * scale)) * 0.5f) / scale;
+            virtualMouse.Y = (mouse.Y - (GetScreenHeight() - (gamescreenHeight * scale)) * 0.5f) / scale;
 
-            Vector2 max = new((float)gameScreenWidth, (float)gameScreenHeight);
+            Vector2 max = new((float)gamescreenWidth, (float)gamescreenHeight);
             virtualMouse = Vector2.Clamp(virtualMouse, Vector2.Zero, max);
             //----------------------------------------------------------------------------------
 
@@ -91,7 +91,7 @@ public class WindowLetterbox
 
             for (int i = 0; i < 10; i++)
             {
-                DrawRectangle(0, (gameScreenHeight / 10) * i, gameScreenWidth, gameScreenHeight / 10, colors[i]);
+                DrawRectangle(0, (gamescreenHeight / 10) * i, gamescreenWidth, gamescreenHeight / 10, colors[i]);
             }
 
             DrawText(
@@ -115,10 +115,10 @@ public class WindowLetterbox
                 (float)-target.Texture.Height
             );
             Rectangle destRec = new(
-                (GetScreenWidth() - ((float)gameScreenWidth * scale)) * 0.5f,
-                (GetScreenHeight() - ((float)gameScreenHeight * scale)) * 0.5f,
-                (float)gameScreenWidth * scale,
-                (float)gameScreenHeight * scale
+                (GetScreenWidth() - ((float)gamescreenWidth * scale)) * 0.5f,
+                (GetScreenHeight() - ((float)gamescreenHeight * scale)) * 0.5f,
+                (float)gamescreenWidth * scale,
+                (float)gamescreenHeight * scale
             );
             DrawTexturePro(target.Texture, sourceRec, destRec, new Vector2(0, 0), 0.0f, Color.White);
 

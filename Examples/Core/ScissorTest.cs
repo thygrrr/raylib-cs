@@ -15,7 +15,7 @@ using static Raylib_cs.Raylib;
 
 namespace Examples.Core;
 
-public class ScissorTest
+public partial class ScissorTest
 {
     public static int Main()
     {

@@ -13,7 +13,7 @@ using static Raylib_cs.Raylib;
 
 namespace Examples.Text;
 
-public class WritingAnim
+public partial class WritingAnim
 {
     public static int Main()
     {

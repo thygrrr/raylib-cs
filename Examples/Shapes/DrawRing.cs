@@ -17,7 +17,7 @@ using static Raylib_cs.Raylib;
 
 namespace Examples.Shapes;
 
-public class DrawRing
+public partial class DrawRing
 {
     public static int Main()
     {
