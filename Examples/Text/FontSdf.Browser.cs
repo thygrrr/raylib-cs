@@ -57,9 +57,9 @@ public partial class FontSdf : IExample
             fontDefault.GlyphCount = 95;
 
             // Loading font data from memory data
-            // Parameters > font size: 16, no chars array provided (0), chars count: 95 (autogenerate chars array)
+            // Parameters > font size: 16, no glyphs array provided (0), glyphs count: 95 (autogenerate chars array)
             fontDefault.Glyphs = LoadFontData(fileData, fileSize, 16, null, 95, FontType.Default, &fontDefault.GlyphCount);
-            // Parameters > chars count: 95, font size: 16, chars padding in image: 4 px, pack method: 0 (default)
+            // Parameters > glyphs count: 95, font size: 16, glyphs padding in image: 4 px, pack method: 0 (default)
             Image atlas = GenImageFontAtlas(fontDefault.Glyphs, &fontDefault.Recs, 95, 16, 4, 0);
             fontDefault.Texture = LoadTextureFromImage(atlas);
             UnloadImage(atlas);
@@ -69,9 +69,9 @@ public partial class FontSdf : IExample
             Font fontSDF = new();
             fontSDF.BaseSize = 16;
             fontSDF.GlyphCount = 95;
-            // Parameters > font size: 16, no chars array provided (0), chars count: 0 (defaults to 95)
+            // Parameters > font size: 16, no glyphs array provided (0), glyphs count: 0 (defaults to 95)
             fontSDF.Glyphs = LoadFontData(fileData, fileSize, 16, null, 0, FontType.Sdf, &fontSDF.GlyphCount);
-            // Parameters > chars count: 95, font size: 16, chars padding in image: 0 px, pack method: 1 (Skyline algorythm)
+            // Parameters > glyphs count: 95, font size: 16, glyphs padding in image: 0 px, pack method: 1 (Skyline algorythm)
             atlas = GenImageFontAtlas(fontSDF.Glyphs, &fontSDF.Recs, 95, 16, 0, 1);
             fontSDF.Texture = LoadTextureFromImage(atlas);
             UnloadImage(atlas);
@@ -150,10 +150,10 @@ public partial class FontSdf : IExample
             }
 
             DrawText("FONT SIZE: 16.0", GetScreenWidth() - 240, 20, 20, Color.DarkGray);
-            DrawText($"RENDER SIZE: {_fontSize:2F}", GetScreenWidth() - 240, 50, 20, Color.DarkGray);
+            DrawText($"RENDER SIZE: {_fontSize:00.00}", GetScreenWidth() - 240, 50, 20, Color.DarkGray);
             DrawText("Use MOUSE WHEEL to SCALE TEXT!", GetScreenWidth() - 240, 90, 10, Color.DarkGray);
 
-            DrawText("PRESS SPACE to USE SDF FONT VERSION!", 340, GetScreenHeight() - 30, 20, Color.Maroon);
+            DrawText("HOLD SPACE to USE SDF FONT VERSION!", 340, GetScreenHeight() - 30, 20, Color.Maroon);
 
             EndDrawing();
         }

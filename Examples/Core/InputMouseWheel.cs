@@ -31,11 +31,11 @@ public partial class InputMouseWheel
         int boxPositionY = screenHeight / 2 - 40;
         int scrollSpeed = 4;            // Scrolling speed in pixels
 
-        SetTargetFPS(60);
+        SetTargetFPS(60);               // Set our game to run at 60 frames-per-second
         //--------------------------------------------------------------------------------------
 
         // Main game loop
-        while (!WindowShouldClose())
+        while (!WindowShouldClose())    // Detect window close button or ESC key
         {
             // Update
             //----------------------------------------------------------------------------------
@@ -50,7 +50,7 @@ public partial class InputMouseWheel
             DrawRectangle(screenWidth / 2 - 40, boxPositionY, 80, 80, Color.Maroon);
 
             DrawText("Use mouse wheel to move the cube up and down!", 10, 10, 20, Color.Gray);
-            DrawText($"Box position Y: {boxPositionY}", 10, 40, 20, Color.LightGray);
+            DrawText($"Box position Y: {boxPositionY:000}", 10, 40, 20, Color.LightGray);
 
             EndDrawing();
             //----------------------------------------------------------------------------------
@@ -58,7 +58,7 @@ public partial class InputMouseWheel
 
         // De-Initialization
         //--------------------------------------------------------------------------------------
-        CloseWindow();
+        CloseWindow();        // Close window and OpenGL context
         //--------------------------------------------------------------------------------------
 
         return 0;

@@ -50,15 +50,14 @@ public partial class RectangleBounds : IExample
 
         public void Init()
         {
-            _text = "";
-            _text += "Text cannot escape this container ...word wrap also works when active so here's a long text for testing.";
-            _text += "\n\nLorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor ";
-            _text += "incididunt ut labore et dolore magna aliqua. Nec ullamcorper sit amet risus nullam eget felis eget.";
+            _text = "Text cannot escape\tthis container\t...word wrap also works when active so here's " +
+                "a long text for testing.\n\nLorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod " +
+                "tempor incididunt ut labore et dolore magna aliqua. Nec ullamcorper sit amet risus nullam eget felis eget.";
 
             _resizing = false;
             _wordWrap = true;
 
-            _container = new(25, 25, screenWidth - 50, screenHeight - 250);
+            _container = new(25.0f, 25.0f, screenWidth - 50.0f, screenHeight - 250.0f);
             _resizer = new(
                 _container.X + _container.Width - 17,
                 _container.Y + _container.Height - 17,
@@ -83,7 +82,7 @@ public partial class RectangleBounds : IExample
             // Check if the mouse is inside the container and toggle border color
             if (CheckCollisionPointRec(mouse, _container))
             {
-                _borderColor = ColorAlpha(Color.Maroon, 0.4f);
+                _borderColor = Fade(Color.Maroon, 0.4f);
             }
             else if (!_resizing)
             {
@@ -98,10 +97,10 @@ public partial class RectangleBounds : IExample
                     _resizing = false;
                 }
 
-                int width = (int)(_container.Width + (mouse.X - _lastMouse.X));
+                float width = _container.Width + (mouse.X - _lastMouse.X);
                 _container.Width = (width > MinWidth) ? ((width < MaxWidth) ? width : MaxWidth) : MinWidth;
 
-                int height = (int)(_container.Height + (mouse.Y - _lastMouse.Y));
+                float height = _container.Height + (mouse.Y - _lastMouse.Y);
                 _container.Height = (height > MinHeight) ? ((height < MaxHeight) ? height : MaxHeight) : MinHeight;
             }
             else

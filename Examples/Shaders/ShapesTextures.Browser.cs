@@ -37,10 +37,7 @@ public partial class ShapesTextures : IExample
             _fudesumi = LoadTexture("resources/fudesumi.png");
 
             // NOTE: Using GLSL 100 shader version for WebGL1 (OpenGL ES 2.0)
-            _shader = LoadShader(
-                "resources/shaders/glsl100/base.vs",
-                "resources/shaders/glsl100/grayscale.fs"
-            );
+            _shader = LoadShader(null, "resources/shaders/glsl100/grayscale.fs");
         }
 
         public void Update()

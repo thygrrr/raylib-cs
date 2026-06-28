@@ -1,18 +1,22 @@
 /*******************************************************************************************
 *
-*   raylib [shaders] example - Apply a shader to some shape or texture
+*   raylib [shaders] example - shapes textures
+*
+*   Example complexity rating: [★★☆☆] 2/4
 *
 *   NOTE: This example requires raylib OpenGL 3.3 or ES2 versions for shaders support,
-*         OpenGL 1.1 does not support shaders, recompile raylib to OpenGL 3.3 version.
+*         OpenGL 1.1 does not support shaders, recompile raylib to OpenGL 3.3 version
 *
 *   NOTE: Shaders used in this example are #version 330 (OpenGL 3.3), to test this example
 *         on OpenGL ES 2.0 platforms (Android, Raspberry Pi, HTML5), use #version 100 shaders
 *         raylib comes with shaders ready for both versions, check raylib/shaders install folder
 *
-*   This example has been created using raylib 1.7 (www.raylib.com)
-*   raylib is licensed under an unmodified zlib/libpng license (View raylib.h for details)
+*   Example originally created with raylib 1.7, last time updated with raylib 3.7
 *
-*   Copyright (c) 2015 Ramon Santamaria (@raysan5)
+*   Example licensed under an unmodified zlib/libpng license, which is an OSI-certified,
+*   BSD-like license that allows static linking with closed source software
+*
+*   Copyright (c) 2015-2025 Ramon Santamaria (@raysan5)
 *
 ********************************************************************************************/
 
@@ -23,6 +27,8 @@ namespace Examples.Shaders;
 
 public partial class ShapesTextures
 {
+    const int GlslVersion = 330;
+
     public static int Main()
     {
         // Initialization
@@ -30,21 +36,20 @@ public partial class ShapesTextures
         const int screenWidth = 800;
         const int screenHeight = 450;
 
-        InitWindow(screenWidth, screenHeight, "raylib [shaders] example - shapes and texture shaders");
+        InitWindow(screenWidth, screenHeight, "raylib [shaders] example - shapes textures");
 
         Texture2D fudesumi = LoadTexture("resources/fudesumi.png");
 
-        // NOTE: Using GLSL 330 shader version, on OpenGL ES 2.0 use GLSL 100 shader version
-        Shader shader = LoadShader(
-            "resources/shaders/glsl330/base.vs",
-            "resources/shaders/glsl330/grayscale.fs"
-        );
+        // Load shader to be used on some parts drawing
+        // NOTE 1: Using GLSL 330 shader version, on OpenGL ES 2.0 use GLSL 100 shader version
+        // NOTE 2: Defining null (NULL) for vertex shader forces usage of internal default vertex shader
+        Shader shader = LoadShader(null, $"resources/shaders/glsl{GlslVersion}/grayscale.fs");
 
-        SetTargetFPS(60);
+        SetTargetFPS(60);               // Set our game to run at 60 frames-per-second
         //--------------------------------------------------------------------------------------
 
         // Main game loop
-        while (!WindowShouldClose())
+        while (!WindowShouldClose())    // Detect window close button or ESC key
         {
             // Update
             //----------------------------------------------------------------------------------
@@ -109,10 +114,10 @@ public partial class ShapesTextures
 
         // De-Initialization
         //--------------------------------------------------------------------------------------
-        UnloadShader(shader);
-        UnloadTexture(fudesumi);
+        UnloadShader(shader);       // Unload shader
+        UnloadTexture(fudesumi);    // Unload texture
 
-        CloseWindow();
+        CloseWindow();              // Close window and OpenGL context
         //--------------------------------------------------------------------------------------
 
         return 0;

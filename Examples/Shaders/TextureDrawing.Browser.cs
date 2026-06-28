@@ -60,7 +60,7 @@ public partial class TextureDrawing : IExample
             // Enable our custom shader for next shapes/textures drawings
             BeginShaderMode(_shader);
 
-            // Drawing blank texture, all magic happens on shader
+            // Drawing BLANK texture, all rendering magic happens on shader
             DrawTexture(_texture, 0, 0, Color.White);
 
             // Disable our custom shader, return to default shader

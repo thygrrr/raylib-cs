@@ -60,10 +60,10 @@ public partial class CustomUniform : IExample
 
             _position = new(0.0f, 0.0f, 0.0f);
 
-            // Load postpro shader
+            // Load postprocessing shader
+            // NOTE: Defining 0 (NULL) for vertex shader forces usage of internal default vertex shader
             // NOTE: Using GLSL 100 shader version for WebGL1 (OpenGL ES 2.0)
-            _shader = LoadShader("resources/shaders/glsl100/base.vs",
-                                 "resources/shaders/glsl100/swirl.fs");
+            _shader = LoadShader(null, "resources/shaders/glsl100/swirl.fs");
 
             // Get variable (uniform) location on the shader to connect with the program
             // NOTE: If uniform variable could not be found in the shader, function returns -1
@@ -77,6 +77,8 @@ public partial class CustomUniform : IExample
 
         public void Update()
         {
+            UpdateCamera(ref _camera, CameraMode.Orbital);
+
             Vector2 mousePosition = GetMousePosition();
 
             _swirlCenter[0] = mousePosition.X;
@@ -84,11 +86,6 @@ public partial class CustomUniform : IExample
 
             // Send new value to the shader to be used on drawing
             Raylib.SetShaderValue(_shader, _swirlCenterLoc, _swirlCenter, ShaderUniformDataType.Vec2);
-
-            UpdateCamera(ref _camera, CameraMode.Orbital);
-
-            BeginDrawing();
-            ClearBackground(Color.RayWhite);
 
             // Enable drawing to texture
             BeginTextureMode(_target);
@@ -106,6 +103,10 @@ public partial class CustomUniform : IExample
             // End drawing to texture (now we have a texture available for next passes)
             EndTextureMode();
 
+            BeginDrawing();
+            ClearBackground(Color.RayWhite);
+
+            // Enable shader using the custom uniform
             BeginShaderMode(_shader);
 
             // NOTE: Render texture must be y-flipped due to default OpenGL coordinates (left-bottom)
@@ -118,6 +119,7 @@ public partial class CustomUniform : IExample
 
             EndShaderMode();
 
+            // Draw some 2d text over drawn texture
             DrawText(
                 "(c) Barracks 3D model by Alberto Cano",
                 screenWidth - 220,

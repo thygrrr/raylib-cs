@@ -42,11 +42,11 @@ public partial class InputGestures
 
         // SetGesturesEnabled(0b0000000000001001);   // Enable only some gestures to be detected
 
-        SetTargetFPS(60);
+        SetTargetFPS(60);               // Set our game to run at 60 frames-per-second
         //--------------------------------------------------------------------------------------
 
         // Main game loop
-        while (!WindowShouldClose())
+        while (!WindowShouldClose())    // Detect window close button or ESC key
         {
             // Update
             //----------------------------------------------------------------------------------
@@ -118,17 +118,17 @@ public partial class InputGestures
             DrawRectangleRec(touchArea, Color.Gray);
             DrawRectangle(225, 15, screenWidth - 240, screenHeight - 30, Color.RayWhite);
 
-            DrawText("GESTURES TEST AREA", screenWidth - 270, screenHeight - 40, 20, ColorAlpha(Color.Gray, 0.5f));
+            DrawText("GESTURES TEST AREA", screenWidth - 270, screenHeight - 40, 20, Fade(Color.Gray, 0.5f));
 
             for (int i = 0; i < gesturesCount; i++)
             {
                 if (i % 2 == 0)
                 {
-                    DrawRectangle(10, 30 + 20 * i, 200, 20, ColorAlpha(Color.LightGray, 0.5f));
+                    DrawRectangle(10, 30 + 20 * i, 200, 20, Fade(Color.LightGray, 0.5f));
                 }
                 else
                 {
-                    DrawRectangle(10, 30 + 20 * i, 200, 20, ColorAlpha(Color.LightGray, 0.3f));
+                    DrawRectangle(10, 30 + 20 * i, 200, 20, Fade(Color.LightGray, 0.3f));
                 }
 
                 if (i < gesturesCount - 1)
@@ -155,8 +155,9 @@ public partial class InputGestures
 
         // De-Initialization
         //--------------------------------------------------------------------------------------
-        CloseWindow();
+        CloseWindow();        // Close window and OpenGL context
         //--------------------------------------------------------------------------------------
+
         return 0;
     }
 }

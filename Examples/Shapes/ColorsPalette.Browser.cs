@@ -131,10 +131,9 @@ public partial class ColorsPalette : IExample
                 Color.Gray
             );
 
-            // Draw all rectangles
-            for (int i = 0; i < _colorsRecs.Length; i++)
+            for (int i = 0; i < _colorsRecs.Length; i++)    // Draw all rectangles
             {
-                DrawRectangleRec(_colorsRecs[i], ColorAlpha(_colors[i], _colorState[i] != 0 ? 0.6f : 1.0f));
+                DrawRectangleRec(_colorsRecs[i], Fade(_colors[i], _colorState[i] != 0 ? 0.6f : 1.0f));
 
                 if (IsKeyDown(KeyboardKey.Space) || _colorState[i] != 0)
                 {
@@ -145,7 +144,7 @@ public partial class ColorsPalette : IExample
                         20,
                         Color.Black
                     );
-                    DrawRectangleLinesEx(_colorsRecs[i], 6, ColorAlpha(Color.Black, 0.3f));
+                    DrawRectangleLinesEx(_colorsRecs[i], 6, Fade(Color.Black, 0.3f));
                     DrawText(
                         _colorNames[i],
                         (int)(_colorsRecs[i].X + _colorsRecs[i].Width - MeasureText(_colorNames[i], 10) - 12),

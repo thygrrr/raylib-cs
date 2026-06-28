@@ -1,13 +1,17 @@
 /*******************************************************************************************
 *
-*   raylib [models] example - Show the difference between perspective and orthographic projection
+*   raylib [models] example - orthographic projection
 *
-*   This program is heavily based on the geometric objects example
+*   Example complexity rating: [★☆☆☆] 1/4
 *
-*   This example has been created using raylib 1.9.7 (www.raylib.com)
-*   raylib is licensed under an unmodified zlib/libpng license (View raylib.h for details)
+*   Example originally created with raylib 2.0, last time updated with raylib 3.7
 *
-*   Copyright (c) 2018 Max Danielsson ref Ramon Santamaria (@raysan5)
+*   Example contributed by Max Danielsson (@autious) and reviewed by Ramon Santamaria (@raysan5)
+*
+*   Example licensed under an unmodified zlib/libpng license, which is an OSI-certified,
+*   BSD-like license that allows static linking with closed source software
+*
+*   Copyright (c) 2018-2025 Max Danielsson (@autious) and Ramon Santamaria (@raysan5)
 *
 ********************************************************************************************/
 
@@ -28,7 +32,7 @@ public partial class OrthographicProjection
         const int screenWidth = 800;
         const int screenHeight = 450;
 
-        InitWindow(screenWidth, screenHeight, "raylib [models] example - geometric shapes");
+        InitWindow(screenWidth, screenHeight, "raylib [models] example - orthographic projection");
 
         // Define the camera to look into our 3d world
         Camera3D camera = new();
@@ -82,7 +86,7 @@ public partial class OrthographicProjection
             DrawCylinder(new Vector3(1.0f, 0.0f, -4.0f), 0.0f, 1.5f, 3.0f, 8, Color.Gold);
             DrawCylinderWires(new Vector3(1.0f, 0.0f, -4.0f), 0.0f, 1.5f, 3.0f, 8, Color.Pink);
 
-            DrawGrid(10, 1.0f);
+            DrawGrid(10, 1.0f);        // Draw a grid
 
             EndMode3D();
 

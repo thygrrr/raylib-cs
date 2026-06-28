@@ -48,8 +48,10 @@ public partial class ModelShader : IExample
 
             _model = LoadModel("resources/models/obj/watermill.obj");
             _texture = LoadTexture("resources/models/obj/watermill_diffuse.png");
-            _shader = LoadShader("resources/shaders/glsl100/base.vs",
-                                 "resources/shaders/glsl100/grayscale.fs");
+
+            // Load shader for model
+            // NOTE: Defining 0 (NULL) for vertex shader forces usage of internal default vertex shader
+            _shader = LoadShader(null, "resources/shaders/glsl100/grayscale.fs");
 
             SetMaterialShader(ref _model, 0, ref _shader);
             SetMaterialTexture(ref _model, 0, MaterialMapIndex.Albedo, ref _texture);
@@ -79,9 +81,6 @@ public partial class ModelShader : IExample
                 10,
                 Color.Gray
             );
-
-            DrawText($"Camera3D position: ({_camera.Position})", 600, 20, 10, Color.Black);
-            DrawText($"Camera3D target: ({_camera.Position})", 600, 40, 10, Color.Gray);
 
             DrawFPS(10, 10);
 

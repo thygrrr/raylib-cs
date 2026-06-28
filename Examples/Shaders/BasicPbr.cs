@@ -1,21 +1,23 @@
 /*******************************************************************************************
- *
- *   raylib [shaders] example - Basic PBR
- *
- *   Example originally created with raylib 5.0, last time updated with raylib 5.1-dev
- *
- *   Example contributed by Afan OLOVCIC (@_DevDad) and reviewed by Ramon Santamaria (@raysan5)
- *
- *   Example licensed under an unmodified zlib/libpng license, which is an OSI-certified,
- *   BSD-like license that allows static linking with closed source software
- *
- *   Copyright (c) 2023-2024 Afan OLOVCIC (@_DevDad)
- *
- *   Model: "Old Rusty Car" (https://skfb.ly/LxRy) by Renafox,
- *   licensed under Creative Commons Attribution-NonCommercial
- *   (http://creativecommons.org/licenses/by-nc/4.0/)
- *
- ********************************************************************************************/
+*
+*   raylib [shaders] example - basic pbr
+*
+*   Example complexity rating: [★★★★] 4/4
+*
+*   Example originally created with raylib 5.0, last time updated with raylib 5.5
+*
+*   Example contributed by Afan OLOVCIC (@_DevDad) and reviewed by Ramon Santamaria (@raysan5)
+*
+*   Example licensed under an unmodified zlib/libpng license, which is an OSI-certified,
+*   BSD-like license that allows static linking with closed source software
+*
+*   Copyright (c) 2023-2025 Afan OLOVCIC (@_DevDad)
+*
+*   Model: "Old Rusty Car" (https://skfb.ly/LxRy) by Renafox,
+*   licensed under Creative Commons Attribution-NonCommercial
+*   (http://creativecommons.org/licenses/by-nc/4.0/)
+*
+********************************************************************************************/
 
 using System.Numerics;
 using Examples.Shared;
@@ -40,14 +42,14 @@ public partial class BasicPbr
 
         // Define the camera to look into our 3d world
         Camera3D camera = new();
-        camera.Position = new Vector3(2.0f, 4.0f, 6.0f);
+        camera.Position = new Vector3(2.0f, 2.0f, 6.0f);
         camera.Target = new Vector3(0.0f, 0.5f, 0.0f);
         camera.Up = new Vector3(0.0f, 1.0f, 0.0f);
         camera.FovY = 45.0f;
         camera.Projection = CameraProjection.Perspective;
 
         // Load PBR shader and setup all required locations
-        var shader = LoadShader("resources/shaders/glsl330/pbr.vs", "resources/shaders/glsl330/pbr.fs");
+        var shader = LoadShader($"resources/shaders/glsl{GLSL_VERSION}/pbr.vs", $"resources/shaders/glsl{GLSL_VERSION}/pbr.fs");
 
         shader.Locs[(int)ShaderLocationIndex.MapAlbedo] = GetShaderLocation(shader, "albedoMap");
         // WARNING: Metalness, roughness, and ambient occlusion are all packed into a MRA texture
@@ -75,6 +77,8 @@ public partial class BasicPbr
         SetShaderValue(shader, GetShaderLocation(shader, "ambient"), &ambientIntensity, ShaderUniformDataType.Float);
 
         // Get location for shader parameters that can be modified in real time
+        var metallicValueLoc = GetShaderLocation(shader, "metallicValue");
+        var roughnessValueLoc = GetShaderLocation(shader, "roughnessValue");
         var emissiveIntensityLoc = GetShaderLocation(shader, "emissivePower");
         var emissiveColorLoc = GetShaderLocation(shader, "emissiveColor");
         var textureTilingLoc = GetShaderLocation(shader, "tiling");
@@ -91,7 +95,7 @@ public partial class BasicPbr
 
         // Setup materials[0].maps default parameters
         car.Materials[0].Maps[(int)MaterialMapIndex.Albedo].Color = Color.White;
-        car.Materials[0].Maps[(int)MaterialMapIndex.Metalness].Value = 0.0f;
+        car.Materials[0].Maps[(int)MaterialMapIndex.Metalness].Value = 1.0f;
         car.Materials[0].Maps[(int)MaterialMapIndex.Roughness].Value = 0.0f;
         car.Materials[0].Maps[(int)MaterialMapIndex.Occlusion].Value = 1.0f;
         car.Materials[0].Maps[(int)MaterialMapIndex.Emission].Color = new Color(255, 162, 0, 255);
@@ -113,8 +117,8 @@ public partial class BasicPbr
         floor.Materials[0].Shader = shader;
 
         floor.Materials[0].Maps[(int)MaterialMapIndex.Albedo].Color = Color.White;
-        floor.Materials[0].Maps[(int)MaterialMapIndex.Metalness].Value = 0.0f;
-        floor.Materials[0].Maps[(int)MaterialMapIndex.Roughness].Value = 0.0f;
+        floor.Materials[0].Maps[(int)MaterialMapIndex.Metalness].Value = 0.8f;
+        floor.Materials[0].Maps[(int)MaterialMapIndex.Roughness].Value = 0.1f;
         floor.Materials[0].Maps[(int)MaterialMapIndex.Occlusion].Value = 1.0f;
         floor.Materials[0].Maps[(int)MaterialMapIndex.Emission].Color = Color.Black;
 
@@ -223,6 +227,12 @@ public partial class BasicPbr
             var floorEmissiveColor = ColorNormalize(floor.Materials[0].Maps[(int)MaterialMapIndex.Emission].Color);
             SetShaderValue(shader, emissiveColorLoc, &floorEmissiveColor, ShaderUniformDataType.Vec4);
 
+            // Set floor metallic and roughness values
+            var floorMetallicValue = floor.Materials[0].Maps[(int)MaterialMapIndex.Metalness].Value;
+            SetShaderValue(shader, metallicValueLoc, &floorMetallicValue, ShaderUniformDataType.Float);
+            var floorRoughnessValue = floor.Materials[0].Maps[(int)MaterialMapIndex.Roughness].Value;
+            SetShaderValue(shader, roughnessValueLoc, &floorRoughnessValue, ShaderUniformDataType.Float);
+
             DrawModel(floor, Vector3.Zero, 5.0f, Color.White); // Draw floor model
 
             // Set old car model texture tiling, emissive color and emissive intensity parameters on shader
@@ -231,6 +241,12 @@ public partial class BasicPbr
             SetShaderValue(shader, emissiveColorLoc, &carEmissiveColor, ShaderUniformDataType.Vec4);
             var emissiveIntensity = 0.01f;
             SetShaderValue(shader, emissiveIntensityLoc, &emissiveIntensity, ShaderUniformDataType.Float);
+
+            // Set old car metallic and roughness values
+            var carMetallicValue = car.Materials[0].Maps[(int)MaterialMapIndex.Metalness].Value;
+            SetShaderValue(shader, metallicValueLoc, &carMetallicValue, ShaderUniformDataType.Float);
+            var carRoughnessValue = car.Materials[0].Maps[(int)MaterialMapIndex.Roughness].Value;
+            SetShaderValue(shader, roughnessValueLoc, &carRoughnessValue, ShaderUniformDataType.Float);
 
             DrawModel(car, Vector3.Zero, 0.25f, Color.White); // Draw car model
 

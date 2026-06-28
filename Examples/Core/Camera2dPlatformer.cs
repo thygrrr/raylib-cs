@@ -2,12 +2,16 @@
 *
 *   raylib [core] example - 2d camera platformer
 *
-*   This example has been created using raylib 2.5 (www.raylib.com)
-*   raylib is licensed under an unmodified zlib/libpng license (View raylib.h for details)
+*   Example complexity rating: [★★★☆] 3/4
+*
+*   Example originally created with raylib 2.5, last time updated with raylib 3.0
 *
 *   Example contributed by arvyy (@arvyy) and reviewed by Ramon Santamaria (@raysan5)
 *
-*   Copyright (c) 2019 arvyy (@arvyy)
+*   Example licensed under an unmodified zlib/libpng license, which is an OSI-certified,
+*   BSD-like license that allows static linking with closed source software
+*
+*   Copyright (c) 2019-2025 arvyy (@arvyy)
 *
 ********************************************************************************************/
 
@@ -61,7 +65,7 @@ public partial class Camera2dPlatformer
         const int screenWidth = 800;
         const int screenHeight = 450;
 
-        InitWindow(screenWidth, screenHeight, "raylib [core] example - 2d camera");
+        InitWindow(screenWidth, screenHeight, "raylib [core] example - 2d camera platformer");
 
         Player player = new();
         player.Position = new Vector2(400, 280);
@@ -79,11 +83,11 @@ public partial class Camera2dPlatformer
 
         Camera2D camera = new();
         camera.Target = player.Position;
-        camera.Offset = new Vector2(screenWidth / 2, screenHeight / 2);
+        camera.Offset = new Vector2(screenWidth / 2.0f, screenHeight / 2.0f);
         camera.Rotation = 0.0f;
         camera.Zoom = 1.0f;
 
-        // Store callbacks to the multiple update camera functions
+        // Store pointers to the multiple update camera functions
         CameraUpdaterCallback[] cameraUpdaters = new CameraUpdaterCallback[]
         {
             UpdateCameraCenter,
@@ -154,18 +158,21 @@ public partial class Camera2dPlatformer
                 DrawRectangleRec(envItems[i].Rect, envItems[i].Color);
             }
 
-            Rectangle playerRect = new(player.Position.X - 20, player.Position.Y - 40, 40, 40);
+            Rectangle playerRect = new(player.Position.X - 20, player.Position.Y - 40, 40.0f, 40.0f);
             DrawRectangleRec(playerRect, Color.Red);
+
+            DrawCircleV(player.Position, 5.0f, Color.Gold);
 
             EndMode2D();
 
             DrawText("Controls:", 20, 20, 10, Color.Black);
             DrawText("- Right/Left to move", 40, 40, 10, Color.DarkGray);
             DrawText("- Space to jump", 40, 60, 10, Color.DarkGray);
-            DrawText("- Mouse Wheel to Zoom in-out, R to reset zoom", 40, 80, 10, Color.DarkGray);
-            DrawText("- C to change camera mode", 40, 100, 10, Color.DarkGray);
-            DrawText("Current camera mode:", 20, 120, 10, Color.Black);
-            DrawText(cameraDescriptions[cameraOption], 40, 140, 10, Color.DarkGray);
+            DrawText("- Mouse Wheel to Zoom in-out", 40, 80, 10, Color.DarkGray);
+            DrawText("- R to reset position + zoom", 40, 100, 10, Color.DarkGray);
+            DrawText("- C to change camera mode", 40, 120, 10, Color.DarkGray);
+            DrawText("Current camera mode:", 20, 140, 10, Color.Black);
+            DrawText(cameraDescriptions[cameraOption], 40, 160, 10, Color.DarkGray);
 
             EndDrawing();
             //----------------------------------------------------------------------------------
@@ -173,7 +180,7 @@ public partial class Camera2dPlatformer
 
         // De-Initialization
         //--------------------------------------------------------------------------------------
-        CloseWindow();
+        CloseWindow();        // Close window and OpenGL context
         //--------------------------------------------------------------------------------------
 
         return 0;
@@ -211,6 +218,7 @@ public partial class Camera2dPlatformer
                 hitObstacle = 1;
                 player.Speed = 0.0f;
                 player.Position.Y = ei.Rect.Y;
+                break;
             }
         }
 
@@ -235,7 +243,7 @@ public partial class Camera2dPlatformer
         int height
     )
     {
-        camera.Offset = new Vector2(width / 2, height / 2);
+        camera.Offset = new Vector2(width / 2.0f, height / 2.0f);
         camera.Target = player.Position;
     }
 
@@ -248,7 +256,7 @@ public partial class Camera2dPlatformer
         int height)
     {
         camera.Target = player.Position;
-        camera.Offset = new Vector2(width / 2, height / 2);
+        camera.Offset = new Vector2(width / 2.0f, height / 2.0f);
         float minX = 1000, minY = 1000, maxX = -1000, maxY = -1000;
 
         for (int i = 0; i < envItems.Length; i++)
@@ -265,22 +273,22 @@ public partial class Camera2dPlatformer
 
         if (max.X < width)
         {
-            camera.Offset.X = width - (max.X - width / 2);
+            camera.Offset.X = width - (max.X - width / 2.0f);
         }
 
         if (max.Y < height)
         {
-            camera.Offset.Y = height - (max.Y - height / 2);
+            camera.Offset.Y = height - (max.Y - height / 2.0f);
         }
 
         if (min.X > 0)
         {
-            camera.Offset.X = width / 2 - min.X;
+            camera.Offset.X = width / 2.0f - min.X;
         }
 
         if (min.Y > 0)
         {
-            camera.Offset.Y = height / 2 - min.Y;
+            camera.Offset.Y = height / 2.0f - min.Y;
         }
     }
 
@@ -297,7 +305,7 @@ public partial class Camera2dPlatformer
         const float minEffectLength = 10;
         const float fractionSpeed = 0.8f;
 
-        camera.Offset = new Vector2(width / 2, height / 2);
+        camera.Offset = new Vector2(width / 2.0f, height / 2.0f);
         Vector2 diff = Vector2Subtract(player.Position, camera.Target);
         float length = Vector2Length(diff);
 
@@ -321,7 +329,7 @@ public partial class Camera2dPlatformer
         int eveningOut = 0;
         float evenOutTarget = 0.0f;
 
-        camera.Offset = new Vector2(width / 2, height / 2);
+        camera.Offset = new Vector2(width / 2.0f, height / 2.0f);
         camera.Target.X = player.Position.X;
 
         if (eveningOut != 0)

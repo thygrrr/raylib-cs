@@ -1,11 +1,15 @@
 /*******************************************************************************************
 *
-*   raylib [core] example - Storage save/load values
+*   raylib [core] example - storage values
 *
-*   This example has been created using raylib 1.4 (www.raylib.com)
-*   raylib is licensed under an unmodified zlib/libpng license (View raylib.h for details)
+*   Example complexity rating: [★★☆☆] 2/4
 *
-*   Copyright (c) 2015 Ramon Santamaria (@raysan5)
+*   Example originally created with raylib 1.4, last time updated with raylib 4.2
+*
+*   Example licensed under an unmodified zlib/libpng license, which is an OSI-certified,
+*   BSD-like license that allows static linking with closed source software
+*
+*   Copyright (c) 2015-2025 Ramon Santamaria (@raysan5)
 *
 ********************************************************************************************/
 
@@ -30,17 +34,17 @@ public partial class StorageValues
         const int screenHeight = 450;
         const string storageDataFile = "storage.data";
 
-        InitWindow(screenWidth, screenHeight, "raylib [core] example - storage save/load values");
+        InitWindow(screenWidth, screenHeight, "raylib [core] example - storage values");
 
         int score = 0;
         int hiscore = 0;
         int framesCounter = 0;
 
-        SetTargetFPS(60);
+        SetTargetFPS(60);               // Set our game to run at 60 frames-per-second
         //--------------------------------------------------------------------------------------
 
         // Main game loop
-        while (!WindowShouldClose())
+        while (!WindowShouldClose())    // Detect window close button or ESC key
         {
             // Update
             //----------------------------------------------------------------------------------
@@ -85,7 +89,7 @@ public partial class StorageValues
 
         // De-Initialization
         //--------------------------------------------------------------------------------------
-        CloseWindow();
+        CloseWindow();        // Close window and OpenGL context
         //--------------------------------------------------------------------------------------
 
         return 0;

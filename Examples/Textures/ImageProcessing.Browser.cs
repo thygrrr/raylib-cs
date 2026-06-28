@@ -186,13 +186,13 @@ public partial class ImageProcessing : IExample
             // Draw rectangles
             for (int i = 0; i < NumProcesses; i++)
             {
-                DrawRectangleRec(_toggleRecs[i], (i == (int)_currentProcess) ? Color.SkyBlue : Color.LightGray);
+                DrawRectangleRec(_toggleRecs[i], ((i == (int)_currentProcess) || (i == _mouseHoverRec)) ? Color.SkyBlue : Color.LightGray);
                 DrawRectangleLines(
                     (int)_toggleRecs[i].X,
                     (int)_toggleRecs[i].Y,
                     (int)_toggleRecs[i].Width,
                     (int)_toggleRecs[i].Height,
-                    (i == (int)_currentProcess) ? Color.Blue : Color.Gray
+                    ((i == (int)_currentProcess) || (i == _mouseHoverRec)) ? Color.Blue : Color.Gray
                 );
 
                 int labelX = (int)(_toggleRecs[i].X + _toggleRecs[i].Width / 2);
@@ -201,7 +201,7 @@ public partial class ImageProcessing : IExample
                     (int)(labelX - MeasureText(processText[i], 10) / 2),
                     (int)_toggleRecs[i].Y + 11,
                     10,
-                    (i == (int)_currentProcess) ? Color.DarkBlue : Color.DarkGray
+                    ((i == (int)_currentProcess) || (i == _mouseHoverRec)) ? Color.DarkBlue : Color.DarkGray
                 );
             }
 

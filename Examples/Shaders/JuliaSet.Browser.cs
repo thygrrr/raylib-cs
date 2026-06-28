@@ -134,11 +134,12 @@ public partial class JuliaSet : IExample
                 Raylib.SetShaderValue(_shader, _cLoc, _c, ShaderUniformDataType.Vec2);
             }
 
+            // If "R" is pressed, reset zoom and offset
             if (IsKeyPressed(KeyboardKey.R))
             {
                 _zoom = startingZoom;
-                _offset[0] = 1f;
-                _offset[1] = 1f;
+                _offset[0] = 0.0f;
+                _offset[1] = 0.0f;
                 Raylib.SetShaderValue(_shader, _zoomLoc, _zoom, ShaderUniformDataType.Float);
                 Raylib.SetShaderValue(_shader, _offsetLoc, _offset, ShaderUniformDataType.Vec2);
             }
@@ -192,19 +193,18 @@ public partial class JuliaSet : IExample
             }
 
             // Increment c value with time
-            float amount = GetFrameTime() * _incrementSpeed * 0.0005f;
-            _c[0] += amount;
-            _c[1] += amount;
+            float dc = GetFrameTime() * _incrementSpeed * 0.0005f;
+            _c[0] += dc;
+            _c[1] += dc;
 
             Raylib.SetShaderValue(_shader, _cLoc, _c, ShaderUniformDataType.Vec2);
 
             // Using a render texture to draw Julia set
-            // Enable drawing to texture
             BeginTextureMode(_target);
             ClearBackground(Color.Black);
 
             // Draw a rectangle in shader mode to be used as shader canvas
-            // NOTE: Rectangle uses font Color.white character texture coordinates,
+            // NOTE: Rectangle uses font white character texture coordinates,
             // so shader can not be applied here directly because input vertexTexCoord
             // do not represent full screen coordinates (space where want to apply shader)
             DrawRectangle(0, 0, GetScreenWidth(), GetScreenHeight(), Color.Black);
@@ -216,7 +216,9 @@ public partial class JuliaSet : IExample
             // Draw the saved texture and rendered julia set with shader
             // NOTE: We do not invert texture on Y, already considered inside shader
             BeginShaderMode(_shader);
-            DrawTexture(_target.Texture, 0, 0, Color.White);
+            // WARNING: If FLAG_WINDOW_HIGHDPI is enabled, HighDPI monitor scaling should be considered
+            // when rendering the RenderTexture2D to fit in the HighDPI scaled Window
+            DrawTextureEx(_target.Texture, new Vector2(0.0f, 0.0f), 0.0f, 1.0f, Color.White);
             EndShaderMode();
 
             if (_showControls)
@@ -225,7 +227,7 @@ public partial class JuliaSet : IExample
                 DrawText("Press KEY_F1 to toggle these controls", 10, 30, 10, Color.RayWhite);
                 DrawText("Press KEYS [1 - 6] to change point of interest", 10, 45, 10, Color.RayWhite);
                 DrawText("Press KEY_LEFT | KEY_RIGHT to change speed", 10, 60, 10, Color.RayWhite);
-                DrawText("Press KEY_SPACE to pause movement animation", 10, 75, 10, Color.RayWhite);
+                DrawText("Press KEY_SPACE to stop movement animation", 10, 75, 10, Color.RayWhite);
                 DrawText("Press KEY_R to recenter the camera", 10, 90, 10, Color.RayWhite);
             }
 

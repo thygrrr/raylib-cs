@@ -1,14 +1,18 @@
 /*******************************************************************************************
 *
-*   raylib [text] example - raylib font loading and usage
+*   raylib [text] example - sprite fonts
+*
+*   Example complexity rating: [★☆☆☆] 1/4
 *
 *   NOTE: raylib is distributed with some free to use fonts (even for commercial pourposes!)
 *         To view details and credits for those fonts, check raylib license file
 *
-*   This example has been created using raylib 1.7 (www.raylib.com)
-*   raylib is licensed under an unmodified zlib/libpng license (View raylib.h for details)
+*   Example originally created with raylib 1.7, last time updated with raylib 3.7
 *
-*   Copyright (c) 2017 Ramon Santamaria (@raysan5)
+*   Example licensed under an unmodified zlib/libpng license, which is an OSI-certified,
+*   BSD-like license that allows static linking with closed source software
+*
+*   Copyright (c) 2017-2025 Ramon Santamaria (@raysan5)
 *
 ********************************************************************************************/
 
@@ -28,19 +32,19 @@ public partial class RaylibFonts
         const int screenWidth = 800;
         const int screenHeight = 450;
 
-        InitWindow(screenWidth, screenHeight, "raylib [text] example - raylib fonts");
+        InitWindow(screenWidth, screenHeight, "raylib [text] example - sprite fonts");
 
         // NOTE: Textures MUST be loaded after Window initialization (OpenGL context is required)
         Font[] fonts = new Font[MaxFonts];
 
-        fonts[0] = LoadFont("resources/fonts/alagard.png");
-        fonts[1] = LoadFont("resources/fonts/pixelplay.png");
-        fonts[2] = LoadFont("resources/fonts/mecha.png");
-        fonts[3] = LoadFont("resources/fonts/setback.png");
-        fonts[4] = LoadFont("resources/fonts/romulus.png");
-        fonts[5] = LoadFont("resources/fonts/pixantiqua.png");
-        fonts[6] = LoadFont("resources/fonts/alpha_beta.png");
-        fonts[7] = LoadFont("resources/fonts/jupiter_crash.png");
+        fonts[0] = LoadFont("resources/sprite_fonts/alagard.png");
+        fonts[1] = LoadFont("resources/sprite_fonts/pixelplay.png");
+        fonts[2] = LoadFont("resources/sprite_fonts/mecha.png");
+        fonts[3] = LoadFont("resources/sprite_fonts/setback.png");
+        fonts[4] = LoadFont("resources/sprite_fonts/romulus.png");
+        fonts[5] = LoadFont("resources/sprite_fonts/pixantiqua.png");
+        fonts[6] = LoadFont("resources/sprite_fonts/alpha_beta.png");
+        fonts[7] = LoadFont("resources/sprite_fonts/jupiter_crash.png");
 
         string[] messages = new string[MaxFonts] {
                 "ALAGARD FONT designed by Hewett Tsoi",
@@ -78,10 +82,12 @@ public partial class RaylibFonts
                 Color.Gold,
                 Color.Red
             };
+
+        SetTargetFPS(60);               // Set our game to run at 60 frames-per-second
         //--------------------------------------------------------------------------------------
 
         // Main game loop
-        while (!WindowShouldClose())
+        while (!WindowShouldClose())    // Detect window close button or ESC key
         {
             // Update
             //----------------------------------------------------------------------------------
@@ -93,8 +99,8 @@ public partial class RaylibFonts
             BeginDrawing();
             ClearBackground(Color.RayWhite);
 
-            DrawText("free fonts included with raylib", 250, 20, 20, Color.DarkGray);
-            DrawLine(220, 50, 590, 50, Color.DarkGray);
+            DrawText("free sprite fonts included with raylib", 220, 20, 20, Color.DarkGray);
+            DrawLine(220, 50, 600, 50, Color.DarkGray);
 
             for (int i = 0; i < MaxFonts; i++)
             {
@@ -107,12 +113,14 @@ public partial class RaylibFonts
 
         // De-Initialization
         //--------------------------------------------------------------------------------------
+
+        // Fonts unloading
         for (int i = 0; i < MaxFonts; i++)
         {
             UnloadFont(fonts[i]);
         }
 
-        CloseWindow();
+        CloseWindow();                 // Close window and OpenGL context
         //--------------------------------------------------------------------------------------
 
         return 0;

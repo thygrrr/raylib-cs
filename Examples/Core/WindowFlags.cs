@@ -2,10 +2,14 @@
 *
 *   raylib [core] example - window flags
 *
-*   This example has been created using raylib 3.5 (www.raylib.com)
-*   raylib is licensed under an unmodified zlib/libpng license (View raylib.h for details)
+*   Example complexity rating: [★★★☆] 3/4
 *
-*   Copyright (c) 2020 Ramon Santamaria (@raysan5)
+*   Example originally created with raylib 3.5, last time updated with raylib 3.5
+*
+*   Example licensed under an unmodified zlib/libpng license, which is an OSI-certified,
+*   BSD-like license that allows static linking with closed source software
+*
+*   Copyright (c) 2020-2025 Ramon Santamaria (@raysan5)
 *
 ********************************************************************************************/
 
@@ -42,18 +46,20 @@ public partial class WindowFlags
         */
 
         // Set configuration flags for window creation
-        SetConfigFlags(VSyncHint | Msaa4xHint);
+        //SetConfigFlags(VSyncHint | Msaa4xHint | HighDpiWindow);// | TransparentWindow);
         InitWindow(screenWidth, screenHeight, "raylib [core] example - window flags");
 
-        Vector2 ballPosition = new(GetScreenWidth() / 2, GetScreenHeight() / 2);
+        Vector2 ballPosition = new(GetScreenWidth() / 2.0f, GetScreenHeight() / 2.0f);
         Vector2 ballSpeed = new(5.0f, 4.0f);
-        int ballRadius = 20;
+        float ballRadius = 20;
 
         int framesCounter = 0;
+
+        SetTargetFPS(60);               // Set our game to run at 60 frames-per-second
         //----------------------------------------------------------
 
         // Main game loop
-        while (!WindowShouldClose())
+        while (!WindowShouldClose())    // Detect window close button or ESC key
         {
             // Update
             //-----------------------------------------------------
@@ -188,6 +194,11 @@ public partial class WindowFlags
                 }
             }
 
+            if (IsKeyPressed(KeyboardKey.B))
+            {
+                ToggleBorderlessWindowed();
+            }
+
             // Bouncing ball logic
             ballPosition.X += ballSpeed.X;
             ballPosition.Y += ballSpeed.Y;
@@ -224,9 +235,6 @@ public partial class WindowFlags
             DrawText($"Screen Size: [{GetScreenWidth()}, {GetScreenHeight()}]", 10, 40, 10, Color.Green);
 
             // Draw window state info
-            Color on = Color.Lime;
-            Color off = Color.Maroon;
-
             DrawText("Following flags can be set after window creation:", 10, 60, 10, Color.Gray);
 
             DrawWindowState(FullscreenMode, "[F] FLAG_FULLSCREEN_MODE: ", 10, 80, 10);
@@ -239,12 +247,13 @@ public partial class WindowFlags
             DrawWindowState(TopmostWindow, "[T] FLAG_WINDOW_TOPMOST: ", 10, 220, 10);
             DrawWindowState(AlwaysRunWindow, "[A] FLAG_WINDOW_ALWAYS_RUN: ", 10, 240, 10);
             DrawWindowState(VSyncHint, "[V] FLAG_VSYNC_HINT: ", 10, 260, 10);
+            DrawWindowState(BorderlessWindowMode, "[B] FLAG_BORDERLESS_WINDOWED_MODE: ", 10, 280, 10);
 
-            DrawText("Following flags can only be set before window creation:", 10, 300, 10, Color.Gray);
+            DrawText("Following flags can only be set before window creation:", 10, 320, 10, Color.Gray);
 
-            DrawWindowState(HighDpiWindow, "[F] FLAG_WINDOW_HIGHDPI: ", 10, 320, 10);
-            DrawWindowState(TransparentWindow, "[F] FLAG_WINDOW_TRANSPARENT: ", 10, 340, 10);
-            DrawWindowState(Msaa4xHint, "[F] FLAG_MSAA_4X_HINT: ", 10, 360, 10);
+            DrawWindowState(HighDpiWindow, "FLAG_WINDOW_HIGHDPI: ", 10, 340, 10);
+            DrawWindowState(TransparentWindow, "FLAG_WINDOW_TRANSPARENT: ", 10, 360, 10);
+            DrawWindowState(Msaa4xHint, "FLAG_MSAA_4X_HINT: ", 10, 380, 10);
 
             EndDrawing();
             //-----------------------------------------------------
@@ -252,7 +261,7 @@ public partial class WindowFlags
 
         // De-Initialization
         //---------------------------------------------------------
-        CloseWindow();
+        CloseWindow();        // Close window and OpenGL context
         //----------------------------------------------------------
 
         return 0;
@@ -265,11 +274,11 @@ public partial class WindowFlags
 
         if (Raylib.IsWindowState(flag))
         {
-            DrawText($"{text} on", posX, posY, fontSize, onColor);
+            DrawText($"{text}on", posX, posY, fontSize, onColor);
         }
         else
         {
-            DrawText($"{text} off", posX, posY, fontSize, offColor);
+            DrawText($"{text}off", posX, posY, fontSize, offColor);
         }
     }
 }

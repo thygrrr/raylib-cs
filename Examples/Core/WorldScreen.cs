@@ -1,11 +1,15 @@
 /*******************************************************************************************
 *
-*   raylib [core] example - World to screen
+*   raylib [core] example - world screen
 *
-*   This example has been created using raylib 1.3 (www.raylib.com)
-*   raylib is licensed under an unmodified zlib/libpng license (View raylib.h for details)
+*   Example complexity rating: [★★☆☆] 2/4
 *
-*   Copyright (c) 2015 Ramon Santamaria (@raysan5)
+*   Example originally created with raylib 1.3, last time updated with raylib 1.4
+*
+*   Example licensed under an unmodified zlib/libpng license, which is an OSI-certified,
+*   BSD-like license that allows static linking with closed source software
+*
+*   Copyright (c) 2015-2025 Ramon Santamaria (@raysan5)
 *
 ********************************************************************************************/
 
@@ -23,28 +27,30 @@ public partial class WorldScreen
         const int screenWidth = 800;
         const int screenHeight = 450;
 
-        InitWindow(screenWidth, screenHeight, "raylib [core] example - 3d camera free");
+        InitWindow(screenWidth, screenHeight, "raylib [core] example - world screen");
 
         // Define the camera to look into our 3d world
         Camera3D camera = new();
-        camera.Position = new Vector3(10.0f, 10.0f, 10.0f);
-        camera.Target = new Vector3(0.0f, 0.0f, 0.0f);
-        camera.Up = new Vector3(0.0f, 1.0f, 0.0f);
-        camera.FovY = 45.0f;
-        camera.Projection = CameraProjection.Perspective;
+        camera.Position = new Vector3(10.0f, 10.0f, 10.0f); // Camera position
+        camera.Target = new Vector3(0.0f, 0.0f, 0.0f);      // Camera looking at point
+        camera.Up = new Vector3(0.0f, 1.0f, 0.0f);          // Camera up vector (rotation towards target)
+        camera.FovY = 45.0f;                                // Camera field-of-view Y
+        camera.Projection = CameraProjection.Perspective;   // Camera projection type
 
         Vector3 cubePosition = new(0.0f, 0.0f, 0.0f);
-        Vector2 cubeScreenPosition;
+        Vector2 cubeScreenPosition = new(0.0f, 0.0f);
 
-        SetTargetFPS(60);
+        DisableCursor();                    // Limit cursor to relative movement inside the window
+
+        SetTargetFPS(60);                   // Set our game to run at 60 frames-per-second
         //--------------------------------------------------------------------------------------
 
         // Main game loop
-        while (!WindowShouldClose())
+        while (!WindowShouldClose())        // Detect window close button or ESC key
         {
             // Update
             //----------------------------------------------------------------------------------
-            UpdateCamera(ref camera, CameraMode.Free);
+            UpdateCamera(ref camera, CameraMode.ThirdPerson);
 
             // Calculate cube screen space position (with a little offset to be in top)
             cubeScreenPosition = GetWorldToScreen(
@@ -68,19 +74,21 @@ public partial class WorldScreen
             EndMode3D();
 
             DrawText(
-                "Enemy: 100 / 100",
-                (int)cubeScreenPosition.X - MeasureText("Enemy: 100 / 100", 20) / 2,
+                "Enemy: 100/100",
+                (int)cubeScreenPosition.X - MeasureText("Enemy: 100/100", 20) / 2,
                 (int)cubeScreenPosition.Y,
                 20,
                 Color.Black
             );
+
             DrawText(
-                "Text is always on top of the cube",
-                (screenWidth - MeasureText("Text is always on top of the cube", 20)) / 2,
-                25,
+                $"Cube position in screen space coordinates: [{(int)cubeScreenPosition.X}, {(int)cubeScreenPosition.Y}]",
+                10,
+                10,
                 20,
-                Color.Gray
+                Color.Lime
             );
+            DrawText("Text 2d should be always on top of the cube", 10, 40, 20, Color.Gray);
 
             EndDrawing();
             //----------------------------------------------------------------------------------
@@ -88,7 +96,7 @@ public partial class WorldScreen
 
         // De-Initialization
         //--------------------------------------------------------------------------------------
-        CloseWindow();
+        CloseWindow();        // Close window and OpenGL context
         //--------------------------------------------------------------------------------------
 
         return 0;

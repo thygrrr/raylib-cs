@@ -1,12 +1,15 @@
 /*******************************************************************************************
 *
-*   raylib [textures] example - Bunnymark
+*   raylib [textures] example - bunnymark
 *
-*   This example has been created using raylib 1.6 (www.raylib.com)
-*   raylib is licensed under an unmodified zlib/libpng license (View raylib.h for details)
+*   Example complexity rating: [★★★☆] 3/4
 *
-*   Copyright (c) 2014-2019 Ramon Santamaria (@raysan5), 2024 Moritz Voss (@thygrrr)
+*   Example originally created with raylib 1.6, last time updated with raylib 2.5
 *
+*   Example licensed under an unmodified zlib/libpng license, which is an OSI-certified,
+*   BSD-like license that allows static linking with closed source software
+*
+*   Copyright (c) 2014-2025 Ramon Santamaria (@raysan5), 2024 Moritz Voss (@thygrrr)
 *
 ********************************************************************************************/
 
@@ -117,9 +120,9 @@ public partial class Bunnymark
                 // NOTE: When internal batch buffer limit is reached (MAX_BATCH_ELEMENTS),
                 // a draw call is launched and buffer starts being filled again;
                 // before issuing a draw call, updated vertex data from internal CPU buffer is send to GPU...
-                // Process of sending data is costly, and it could happen that GPU data has not been completely
+                // Process of sending data is costly and it could happen that GPU data has not been completely
                 // processed for drawing while new data is tried to be sent (updating current in-use buffers)
-                // it could generate a stall and consequently a frame drop, limiting the number of drawn bunnies
+                // it could generates a stall and consequently a frame drop, limiting the number of drawn bunnies
                 DrawTexture(texBunny, (int)bunny.Position.X, (int)bunny.Position.Y, bunny.Color);
             }
 

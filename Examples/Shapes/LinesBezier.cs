@@ -1,11 +1,15 @@
 /*******************************************************************************************
 *
-*   raylib [shapes] example - Cubic-bezier lines
+*   raylib [shapes] example - lines bezier
 *
-*   This example has been created using raylib 1.7 (www.raylib.com)
-*   raylib is licensed under an unmodified zlib/libpng license (View raylib.h for details)
+*   Example complexity rating: [★☆☆☆] 1/4
 *
-*   Copyright (c) 2017 Ramon Santamaria (@raysan5)
+*   Example originally created with raylib 1.7, last time updated with raylib 1.7
+*
+*   Example licensed under an unmodified zlib/libpng license, which is an OSI-certified,
+*   BSD-like license that allows static linking with closed source software
+*
+*   Copyright (c) 2017-2025 Ramon Santamaria (@raysan5)
 *
 ********************************************************************************************/
 
@@ -24,26 +28,48 @@ public partial class LinesBezier
         const int screenHeight = 450;
 
         SetConfigFlags(ConfigFlags.Msaa4xHint);
-        InitWindow(screenWidth, screenHeight, "raylib [shapes] example - cubic-bezier lines");
+        InitWindow(screenWidth, screenHeight, "raylib [shapes] example - lines bezier");
 
-        Vector2 start = new(0, 0);
-        Vector2 end = new(screenWidth, screenHeight);
+        Vector2 startPoint = new(30, 30);
+        Vector2 endPoint = new(screenWidth - 30, screenHeight - 30);
+        bool moveStartPoint = false;
+        bool moveEndPoint = false;
 
-        SetTargetFPS(60);
+        SetTargetFPS(60);                   // Set our game to run at 60 frames-per-second
         //--------------------------------------------------------------------------------------
 
         // Main game loop
-        while (!WindowShouldClose())
+        while (!WindowShouldClose())        // Detect window close button or ESC key
         {
             // Update
             //----------------------------------------------------------------------------------
-            if (IsMouseButtonDown(MouseButton.Left))
+            Vector2 mouse = GetMousePosition();
+
+            if (CheckCollisionPointCircle(mouse, startPoint, 10.0f) && IsMouseButtonDown(MouseButton.Left))
             {
-                start = GetMousePosition();
+                moveStartPoint = true;
             }
-            else if (IsMouseButtonDown(MouseButton.Right))
+            else if (CheckCollisionPointCircle(mouse, endPoint, 10.0f) && IsMouseButtonDown(MouseButton.Left))
             {
-                end = GetMousePosition();
+                moveEndPoint = true;
+            }
+
+            if (moveStartPoint)
+            {
+                startPoint = mouse;
+                if (IsMouseButtonReleased(MouseButton.Left))
+                {
+                    moveStartPoint = false;
+                }
+            }
+
+            if (moveEndPoint)
+            {
+                endPoint = mouse;
+                if (IsMouseButtonReleased(MouseButton.Left))
+                {
+                    moveEndPoint = false;
+                }
             }
             //----------------------------------------------------------------------------------
 
@@ -52,8 +78,14 @@ public partial class LinesBezier
             BeginDrawing();
             ClearBackground(Color.RayWhite);
 
-            DrawText("USE MOUSE LEFT-RIGHT CLICK to DEFINE LINE START and END POINTS", 15, 20, 20, Color.Gray);
-            DrawLineBezier(start, end, 2.0f, Color.Red);
+            DrawText("MOVE START-END POINTS WITH MOUSE", 15, 20, 20, Color.Gray);
+
+            // Draw line Cubic Bezier, in-out interpolation (easing), no control points
+            DrawLineBezier(startPoint, endPoint, 4.0f, Color.Blue);
+
+            // Draw start-end spline circles with some details
+            DrawCircleV(startPoint, CheckCollisionPointCircle(mouse, startPoint, 10.0f) ? 14.0f : 8.0f, moveStartPoint ? Color.Red : Color.Blue);
+            DrawCircleV(endPoint, CheckCollisionPointCircle(mouse, endPoint, 10.0f) ? 14.0f : 8.0f, moveEndPoint ? Color.Red : Color.Blue);
 
             EndDrawing();
             //----------------------------------------------------------------------------------
@@ -61,7 +93,7 @@ public partial class LinesBezier
 
         // De-Initialization
         //--------------------------------------------------------------------------------------
-        CloseWindow();
+        CloseWindow();        // Close window and OpenGL context
         //--------------------------------------------------------------------------------------
 
         return 0;

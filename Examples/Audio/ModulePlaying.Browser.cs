@@ -59,7 +59,7 @@ public partial class ModulePlaying : IExample
                 _circles[i].Radius = GetRandomValue(10, 40);
                 _circles[i].Position.X = GetRandomValue((int)_circles[i].Radius, screenWidth - (int)_circles[i].Radius);
                 _circles[i].Position.Y = GetRandomValue((int)_circles[i].Radius, screenHeight - (int)_circles[i].Radius);
-                _circles[i].Speed = (float)GetRandomValue(1, 100) / 20000.0f;
+                _circles[i].Speed = (float)GetRandomValue(1, 100) / 2000.0f;
                 _circles[i].Color = colors[GetRandomValue(0, 13)];
             }
 
@@ -149,7 +149,7 @@ public partial class ModulePlaying : IExample
                 DrawCircleV(
                     _circles[i].Position,
                     _circles[i].Radius,
-                    ColorAlpha(_circles[i].Color, _circles[i].Alpha)
+                    Fade(_circles[i].Color, _circles[i].Alpha)
                 );
             }
 
@@ -157,6 +157,14 @@ public partial class ModulePlaying : IExample
             DrawRectangle(20, screenHeight - 20 - 12, screenWidth - 40, 12, Color.LightGray);
             DrawRectangle(20, screenHeight - 20 - 12, (int)_timePlayed, 12, Color.Maroon);
             DrawRectangleLines(20, screenHeight - 20 - 12, screenWidth - 40, 12, Color.Gray);
+
+            // Draw help instructions
+            DrawRectangle(20, 20, 425, 145, Color.White);
+            DrawRectangleLines(20, 20, 425, 145, Color.Gray);
+            DrawText("PRESS SPACE TO RESTART MUSIC", 40, 40, 20, Color.Black);
+            DrawText("PRESS P TO PAUSE/RESUME", 40, 70, 20, Color.Black);
+            DrawText("PRESS UP/DOWN TO CHANGE SPEED", 40, 100, 20, Color.Black);
+            DrawText($"SPEED: {_pitch:F6}", 40, 130, 20, Color.Maroon);
 
             EndDrawing();
         }

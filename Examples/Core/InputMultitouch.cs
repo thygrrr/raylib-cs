@@ -34,18 +34,18 @@ public partial class InputMultitouch
         const int MaxTouchPoints = 10;
         Vector2[] touchPositions = new Vector2[MaxTouchPoints];
 
-        SetTargetFPS(60);
+        SetTargetFPS(60);               // Set our game to run at 60 frames-per-second
         //---------------------------------------------------------------------------------------
 
         // Main game loop
-        while (!WindowShouldClose())
+        while (!WindowShouldClose())    // Detect window close button or ESC key
         {
             // Update
             //----------------------------------------------------------------------------------
-            // Get the touch point count (how many fingers are touching the screen )
+            // Get the touch point count ( how many fingers are touching the screen )
             int tCount = GetTouchPointCount();
 
-            // Clamp touch points available (set the maximum touch points allowed )
+            // Clamp touch points available ( set the maximum touch points allowed )
             if (tCount > MaxTouchPoints)
             {
                 tCount = MaxTouchPoints;
@@ -87,7 +87,7 @@ public partial class InputMultitouch
 
         // De-Initialization
         //--------------------------------------------------------------------------------------
-        CloseWindow();
+        CloseWindow();        // Close window and OpenGL context
         //--------------------------------------------------------------------------------------
 
         return 0;

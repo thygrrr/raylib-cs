@@ -82,13 +82,15 @@ public partial class MultiSample2d : IExample
 
             BeginShaderMode(_shader);
 
-            // WARNING: Additional samplers are enabled for all draw calls in the batch,
-            // EndShaderMode() forces batch drawing and consequently resets active textures
-            // to let other sampler2D to be activated on consequent drawings (if required)
+            // WARNING: Additional textures (sampler2D) are enabled for ALL draw calls in the batch,
+            // but EndShaderMode() forces batch drawing and resets active textures, this way
+            // other textures (sampler2D) can be activated on consequent drawings (if required)
+            // The downside of this approach is that SetShaderValue() must be called inside the loop,
+            // to be set again after every EndShaderMode() reset
             SetShaderValueTexture(_shader, _texBlueLoc, _texBlue);
 
-            // We are drawing texRed using default sampler2D texture0 but
-            // an additional texture units is enabled for texBlue (sampler2D texture1)
+            // We are drawing texRed using default [sampler2D texture0] but
+            // an additional texture units is enabled for texBlue [sampler2D texture1]
             DrawTexture(_texRed, 0, 0, Color.White);
 
             EndShaderMode();

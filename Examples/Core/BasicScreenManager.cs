@@ -1,21 +1,17 @@
 /*******************************************************************************************
 *
-*   raylib [core] example - Basic window
+*   raylib [core] example - basic screen manager
 *
-*   Welcome to raylib!
+*   Example complexity rating: [★☆☆☆] 1/4
 *
-*   To test examples, just press F6 and execute raylib_compile_execute script
-*   Note that compiled executable is placed in the same folder as .c file
+*   NOTE: This example illustrates a very simple screen manager based on a states machines
 *
-*   You can find all basic examples on C:\raylib\raylib\examples folder or
-*   raylib official webpage: www.raylib.com
+*   Example originally created with raylib 4.0, last time updated with raylib 4.0
 *
-*   Enjoy using raylib. :)
+*   Example licensed under an unmodified zlib/libpng license, which is an OSI-certified,
+*   BSD-like license that allows static linking with closed source software
 *
-*   This example has been created using raylib 1.0 (www.raylib.com)
-*   raylib is licensed under an unmodified zlib/libpng license (View raylib.h for details)
-*
-*   Copyright (c) 2013-2016 Ramon Santamaria (@raysan5)
+*   Copyright (c) 2021-2025 Ramon Santamaria (@raysan5)
 *
 ********************************************************************************************/
 
@@ -46,14 +42,13 @@ public partial class BasicScreenManager
 
         // TODO: Initialize all required variables and load all required data here!
 
-        // Useful to count frames
-        int framesCounter = 0;
+        int framesCounter = 0;          // Useful to count frames
 
         SetTargetFPS(60);               // Set desired framerate (frames-per-second)
         //--------------------------------------------------------------------------------------
 
         // Main game loop
-        while (!WindowShouldClose())
+        while (!WindowShouldClose())    // Detect window close button or ESC key
         {
             // Update
             //----------------------------------------------------------------------------------
@@ -63,8 +58,7 @@ public partial class BasicScreenManager
                     {
                         // TODO: Update LOGO screen variables here!
 
-                        // Count frames
-                        framesCounter++;
+                        framesCounter++;    // Count frames
 
                         // Wait for 2 seconds (120 frames) before jumping to TITLE screen
                         if (framesCounter > 120)
@@ -167,7 +161,7 @@ public partial class BasicScreenManager
 
         // TODO: Unload all loaded data (textures, fonts, audio) here!
 
-        CloseWindow();
+        CloseWindow();        // Close window and OpenGL context
         //--------------------------------------------------------------------------------------
 
         return 0;

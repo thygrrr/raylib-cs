@@ -55,6 +55,7 @@ public partial class InputMouse : IExample
             if (IsMouseButtonPressed(MouseButton.Left)) _color = Color.Maroon;
             else if (IsMouseButtonPressed(MouseButton.Middle)) _color = Color.Lime;
             else if (IsMouseButtonPressed(MouseButton.Right)) _color = Color.DarkBlue;
+            else if (IsMouseButtonPressed(MouseButton.Side)) _color = Color.Purple;
             else if (IsMouseButtonPressed(MouseButton.Extra)) _color = Color.Yellow;
             else if (IsMouseButtonPressed(MouseButton.Forward)) _color = Color.Orange;
             else if (IsMouseButtonPressed(MouseButton.Back)) _color = Color.Beige;

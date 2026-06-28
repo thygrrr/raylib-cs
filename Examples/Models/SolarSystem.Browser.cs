@@ -67,8 +67,6 @@ public partial class SolarSystem : IExample
 
         public void Update()
         {
-            UpdateCamera(ref _camera, CameraMode.Free);
-
             _earthRotation += (5.0f * _rotationSpeed);
             _earthOrbitRotation += (365 / 360.0f * (5.0f * _rotationSpeed) * _rotationSpeed);
             _moonRotation += (2.0f * _rotationSpeed);
@@ -91,8 +89,6 @@ public partial class SolarSystem : IExample
             Rlgl.Rotatef(_earthOrbitRotation, 0.0f, 1.0f, 0.0f);
             // Translation for Earth orbit
             Rlgl.Translatef(EarthOrbitRadius, 0.0f, 0.0f);
-            // Rotation for Earth orbit around Sun inverted
-            Rlgl.Rotatef(-_earthOrbitRotation, 0.0f, 1.0f, 0.0f);
 
             Rlgl.PushMatrix();
             // Rotation for Earth itself
@@ -108,8 +104,6 @@ public partial class SolarSystem : IExample
             Rlgl.Rotatef(_moonOrbitRotation, 0.0f, 1.0f, 0.0f);
             // Translation for Moon orbit
             Rlgl.Translatef(MoonOrbitRadius, 0.0f, 0.0f);
-            // Rotation for Moon orbit around Earth inverted
-            Rlgl.Rotatef(-_moonOrbitRotation, 0.0f, 1.0f, 0.0f);
             // Rotation for Moon itself
             Rlgl.Rotatef(_moonRotation, 0.0f, 1.0f, 0.0f);
             // Scale Moon
@@ -125,7 +119,7 @@ public partial class SolarSystem : IExample
                 EarthOrbitRadius,
                 new Vector3(1, 0, 0),
                 90.0f,
-                ColorAlpha(Color.Red, 0.5f)
+                Fade(Color.Red, 0.5f)
             );
             DrawGrid(20, 1.0f);
 

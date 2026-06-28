@@ -30,7 +30,6 @@ public partial class SplitScreen : IExample
         private const int screenWidth = 800;
         private const int screenHeight = 450;
 
-        private Texture2D _textureGrid;
         private Camera3D _cameraPlayer1;
         private Camera3D _cameraPlayer2;
 
@@ -44,9 +43,8 @@ public partial class SplitScreen : IExample
             int count = 5;
             float spacing = 4;
 
-            // Grid of cube trees on a plane to make a "world"
-            // Simple world plane
-            DrawPlane(new Vector3(0, 0, 0), new Vector2(50, 50), Color.Beige);
+            // Draw scene: grid of cube trees on a plane to make a "world"
+            DrawPlane(new Vector3(0, 0, 0), new Vector2(50, 50), Color.Beige); // Simple world plane
 
             for (float x = -count * spacing; x <= count * spacing; x += spacing)
             {
@@ -64,13 +62,6 @@ public partial class SplitScreen : IExample
 
         public void Init()
         {
-            // Generate a simple texture to use for trees
-            Image img = GenImageChecked(256, 256, 32, 32, Color.DarkGray, Color.White);
-            _textureGrid = LoadTextureFromImage(img);
-            UnloadImage(img);
-            SetTextureFilter(_textureGrid, TextureFilter.Anisotropic16X);
-            SetTextureWrap(_textureGrid, TextureWrap.Clamp);
-
             // Setup player 1 camera and screen
             _cameraPlayer1.FovY = 45.0f;
             _cameraPlayer1.Up.Y = 1.0f;
@@ -136,7 +127,8 @@ public partial class SplitScreen : IExample
             DrawScene();
             EndMode3D();
 
-            DrawText("PLAYER 1 W/S to move", 10, 10, 20, Color.Red);
+            DrawRectangle(0, 0, GetScreenWidth() / 2, 40, Fade(Color.RayWhite, 0.8f));
+            DrawText("PLAYER1: W/S to move", 10, 10, 20, Color.Maroon);
             EndTextureMode();
 
             // Draw Player2 view to the render texture
@@ -147,7 +139,8 @@ public partial class SplitScreen : IExample
             DrawScene();
             EndMode3D();
 
-            DrawText("PLAYER 2 UP/DOWN to move", 10, 10, 20, Color.Blue);
+            DrawRectangle(0, 0, GetScreenWidth() / 2, 40, Fade(Color.RayWhite, 0.8f));
+            DrawText("PLAYER2: UP/DOWN to move", 10, 10, 20, Color.DarkBlue);
             EndTextureMode();
 
             // Draw both views render textures to the screen side by side
@@ -157,6 +150,7 @@ public partial class SplitScreen : IExample
             DrawTextureRec(_screenPlayer1.Texture, _splitScreenRect, new Vector2(0, 0), Color.White);
             DrawTextureRec(_screenPlayer2.Texture, _splitScreenRect, new Vector2(screenWidth / 2.0f, 0), Color.White);
 
+            DrawRectangle(GetScreenWidth() / 2 - 2, 0, 4, GetScreenHeight(), Color.LightGray);
             EndDrawing();
         }
 
@@ -164,7 +158,6 @@ public partial class SplitScreen : IExample
         {
             UnloadRenderTexture(_screenPlayer1);
             UnloadRenderTexture(_screenPlayer2);
-            UnloadTexture(_textureGrid);
         }
     }
 }

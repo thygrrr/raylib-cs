@@ -29,7 +29,7 @@ public partial class FontLoading : IExample
 
         // Define characters to draw
         // NOTE: raylib supports UTF-8 encoding, following list is actually codified as UTF8 internally
-        private const string Msg = "!\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHI\nJKLMNOPQRSTUVWXYZ[]^_`abcdefghijklmn\nopqrstuvwxyz{|}~¿ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓ\nÔÕÖ×ØÙÚÛÜÝÞßàáâãäåæçèéêëìíîïðñòóôõö÷\nøùúûüýþÿ";
+        private const string Msg = "!#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHI\nJKLMNOPQRSTUVWXYZ[]^_`abcdefghijklmn\nopqrstuvwxyz{|}~¿ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓ\nÔÕÖ×ØÙÚÛÜÝÞßàáâãäåæçèéêëìíîïðñòóôõö÷\nøùúûüýþÿ";
 
         private Font _fontBm;
         private Font _fontTtf;
@@ -45,6 +45,8 @@ public partial class FontLoading : IExample
             // TTF font : Font data and atlas are generated directly from TTF
             // NOTE: We define a font base size of 32 pixels tall and up-to 250 characters
             _fontTtf = LoadFontEx("resources/fonts/pixantiqua.ttf", 32, null, 250);
+
+            SetTextLineSpacing(16);
 
             _useTtf = false;
         }

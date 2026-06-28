@@ -1,17 +1,22 @@
 /*******************************************************************************************
 *
-*   raylib [shaders] example - Hot reloading
+*   raylib [shaders] example - hot reloading
+*
+*   Example complexity rating: [★★★☆] 3/4
 *
 *   NOTE: This example requires raylib OpenGL 3.3 for shaders support and only #version 330
-*         is currently supported. OpenGL ES 2.0 platforms are not supported at the moment.
+*         is currently supported. OpenGL ES 2.0 platforms are not supported at the moment
 *
-*   This example has been created using raylib 3.0 (www.raylib.com)
-*   raylib is licensed under an unmodified zlib/libpng license (View raylib.h for details)
+*   Example originally created with raylib 3.0, last time updated with raylib 3.5
 *
-*   Copyright (c) 2020 Ramon Santamaria (@raysan5)
+*   Example licensed under an unmodified zlib/libpng license, which is an OSI-certified,
+*   BSD-like license that allows static linking with closed source software
+*
+*   Copyright (c) 2020-2025 Ramon Santamaria (@raysan5)
 *
 ********************************************************************************************/
 
+using System;
 using System.Numerics;
 using static Raylib_cs.Raylib;
 
@@ -19,6 +24,8 @@ namespace Examples.Shaders;
 
 public partial class HotReloading
 {
+    const int GLSL_VERSION = 330;
+
     public static int Main()
     {
         // Initialization
@@ -28,7 +35,7 @@ public partial class HotReloading
 
         InitWindow(screenWidth, screenHeight, "raylib [shaders] example - hot reloading");
 
-        string fragShaderFileName = "resources/shaders/glsl330/reload.fs";
+        string fragShaderFileName = $"resources/shaders/glsl{GLSL_VERSION}/reload.fs";
         long fragShaderFileModTime = GetFileModTime(fragShaderFileName);
 
         // Load raymarching shader
@@ -74,7 +81,7 @@ public partial class HotReloading
                     Shader updatedShader = LoadShader(null, fragShaderFileName);
 
                     // It was correctly loaded
-                    if (updatedShader.Id != 0) //rlGetShaderIdDefault())
+                    if (updatedShader.Id != Rlgl.GetShaderIdDefault())
                     {
                         UnloadShader(shader);
                         shader = updatedShader;
@@ -120,7 +127,8 @@ public partial class HotReloading
                 DrawText("MOUSE CLICK to SHADER RE-LOADING", 10, 30, 10, Color.Black);
             }
 
-            // DrawText($"Shader last modification: ", 10, 430, 10, Color.BLACK);
+            string lastModification = DateTimeOffset.FromUnixTimeSeconds(fragShaderFileModTime).LocalDateTime.ToString();
+            DrawText($"Shader last modification: {lastModification}", 10, 430, 10, Color.Black);
 
             EndDrawing();
             //----------------------------------------------------------------------------------

@@ -1,11 +1,15 @@
 /*******************************************************************************************
 *
-*   raylib [text] example - Text formatting
+*   raylib [text] example - format text
 *
-*   This example has been created using raylib 1.1 (www.raylib.com)
-*   raylib is licensed under an unmodified zlib/libpng license (View raylib.h for details)
+*   Example complexity rating: [★☆☆☆] 1/4
 *
-*   Copyright (c) 2014 Ramon Santamaria (@raysan5)
+*   Example originally created with raylib 1.1, last time updated with raylib 3.0
+*
+*   Example licensed under an unmodified zlib/libpng license, which is an OSI-certified,
+*   BSD-like license that allows static linking with closed source software
+*
+*   Copyright (c) 2014-2025 Ramon Santamaria (@raysan5)
 *
 ********************************************************************************************/
 
@@ -22,17 +26,17 @@ public partial class FormatText
         const int screenWidth = 800;
         const int screenHeight = 450;
 
-        InitWindow(screenWidth, screenHeight, "raylib [text] example - text formatting");
+        InitWindow(screenWidth, screenHeight, "raylib [text] example - format text");
 
         int score = 100020;
         int hiscore = 200450;
         int lives = 5;
 
-        SetTargetFPS(60);
+        SetTargetFPS(60);                   // Set our game to run at 60 frames-per-second
         //--------------------------------------------------------------------------------------
 
         // Main game loop
-        while (!WindowShouldClose())
+        while (!WindowShouldClose())        // Detect window close button or ESC key
         {
             // Update
             //----------------------------------------------------------------------------------
@@ -44,10 +48,13 @@ public partial class FormatText
             BeginDrawing();
             ClearBackground(Color.RayWhite);
 
-            DrawText($"Score: {score}", 200, 80, 20, Color.Red);
-            DrawText($"HiScore: {hiscore}", 200, 120, 20, Color.Green);
-            DrawText($"Lives: {lives}", 200, 160, 40, Color.Blue);
-            DrawText($"Elapsed Time: {GetFrameTime() * 1000} ms", 200, 220, 20, Color.Black);
+            DrawText($"Score: {score:D8}", 200, 80, 20, Color.Red);
+
+            DrawText($"HiScore: {hiscore:D8}", 200, 120, 20, Color.Green);
+
+            DrawText($"Lives: {lives:D2}", 200, 160, 40, Color.Blue);
+
+            DrawText($"Elapsed Time: {GetFrameTime() * 1000:F2} ms", 200, 220, 20, Color.Black);
 
             EndDrawing();
             //----------------------------------------------------------------------------------
@@ -55,7 +62,7 @@ public partial class FormatText
 
         // De-Initialization
         //--------------------------------------------------------------------------------------
-        CloseWindow();
+        CloseWindow();        // Close window and OpenGL context
         //--------------------------------------------------------------------------------------
 
         return 0;

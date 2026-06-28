@@ -68,6 +68,7 @@ public partial class LoadingGltf : IExample
             // Update
             UpdateCamera(ref _camera, CameraMode.Orbital);
 
+            // Select current animation
             if (IsKeyPressed(KeyboardKey.Right))
             {
                 _animIndex = (_animIndex + 1) % _animCount;

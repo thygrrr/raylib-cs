@@ -1,13 +1,17 @@
 /*******************************************************************************************
 *
-*   raylib [models] example - Plane rotations (yaw, pitch, roll)
+*   raylib [models] example - yaw pitch roll
 *
-*   This example has been created using raylib 1.8 (www.raylib.com)
-*   raylib is licensed under an unmodified zlib/libpng license (View raylib.h for details)
+*   Example complexity rating: [★★☆☆] 2/4
+*
+*   Example originally created with raylib 1.8, last time updated with raylib 4.0
 *
 *   Example contributed by Berni (@Berni8k) and reviewed by Ramon Santamaria (@raysan5)
 *
-*   Copyright (c) 2017-2021 Berni (@Berni8k) and Ramon Santamaria (@raysan5)
+*   Example licensed under an unmodified zlib/libpng license, which is an OSI-certified,
+*   BSD-like license that allows static linking with closed source software
+*
+*   Copyright (c) 2017-2025 Berni (@Berni8k) and Ramon Santamaria (@raysan5)
 *
 ********************************************************************************************/
 
@@ -26,19 +30,21 @@ public partial class YawPitchRoll
         const int screenWidth = 800;
         const int screenHeight = 450;
 
-        InitWindow(screenWidth, screenHeight, "raylib [models] example - plane rotations (yaw, pitch, roll)");
+        InitWindow(screenWidth, screenHeight, "raylib [models] example - yaw pitch roll");
 
         Camera3D camera = new();
-        camera.Position = new Vector3(0.0f, 50.0f, -120.0f);
-        camera.Target = new Vector3(0.0f, 0.0f, 0.0f);
-        camera.Up = new Vector3(0.0f, 1.0f, 0.0f);
-        camera.FovY = 30.0f;
-        camera.Projection = CameraProjection.Perspective;
+        camera.Position = new Vector3(0.0f, 50.0f, -120.0f);// Camera position perspective
+        camera.Target = new Vector3(0.0f, 0.0f, 0.0f);      // Camera looking at point
+        camera.Up = new Vector3(0.0f, 1.0f, 0.0f);          // Camera up vector (rotation towards target)
+        camera.FovY = 30.0f;                                // Camera field-of-view Y
+        camera.Projection = CameraProjection.Perspective;   // Camera type
 
-        // Model loading
-        Model model = LoadModel("resources/models/obj/plane.obj");
-        Texture2D texture = LoadTexture("resources/models/obj/plane_diffuse.png");
-        model.Materials[0].Maps[(int)MaterialMapIndex.Diffuse].Texture = texture;
+        Model model = LoadModel("resources/models/obj/plane.obj");                  // Load model
+        Texture2D texture = LoadTexture("resources/models/obj/plane_diffuse.png");  // Load model texture
+
+        SetTextureWrap(texture, TextureWrap.Repeat);        // Force Repeat to avoid issue on Web version
+
+        model.Materials[0].Maps[(int)MaterialMapIndex.Diffuse].Texture = texture;   // Set map diffuse texture
 
         float pitch = 0.0f;
         float roll = 0.0f;
@@ -52,7 +58,7 @@ public partial class YawPitchRoll
             // Update
             //----------------------------------------------------------------------------------
 
-            // Plane roll (x-axis) controls
+            // Plane pitch (x-axis) controls
             if (IsKeyDown(KeyboardKey.Down))
             {
                 pitch += 0.6f;
@@ -94,7 +100,7 @@ public partial class YawPitchRoll
                 }
             }
 
-            // Plane pitch (z-axis) controls
+            // Plane roll (z-axis) controls
             if (IsKeyDown(KeyboardKey.Left))
             {
                 roll += 1.0f;

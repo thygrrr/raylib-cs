@@ -1,20 +1,24 @@
 /*******************************************************************************************
 *
-*   raylib [text] example - Font loading
+*   raylib [text] example - font loading
 *
-*   raylib can load fonts from multiple file formats:
+*   Example complexity rating: [★☆☆☆] 1/4
+*
+*   NOTE: raylib can load fonts from multiple input file formats:
 *
 *     - TTF/OTF > Sprite font atlas is generated on loading, user can configure
 *                 some of the generation parameters (size, characters to include)
 *     - BMFonts > Angel code font fileformat, sprite font image must be provided
-*                 together with the .fnt file, font generation cna not be configured
+*                 together with the .fnt file, font generation can not be configured
 *     - XNA Spritefont > Sprite font image, following XNA Spritefont conventions,
 *                 Characters in image must follow some spacing and order rules
 *
-*   This example has been created using raylib 2.6 (www.raylib.com)
-*   raylib is licensed under an unmodified zlib/libpng license (View raylib.h for details)
+*   Example originally created with raylib 1.4, last time updated with raylib 3.0
 *
-*   Copyright (c) 2016-2019 Ramon Santamaria (@raysan5)
+*   Example licensed under an unmodified zlib/libpng license, which is an OSI-certified,
+*   BSD-like license that allows static linking with closed source software
+*
+*   Copyright (c) 2016-2025 Ramon Santamaria (@raysan5)
 *
 ********************************************************************************************/
 
@@ -36,24 +40,26 @@ public partial class FontLoading
 
         // Define characters to draw
         // NOTE: raylib supports UTF-8 encoding, following list is actually codified as UTF8 internally
-        string msg = "!\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHI\nJKLMNOPQRSTUVWXYZ[]^_`abcdefghijklmn\nopqrstuvwxyz{|}~¿ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓ\nÔÕÖ×ØÙÚÛÜÝÞßàáâãäåæçèéêëìíîïðñòóôõö÷\nøùúûüýþÿ";
+        string msg = "!#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHI\nJKLMNOPQRSTUVWXYZ[]^_`abcdefghijklmn\nopqrstuvwxyz{|}~¿ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓ\nÔÕÖ×ØÙÚÛÜÝÞßàáâãäåæçèéêëìíîïðñòóôõö÷\nøùúûüýþÿ";
 
         // NOTE: Textures/Fonts MUST be loaded after Window initialization (OpenGL context is required)
 
         // BMFont (AngelCode) : Font data and image atlas have been generated using external program
-        Font fontBm = LoadFont("resources/fonts/pixantiqua.fnt");
+        Font fontBm = LoadFont("resources/fonts/pixantiqua.fnt"); // Requires "resources/fonts/pixantiqua.png"
 
         // TTF font : Font data and atlas are generated directly from TTF
         // NOTE: We define a font base size of 32 pixels tall and up-to 250 characters
         Font fontTtf = LoadFontEx("resources/fonts/pixantiqua.ttf", 32, null, 250);
 
+        SetTextLineSpacing(16);         // Set line spacing for multiline text (when line breaks are included '\n')
+
         bool useTtf = false;
 
-        SetTargetFPS(60);
+        SetTargetFPS(60);               // Set our game to run at 60 frames-per-second
         //--------------------------------------------------------------------------------------
 
         // Main game loop
-        while (!WindowShouldClose())
+        while (!WindowShouldClose())    // Detect window close button or ESC key
         {
             // Update
             //----------------------------------------------------------------------------------
@@ -91,10 +97,10 @@ public partial class FontLoading
 
         // De-Initialization
         //--------------------------------------------------------------------------------------
-        UnloadFont(fontBm);
-        UnloadFont(fontTtf);
+        UnloadFont(fontBm);     // AngelCode Font unloading
+        UnloadFont(fontTtf);    // TTF Font unloading
 
-        CloseWindow();
+        CloseWindow();          // Close window and OpenGL context
         //--------------------------------------------------------------------------------------
 
         return 0;

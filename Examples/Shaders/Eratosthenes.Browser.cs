@@ -49,10 +49,6 @@ public partial class Eratosthenes : IExample
         {
             // Nothing to do here, everything is happening in the shader
 
-            BeginDrawing();
-            ClearBackground(Color.RayWhite);
-
-            // Enable drawing to texture
             BeginTextureMode(_target);
             ClearBackground(Color.Black);
 
@@ -61,9 +57,10 @@ public partial class Eratosthenes : IExample
             // so shader can not be applied here directly because input vertexTexCoord
             // do not represent full screen coordinates (space where want to apply shader)
             DrawRectangle(0, 0, GetScreenWidth(), GetScreenHeight(), Color.Black);
-
-            // End drawing to texture (now we have a blank texture available for the shader)
             EndTextureMode();
+
+            BeginDrawing();
+            ClearBackground(Color.RayWhite);
 
             BeginShaderMode(_shader);
             // NOTE: Render texture must be y-flipped due to default OpenGL coordinates (left-bottom)

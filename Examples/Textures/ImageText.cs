@@ -1,11 +1,15 @@
 /*******************************************************************************************
 *
-*   raylib [texture] example - Image text drawing using TTF generated spritefont
+*   raylib [textures] example - image text
 *
-*   This example has been created using raylib 1.8 (www.raylib.com)
-*   raylib is licensed under an unmodified zlib/libpng license (View raylib.h for details)
+*   Example complexity rating: [★★☆☆] 2/4
 *
-*   Copyright (c) 2017 Ramon Santamaria (@raysan5)
+*   Example originally created with raylib 1.8, last time updated with raylib 4.0
+*
+*   Example licensed under an unmodified zlib/libpng license, which is an OSI-certified,
+*   BSD-like license that allows static linking with closed source software
+*
+*   Copyright (c) 2017-2025 Ramon Santamaria (@raysan5)
 *
 ********************************************************************************************/
 
@@ -23,12 +27,12 @@ public partial class ImageText
         const int screenWidth = 800;
         const int screenHeight = 450;
 
-        InitWindow(screenWidth, screenHeight, "raylib [texture] example - image text drawing");
+        InitWindow(screenWidth, screenHeight, "raylib [textures] example - image text");
+
+        Image parrots = LoadImage("resources/parrots.png"); // Load image in CPU memory (RAM)
 
         // TTF Font loading with custom generation parameters
-        Font font = LoadFontEx("resources/fonts/KAISG.ttf", 64, null, 95);
-
-        Image parrots = LoadImage("resources/parrots.png");
+        Font font = LoadFontEx("resources/fonts/KAISG.ttf", 64, null, 0);
 
         // Draw over image using custom font
         ImageDrawTextEx(
@@ -38,12 +42,11 @@ public partial class ImageText
             new Vector2(20, 20),
             font.BaseSize,
             0,
-            Color.White
+            Color.Red
         );
 
-        // Image converted to texture, uploaded to GPU memory (VRAM)
-        Texture2D texture = LoadTextureFromImage(parrots);
-        UnloadImage(parrots);
+        Texture2D texture = LoadTextureFromImage(parrots);  // Image converted to texture, uploaded to GPU memory (VRAM)
+        UnloadImage(parrots);   // Once image has been converted to texture and uploaded to VRAM, it can be unloaded from RAM
 
         Vector2 position = new(
             screenWidth / 2 - texture.Width / 2,
@@ -56,7 +59,7 @@ public partial class ImageText
         //--------------------------------------------------------------------------------------
 
         // Main game loop
-        while (!WindowShouldClose())
+        while (!WindowShouldClose())    // Detect window close button or ESC key
         {
             // Update
             //----------------------------------------------------------------------------------
@@ -89,7 +92,7 @@ public partial class ImageText
                 DrawTexture(font.Texture, screenWidth / 2 - font.Texture.Width / 2, 50, Color.Black);
             }
 
-            DrawText("PRESS SPACE to SEE USED SPRITEFONT ", 290, 420, 10, Color.DarkGray);
+            DrawText("PRESS SPACE to SHOW FONT ATLAS USED", 290, 420, 10, Color.DarkGray);
 
             EndDrawing();
             //----------------------------------------------------------------------------------
@@ -97,10 +100,11 @@ public partial class ImageText
 
         // De-Initialization
         //--------------------------------------------------------------------------------------
-        UnloadTexture(texture);
-        UnloadFont(font);
+        UnloadTexture(texture);     // Texture unloading
 
-        CloseWindow();
+        UnloadFont(font);           // Unload custom font
+
+        CloseWindow();              // Close window and OpenGL context
         //--------------------------------------------------------------------------------------
 
         return 0;

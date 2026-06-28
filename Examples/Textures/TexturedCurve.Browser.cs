@@ -209,7 +209,7 @@ public partial class TexturedCurve : IExample
                 Vector2 normal = Vector2.Normalize(new Vector2(-delta.Y, delta.X));
 
                 // The v texture coordinate of the segment (add up the length of all the segments so far)
-                float v = previousV + delta.Length();
+                float v = previousV + delta.Length() / (_texRoad.Height * 2);
 
                 // Make sure the start point has a normal
                 if (!tangentSet)

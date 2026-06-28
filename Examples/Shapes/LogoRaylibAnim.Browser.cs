@@ -175,17 +175,17 @@ public partial class LogoRaylibAnim : IExample
             }
             else if (_state == 3)
             {
-                Color outlineFade = ColorAlpha(_outline, _alpha);
+                Color outlineFade = Fade(_outline, _alpha);
                 DrawRectangle(_logoPositionX, _logoPositionY, _topSideRecWidth, 16, outlineFade);
                 DrawRectangle(_logoPositionX, _logoPositionY + 16, 16, _leftSideRecHeight - 32, outlineFade);
 
                 DrawRectangle(_logoPositionX + 240, _logoPositionY + 16, 16, _rightSideRecHeight - 32, outlineFade);
                 DrawRectangle(_logoPositionX, _logoPositionY + 240, _bottomSideRecWidth, 16, outlineFade);
 
-                Color whiteFade = ColorAlpha(Color.RayWhite, _alpha);
+                Color whiteFade = Fade(Color.RayWhite, _alpha);
                 DrawRectangle(screenWidth / 2 - 112, screenHeight / 2 - 112, 224, 224, whiteFade);
 
-                Color label = ColorAlpha(new Color(155, 79, 151, 255), _alpha);
+                Color label = Fade(new Color(155, 79, 151, 255), _alpha);
                 string text = "raylib".SubText(0, _lettersCount);
                 DrawText(text, screenWidth / 2 - 44, screenHeight / 2 + 28, 50, label);
 

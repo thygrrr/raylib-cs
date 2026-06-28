@@ -46,7 +46,7 @@ public partial class FontFilters : IExample
             _font = LoadFontEx("resources/fonts/KAISG.ttf", 96, null, 0);
 
             // Generate mipmap levels to use trilinear filtering
-            // NOTE: On 2D drawing it won't be noticeable, it looks like TEXTURE_FILTER_BILINEAR
+            // NOTE: On 2D drawing it won't be noticeable, it looks like FILTER_BILINEAR
             GenTextureMipmaps(ref _font.Texture);
 
             _fontSize = _font.BaseSize;
@@ -103,14 +103,19 @@ public partial class FontFilters : IExample
 
             DrawTextEx(_font, Msg, _fontPosition, _fontSize, 0, Color.Black);
 
+            // TODO: It seems texSize measurement is not accurate due to chars offsets...
+            //DrawRectangleLines((int)_fontPosition.X, (int)_fontPosition.Y, (int)_textSize.X, (int)_textSize.Y, Color.Red);
+
             DrawRectangle(0, screenHeight - 80, screenWidth, 80, Color.LightGray);
+            DrawText($"Font size: {_fontSize:00.00}", 20, screenHeight - 50, 10, Color.DarkGray);
+            DrawText($"Text size: [{_textSize.X:00.00}, {_textSize.Y:00.00}]", 20, screenHeight - 30, 10, Color.DarkGray);
             DrawText("CURRENT TEXTURE FILTER:", 250, 400, 20, Color.Gray);
 
             if (_currentFontFilter == TextureFilter.Point)
             {
                 DrawText("POINT", 570, 400, 20, Color.Black);
             }
-            else if (_currentFontFilter == TextureFilter.Point)
+            else if (_currentFontFilter == TextureFilter.Bilinear)
             {
                 DrawText("BILINEAR", 570, 400, 20, Color.Black);
             }

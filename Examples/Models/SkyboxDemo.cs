@@ -1,14 +1,19 @@
 /*******************************************************************************************
 *
-*   raylib [models] example - Skybox loading and drawing
+*   raylib [models] example - skybox rendering
 *
-*   This example has been created using raylib 1.8 (www.raylib.com)
-*   raylib is licensed under an unmodified zlib/libpng license (View raylib.h for details)
+*   Example complexity rating: [★★☆☆] 2/4
 *
-*   Copyright (c) 2017 Ramon Santamaria (@raysan5)
+*   Example originally created with raylib 1.8, last time updated with raylib 4.0
+*
+*   Example licensed under an unmodified zlib/libpng license, which is an OSI-certified,
+*   BSD-like license that allows static linking with closed source software
+*
+*   Copyright (c) 2017-2025 Ramon Santamaria (@raysan5)
 *
 ********************************************************************************************/
 
+using System;
 using System.Numerics;
 using static Raylib_cs.Raylib;
 
@@ -16,6 +21,9 @@ namespace Examples.Models;
 
 public class SkyboxDemo
 {
+    // GLSL version used for shaders (330 desktop, 100 web/GLES)
+    public const int GlslVersion = 330;
+
     public static int Main()
     {
         // Initialization
@@ -23,7 +31,7 @@ public class SkyboxDemo
         const int screenWidth = 800;
         const int screenHeight = 450;
 
-        InitWindow(screenWidth, screenHeight, "raylib [models] example - skybox loading and drawing");
+        InitWindow(screenWidth, screenHeight, "raylib [models] example - skybox rendering");
 
         // Define the camera to look into our 3d world
         Camera3D camera = new();
@@ -37,11 +45,16 @@ public class SkyboxDemo
         Mesh cube = GenMeshCube(1.0f, 1.0f, 1.0f);
         Model skybox = LoadModelFromMesh(cube);
 
+        // Set this to true to use an HDR Texture
+        // NOTE: raylib must be built with HDR Support for this to work: SUPPORT_FILEFORMAT_HDR
         bool useHdr = false;
 
         // Load skybox shader and set required locations
         // NOTE: Some locations are automatically set at shader loading
-        Shader shdrSkybox = LoadShader("resources/shaders/glsl330/skybox.vs", "resources/shaders/glsl330/skybox.fs");
+        Shader shdrSkybox = LoadShader(
+            $"resources/shaders/glsl{GlslVersion}/skybox.vs",
+            $"resources/shaders/glsl{GlslVersion}/skybox.fs"
+        );
 
         Raylib.SetShaderValue(
             shdrSkybox,
@@ -68,8 +81,8 @@ public class SkyboxDemo
 
         // Load cubemap shader and setup required shader locations
         Shader shdrCubemap = LoadShader(
-            "resources/shaders/glsl330/cubemap.vs",
-            "resources/shaders/glsl330/cubemap.fs"
+            $"resources/shaders/glsl{GlslVersion}/cubemap.vs",
+            $"resources/shaders/glsl{GlslVersion}/cubemap.fs"
         );
         Raylib.SetShaderValue(
             shdrCubemap,
@@ -97,13 +110,15 @@ public class SkyboxDemo
         }
         else
         {
+            // TODO: WARNING: On PLATFORM_WEB it requires a big amount of memory to process input image
+            // and generate the required cubemap image to be passed to rlLoadTextureCubemap()
             Image img = LoadImage("resources/skybox.png");
             Texture2D cubemap = LoadTextureCubemap(img, CubemapLayout.AutoDetect);
             SetMaterialTexture(ref skybox, 0, MaterialMapIndex.Cubemap, ref cubemap);
             UnloadImage(img);
         }
 
-        DisableCursor();
+        DisableCursor();                    // Limit cursor to relative movement inside the window
 
         SetTargetFPS(60);
         //--------------------------------------------------------------------------------------
@@ -258,12 +273,12 @@ public class SkyboxDemo
         // Define view matrix for every side of the cubemap
         Matrix4x4[] fboViews = new[]
         {
-            Raymath.MatrixLookAt(Vector3.Zero, new Vector3(-1.0f,  0.0f,  0.0f), new Vector3( 0.0f, -1.0f,  0.0f)),
             Raymath.MatrixLookAt(Vector3.Zero, new Vector3( 1.0f,  0.0f,  0.0f), new Vector3( 0.0f, -1.0f,  0.0f)),
+            Raymath.MatrixLookAt(Vector3.Zero, new Vector3(-1.0f,  0.0f,  0.0f), new Vector3( 0.0f, -1.0f,  0.0f)),
             Raymath.MatrixLookAt(Vector3.Zero, new Vector3( 0.0f,  1.0f,  0.0f), new Vector3( 0.0f,  0.0f,  1.0f)),
             Raymath.MatrixLookAt(Vector3.Zero, new Vector3( 0.0f, -1.0f,  0.0f), new Vector3( 0.0f,  0.0f, -1.0f)),
-            Raymath.MatrixLookAt(Vector3.Zero, new Vector3( 0.0f,  0.0f, -1.0f), new Vector3( 0.0f, -1.0f,  0.0f)),
             Raymath.MatrixLookAt(Vector3.Zero, new Vector3( 0.0f,  0.0f,  1.0f), new Vector3( 0.0f, -1.0f,  0.0f)),
+            Raymath.MatrixLookAt(Vector3.Zero, new Vector3( 0.0f,  0.0f, -1.0f), new Vector3( 0.0f, -1.0f,  0.0f)),
         };
 
         // Set viewport to current fbo dimensions

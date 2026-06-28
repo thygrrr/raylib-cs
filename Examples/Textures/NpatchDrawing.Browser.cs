@@ -54,7 +54,7 @@ public partial class NpatchDrawing : IExample
             _dstRecH = new Rectangle(160.0f, 93.0f, 32.0f, 32.0f);
             _dstRecV = new Rectangle(92.0f, 160.0f, 32.0f, 32.0f);
 
-            // A 9-patch (NPT_9PATCH) changes its sizes in both axis
+            // A 9-patch (NPATCH_NINE_PATCH) changes its sizes in both axis
             _ninePatchInfo1 = new NPatchInfo
             {
                 Source = new Rectangle(0.0f, 0.0f, 64.0f, 64.0f),
@@ -74,7 +74,7 @@ public partial class NpatchDrawing : IExample
                 Layout = NPatchLayout.NinePatch
             };
 
-            // A horizontal 3-patch (NPT_3PATCH_HORIZONTAL) changes its sizes along the x axis only
+            // A horizontal 3-patch (NPATCH_THREE_PATCH_HORIZONTAL) changes its sizes along the x axis only
             _h3PatchInfo = new NPatchInfo
             {
                 Source = new Rectangle(0.0f, 64.0f, 64.0f, 64.0f),
@@ -85,7 +85,7 @@ public partial class NpatchDrawing : IExample
                 Layout = NPatchLayout.ThreePatchHorizontal
             };
 
-            // A vertical 3-patch (NPT_3PATCH_VERTICAL) changes its sizes along the y axis only
+            // A vertical 3-patch (NPATCH_THREE_PATCH_VERTICAL) changes its sizes along the y axis only
             _v3PatchInfo = new NPatchInfo
             {
                 Source = new Rectangle(0.0f, 192.0f, 64.0f, 64.0f),

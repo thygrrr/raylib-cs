@@ -45,11 +45,13 @@ public partial class WorldScreen : IExample
             _camera.Projection = CameraProjection.Perspective;
 
             _cubePosition = new Vector3(0.0f, 0.0f, 0.0f);
+
+            DisableCursor();
         }
 
         public void Update()
         {
-            UpdateCamera(ref _camera, CameraMode.Free);
+            UpdateCamera(ref _camera, CameraMode.ThirdPerson);
 
             // Calculate cube screen space position (with a little offset to be in top)
             _cubeScreenPosition = GetWorldToScreen(
@@ -70,19 +72,21 @@ public partial class WorldScreen : IExample
             EndMode3D();
 
             DrawText(
-                "Enemy: 100 / 100",
-                (int)_cubeScreenPosition.X - MeasureText("Enemy: 100 / 100", 20) / 2,
+                "Enemy: 100/100",
+                (int)_cubeScreenPosition.X - MeasureText("Enemy: 100/100", 20) / 2,
                 (int)_cubeScreenPosition.Y,
                 20,
                 Color.Black
             );
+
             DrawText(
-                "Text is always on top of the cube",
-                (screenWidth - MeasureText("Text is always on top of the cube", 20)) / 2,
-                25,
+                $"Cube position in screen space coordinates: [{(int)_cubeScreenPosition.X}, {(int)_cubeScreenPosition.Y}]",
+                10,
+                10,
                 20,
-                Color.Gray
+                Color.Lime
             );
+            DrawText("Text 2d should be always on top of the cube", 10, 40, 20, Color.Gray);
 
             EndDrawing();
         }

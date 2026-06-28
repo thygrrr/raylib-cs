@@ -74,6 +74,10 @@ public partial class Fog : IExample
                 ShaderUniformDataType.Vec4
             );
 
+            Vector4 fogColor = ColorNormalize(Color.Gray);
+            int fogColorLoc = GetShaderLocation(_shader, "fogColor");
+            SetShaderValue(_shader, fogColorLoc, fogColor, ShaderUniformDataType.Vec4);
+
             _fogDensity = 0.15f;
             _fogDensityLoc = GetShaderLocation(_shader, "fogDensity");
             SetShaderValue(_shader, _fogDensityLoc, _fogDensity, ShaderUniformDataType.Float);
@@ -141,7 +145,7 @@ public partial class Fog : IExample
             EndMode3D();
 
             DrawText(
-                $"Use up/down to change fog density [{_fogDensity:F2}]",
+                $"Use KEY_UP/KEY_DOWN to change fog density [{_fogDensity:F2}]",
                 10,
                 10,
                 20,

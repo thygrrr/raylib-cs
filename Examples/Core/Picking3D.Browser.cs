@@ -50,13 +50,30 @@ public partial class Picking3d : IExample
             _cubeSize = new Vector3(2.0f, 2.0f, 2.0f);
 
             // Picking line ray
-            _ray = new Ray(new Vector3(0.0f, 0.0f, 0.0f), Vector3.Zero);
+            _ray = new Ray();
+            // Ray collision hit info
             _collision = new RayCollision();
         }
 
         public void Update()
         {
-            UpdateCamera(ref _camera, CameraMode.Free);
+            if (IsCursorHidden())
+            {
+                UpdateCamera(ref _camera, CameraMode.FirstPerson);
+            }
+
+            // Toggle camera controls
+            if (IsMouseButtonPressed(MouseButton.Right))
+            {
+                if (IsCursorHidden())
+                {
+                    EnableCursor();
+                }
+                else
+                {
+                    DisableCursor();
+                }
+            }
 
             if (IsMouseButtonPressed(MouseButton.Left))
             {
@@ -75,8 +92,6 @@ public partial class Picking3d : IExample
                 {
                     _collision.Hit = false;
                 }
-
-                _ray = GetScreenToWorldRay(GetMousePosition(), _camera);
             }
 
             BeginDrawing();
@@ -102,13 +117,15 @@ public partial class Picking3d : IExample
 
             EndMode3D();
 
-            DrawText("Try selecting the box with mouse!", 240, 10, 20, Color.DarkGray);
+            DrawText("Try clicking on the box with your mouse!", 240, 10, 20, Color.DarkGray);
 
             if (_collision.Hit)
             {
                 int posX = (screenWidth - MeasureText("BOX SELECTED", 30)) / 2;
                 DrawText("BOX SELECTED", posX, (int)(screenHeight * 0.1f), 30, Color.Green);
             }
+
+            DrawText("Right click mouse to toggle camera controls", 10, 430, 10, Color.Gray);
 
             DrawFPS(10, 10);
 

@@ -40,10 +40,13 @@ public partial class FormatText : IExample
             BeginDrawing();
             ClearBackground(Color.RayWhite);
 
-            DrawText($"Score: {Score}", 200, 80, 20, Color.Red);
-            DrawText($"HiScore: {HiScore}", 200, 120, 20, Color.Green);
-            DrawText($"Lives: {Lives}", 200, 160, 40, Color.Blue);
-            DrawText($"Elapsed Time: {GetFrameTime() * 1000} ms", 200, 220, 20, Color.Black);
+            DrawText($"Score: {Score:D8}", 200, 80, 20, Color.Red);
+
+            DrawText($"HiScore: {HiScore:D8}", 200, 120, 20, Color.Green);
+
+            DrawText($"Lives: {Lives:D2}", 200, 160, 40, Color.Blue);
+
+            DrawText($"Elapsed Time: {GetFrameTime() * 1000:F2} ms", 200, 220, 20, Color.Black);
 
             EndDrawing();
         }

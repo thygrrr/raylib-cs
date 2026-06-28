@@ -53,7 +53,7 @@ public partial class WritingAnim : IExample
             DrawText(Message.Substring(0, count), 210, 160, 20, Color.Maroon);
 
             DrawText("PRESS [ENTER] to RESTART!", 240, 260, 20, Color.LightGray);
-            DrawText("PRESS [SPACE] to SPEED UP!", 239, 300, 20, Color.LightGray);
+            DrawText("HOLD [SPACE] to SPEED UP!", 239, 300, 20, Color.LightGray);
 
             EndDrawing();
         }

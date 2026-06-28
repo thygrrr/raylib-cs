@@ -32,8 +32,6 @@ public partial class BasicLighting : IExample
         private const int GLSL_VERSION = 100;
 
         private Camera3D _camera;
-        private Model _model;
-        private Model _cube;
         private Shader _shader;
         private Light[] _lights;
 
@@ -47,28 +45,21 @@ public partial class BasicLighting : IExample
             _camera.FovY = 45.0f;
             _camera.Projection = CameraProjection.Perspective;
 
-            // Load plane model from a generated mesh
-            _model = LoadModelFromMesh(GenMeshPlane(10.0f, 10.0f, 3, 3));
-            _cube = LoadModelFromMesh(GenMeshCube(2.0f, 4.0f, 2.0f));
-
+            // Load basic lighting shader
             _shader = LoadShader(
                 "resources/shaders/glsl100/lighting.vs",
                 "resources/shaders/glsl100/lighting.fs"
             );
 
-            // Get some required shader loactions
+            // Get some required shader locations
             _shader.Locs[(int)ShaderLocationIndex.VectorView] = GetShaderLocation(_shader, "viewPos");
 
-            // ambient light level
+            // Ambient light level (some basic lighting)
             int ambientLoc = GetShaderLocation(_shader, "ambient");
             float[] ambient = new[] { 0.1f, 0.1f, 0.1f, 1.0f };
             SetShaderValue(_shader, ambientLoc, ambient, ShaderUniformDataType.Vec4);
 
-            // Assign out lighting shader to model
-            _model.Materials[0].Shader = _shader;
-            _cube.Materials[0].Shader = _shader;
-
-            // Using 4 point lights: Color.gold, Color.red, Color.green and Color.blue
+            // Create lights
             _lights = new Light[4];
             _lights[0] = CreateLight(
                 0,
@@ -108,6 +99,15 @@ public partial class BasicLighting : IExample
         {
             UpdateCamera(ref _camera, CameraMode.Orbital);
 
+            // Update the shader with the camera view vector (points towards { 0.0f, 0.0f, 0.0f })
+            SetShaderValue(
+                _shader,
+                _shader.Locs[(int)ShaderLocationIndex.VectorView],
+                _camera.Position,
+                ShaderUniformDataType.Vec3
+            );
+
+            // Check key inputs to enable/disable lights
             if (IsKeyPressed(KeyboardKey.Y))
             {
                 _lights[0].Enabled = !_lights[0].Enabled;
@@ -126,62 +126,35 @@ public partial class BasicLighting : IExample
             }
 
             // Update light values (actually, only enable/disable them)
-            UpdateLightValues(_shader, _lights[0]);
-            UpdateLightValues(_shader, _lights[1]);
-            UpdateLightValues(_shader, _lights[2]);
-            UpdateLightValues(_shader, _lights[3]);
-
-            // Update the light shader with the camera view position
-            SetShaderValue(
-                _shader,
-                _shader.Locs[(int)ShaderLocationIndex.VectorView],
-                _camera.Position,
-                ShaderUniformDataType.Vec3
-            );
+            for (int i = 0; i < 4; i++)
+            {
+                UpdateLightValues(_shader, _lights[i]);
+            }
 
             BeginDrawing();
+
             ClearBackground(Color.RayWhite);
 
             BeginMode3D(_camera);
 
-            DrawModel(_model, Vector3.Zero, 1.0f, Color.White);
-            DrawModel(_cube, Vector3.Zero, 1.0f, Color.White);
+            BeginShaderMode(_shader);
 
-            // Draw markers to show where the lights are
-            if (_lights[0].Enabled)
-            {
-                DrawSphereEx(_lights[0].Position, 0.2f, 8, 8, Color.Yellow);
-            }
-            else
-            {
-                DrawSphereWires(_lights[0].Position, 0.2f, 8, 8, ColorAlpha(Color.Yellow, 0.3f));
-            }
+            DrawPlane(Vector3.Zero, new Vector2(10.0f, 10.0f), Color.White);
+            DrawCube(Vector3.Zero, 2.0f, 4.0f, 2.0f, Color.White);
 
-            if (_lights[1].Enabled)
-            {
-                DrawSphereEx(_lights[1].Position, 0.2f, 8, 8, Color.Red);
-            }
-            else
-            {
-                DrawSphereWires(_lights[1].Position, 0.2f, 8, 8, ColorAlpha(Color.Red, 0.3f));
-            }
+            EndShaderMode();
 
-            if (_lights[2].Enabled)
+            // Draw spheres to show where the lights are
+            for (int i = 0; i < 4; i++)
             {
-                DrawSphereEx(_lights[2].Position, 0.2f, 8, 8, Color.Green);
-            }
-            else
-            {
-                DrawSphereWires(_lights[2].Position, 0.2f, 8, 8, ColorAlpha(Color.Green, 0.3f));
-            }
-
-            if (_lights[3].Enabled)
-            {
-                DrawSphereEx(_lights[3].Position, 0.2f, 8, 8, Color.Blue);
-            }
-            else
-            {
-                DrawSphereWires(_lights[3].Position, 0.2f, 8, 8, ColorAlpha(Color.Blue, 0.3f));
+                if (_lights[i].Enabled)
+                {
+                    DrawSphereEx(_lights[i].Position, 0.2f, 8, 8, _lights[i].Color);
+                }
+                else
+                {
+                    DrawSphereWires(_lights[i].Position, 0.2f, 8, 8, ColorAlpha(_lights[i].Color, 0.3f));
+                }
             }
 
             DrawGrid(10, 1.0f);
@@ -189,6 +162,7 @@ public partial class BasicLighting : IExample
             EndMode3D();
 
             DrawFPS(10, 10);
+
             DrawText("Use keys [Y][R][G][B] to toggle lights", 10, 40, 20, Color.DarkGray);
 
             EndDrawing();
@@ -196,8 +170,6 @@ public partial class BasicLighting : IExample
 
         public void Unload()
         {
-            UnloadModel(_model);
-            UnloadModel(_cube);
             UnloadShader(_shader);
         }
 

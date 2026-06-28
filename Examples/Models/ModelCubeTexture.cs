@@ -1,13 +1,15 @@
 /*******************************************************************************************
 *
-*   raylib [models] example - Draw textured cube
+*   raylib [models] example - textured cube
+*
+*   Example complexity rating: [★★☆☆] 2/4
 *
 *   Example originally created with raylib 4.5, last time updated with raylib 4.5
 *
 *   Example licensed under an unmodified zlib/libpng license, which is an OSI-certified,
 *   BSD-like license that allows static linking with closed source software
 *
-*   Copyright (c) 2022-2023 Ramon Santamaria (@raysan5)
+*   Copyright (c) 2022-2025 Ramon Santamaria (@raysan5)
 *
 ********************************************************************************************/
 
@@ -25,7 +27,7 @@ public partial class ModelCubeTexture
         const int screenWidth = 800;
         const int screenHeight = 450;
 
-        InitWindow(screenWidth, screenHeight, "raylib [models] example - draw cube texture");
+        InitWindow(screenWidth, screenHeight, "raylib [models] example - textured cube");
 
         // Define the camera to look into our 3d world
         Camera3D camera;
@@ -46,6 +48,7 @@ public partial class ModelCubeTexture
         {
             // Update
             //----------------------------------------------------------------------------------
+            // TODO: Update your variables here
             //----------------------------------------------------------------------------------
 
             // Draw

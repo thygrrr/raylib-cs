@@ -1,11 +1,17 @@
 /*******************************************************************************************
 *
-*   raylib [textures] example - Draw part of the texture tiled
+*   raylib [textures] example - tiled drawing
 *
-*   This example has been created using raylib 3.0 (www.raylib.com)
-*   raylib is licensed under an unmodified zlib/libpng license (View raylib.h for details)
+*   Example complexity rating: [★★★☆] 3/4
 *
-*   Copyright (c) 2020 Vlad Adrian (@demizdor) and Ramon Santamaria (@raysan5)
+*   Example originally created with raylib 3.0, last time updated with raylib 4.2
+*
+*   Example contributed by Vlad Adrian (@demizdor) and reviewed by Ramon Santamaria (@raysan5)
+*
+*   Example licensed under an unmodified zlib/libpng license, which is an OSI-certified,
+*   BSD-like license that allows static linking with closed source software
+*
+*   Copyright (c) 2020-2025 Vlad Adrian (@demizdor) and Ramon Santamaria (@raysan5)
 *
 ********************************************************************************************/
 
@@ -27,14 +33,12 @@ public partial class DrawTiled
         int screenWidth = 800;
         int screenHeight = 450;
 
-        SetConfigFlags(ConfigFlags.ResizableWindow);
-        InitWindow(screenWidth, screenHeight, "raylib [textures] example - Draw part of a texture tiled");
+        SetConfigFlags(ConfigFlags.ResizableWindow); // Make the window resizable
+        InitWindow(screenWidth, screenHeight, "raylib [textures] example - tiled drawing");
 
         // NOTE: Textures MUST be loaded after Window initialization (OpenGL context is required)
         Texture2D texPattern = LoadTexture("resources/patterns.png");
-
-        // Makes the texture smoother when upscaled
-        SetTextureFilter(texPattern, TextureFilter.Trilinear);
+        SetTextureFilter(texPattern, TextureFilter.Bilinear); // Makes the texture smoother when upscaled
 
         // Coordinates for all patterns inside the texture
         Rectangle[] recPattern = new[] {
@@ -88,7 +92,7 @@ public partial class DrawTiled
         //---------------------------------------------------------------------------------------
 
         // Main game loop
-        while (!WindowShouldClose())
+        while (!WindowShouldClose())    // Detect window close button or ESC key
         {
             // Update
             //----------------------------------------------------------------------------------
@@ -127,9 +131,7 @@ public partial class DrawTiled
                 }
             }
 
-            // Handle keys
-
-            // Change scale
+            // Handle keys: change scale
             if (IsKeyPressed(KeyboardKey.Up))
             {
                 scale += 0.25f;
@@ -147,7 +149,7 @@ public partial class DrawTiled
                 scale = 0.25f;
             }
 
-            // Change rotation
+            // Handle keys: change rotation
             if (IsKeyPressed(KeyboardKey.Left))
             {
                 rotation -= 25.0f;
@@ -157,7 +159,7 @@ public partial class DrawTiled
                 rotation += 25.0f;
             }
 
-            // Reset
+            // Handle keys: reset
             if (IsKeyPressed(KeyboardKey.Space))
             {
                 rotation = 0.0f;
@@ -205,24 +207,24 @@ public partial class DrawTiled
             }
 
             DrawText("Scale (UP/DOWN to change)", 2 + MarginSize, 80 + 256 + MarginSize, 10, Color.Black);
-            DrawText($"{scale}x", 2 + MarginSize, 92 + 256 + MarginSize, 20, Color.Black);
+            DrawText($"{scale:F2}x", 2 + MarginSize, 92 + 256 + MarginSize, 20, Color.Black);
 
             DrawText("Rotation (LEFT/RIGHT to change)", 2 + MarginSize, 122 + 256 + MarginSize, 10, Color.Black);
-            DrawText($"{rotation} degrees", 2 + MarginSize, 134 + 256 + MarginSize, 20, Color.Black);
+            DrawText($"{rotation:F0} degrees", 2 + MarginSize, 134 + 256 + MarginSize, 20, Color.Black);
 
             DrawText("Press [SPACE] to reset", 2 + MarginSize, 164 + 256 + MarginSize, 10, Color.DarkBlue);
 
             // Draw FPS
-            DrawText($"{GetFPS()}", 2 + MarginSize, 2 + MarginSize, 20, Color.Black);
+            DrawText($"{GetFPS()} FPS", 2 + MarginSize, 2 + MarginSize, 20, Color.Black);
             EndDrawing();
             //----------------------------------------------------------------------------------
         }
 
         // De-Initialization
         //--------------------------------------------------------------------------------------
-        UnloadTexture(texPattern);
+        UnloadTexture(texPattern);  // Unload texture
 
-        CloseWindow();
+        CloseWindow();              // Close window and OpenGL context
         //--------------------------------------------------------------------------------------
 
         return 0;

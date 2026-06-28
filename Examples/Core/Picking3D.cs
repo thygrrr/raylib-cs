@@ -1,11 +1,15 @@
 /*******************************************************************************************
 *
-*   raylib [core] example - Picking in 3d mode
+*   raylib [core] example - 3d picking
 *
-*   This example has been created using raylib 1.3 (www.raylib.com)
-*   raylib is licensed under an unmodified zlib/libpng license (View raylib.h for details)
+*   Example complexity rating: [★★☆☆] 2/4
 *
-*   Copyright (c) 2015 Ramon Santamaria (@raysan5)
+*   Example originally created with raylib 1.3, last time updated with raylib 4.0
+*
+*   Example licensed under an unmodified zlib/libpng license, which is an OSI-certified,
+*   BSD-like license that allows static linking with closed source software
+*
+*   Copyright (c) 2015-2025 Ramon Santamaria (@raysan5)
 *
 ********************************************************************************************/
 
@@ -27,28 +31,43 @@ public partial class Picking3d
 
         // Define the camera to look into our 3d world
         Camera3D camera;
-        camera.Position = new Vector3(10.0f, 10.0f, 10.0f);
-        camera.Target = new Vector3(0.0f, 0.0f, 0.0f);
-        camera.Up = new Vector3(0.0f, 1.0f, 0.0f);
-        camera.FovY = 45.0f;
-        camera.Projection = CameraProjection.Perspective;
+        camera.Position = new Vector3(10.0f, 10.0f, 10.0f); // Camera position
+        camera.Target = new Vector3(0.0f, 0.0f, 0.0f);      // Camera looking at point
+        camera.Up = new Vector3(0.0f, 1.0f, 0.0f);          // Camera up vector (rotation towards target)
+        camera.FovY = 45.0f;                                // Camera field-of-view Y
+        camera.Projection = CameraProjection.Perspective;   // Camera projection type
 
         Vector3 cubePosition = new(0.0f, 1.0f, 0.0f);
         Vector3 cubeSize = new(2.0f, 2.0f, 2.0f);
 
-        // Picking line ray
-        Ray ray = new(new Vector3(0.0f, 0.0f, 0.0f), Vector3.Zero);
-        RayCollision collision = new();
+        Ray ray = new();                    // Picking line ray
+        RayCollision collision = new();     // Ray collision hit info
 
-        SetTargetFPS(60);
+        SetTargetFPS(60);                   // Set our game to run at 60 frames-per-second
         //--------------------------------------------------------------------------------------
 
         // Main game loop
-        while (!WindowShouldClose())
+        while (!WindowShouldClose())        // Detect window close button or ESC key
         {
             // Update
             //----------------------------------------------------------------------------------
-            UpdateCamera(ref camera, CameraMode.Free);
+            if (IsCursorHidden())
+            {
+                UpdateCamera(ref camera, CameraMode.FirstPerson);
+            }
+
+            // Toggle camera controls
+            if (IsMouseButtonPressed(MouseButton.Right))
+            {
+                if (IsCursorHidden())
+                {
+                    EnableCursor();
+                }
+                else
+                {
+                    DisableCursor();
+                }
+            }
 
             if (IsMouseButtonPressed(MouseButton.Left))
             {
@@ -67,8 +86,6 @@ public partial class Picking3d
                 {
                     collision.Hit = false;
                 }
-
-                ray = GetScreenToWorldRay(GetMousePosition(), camera);
             }
             //----------------------------------------------------------------------------------
 
@@ -97,13 +114,15 @@ public partial class Picking3d
 
             EndMode3D();
 
-            DrawText("Try selecting the box with mouse!", 240, 10, 20, Color.DarkGray);
+            DrawText("Try clicking on the box with your mouse!", 240, 10, 20, Color.DarkGray);
 
             if (collision.Hit)
             {
                 int posX = (screenWidth - MeasureText("BOX SELECTED", 30)) / 2;
                 DrawText("BOX SELECTED", posX, (int)(screenHeight * 0.1f), 30, Color.Green);
             }
+
+            DrawText("Right click mouse to toggle camera controls", 10, 430, 10, Color.Gray);
 
             DrawFPS(10, 10);
 
@@ -113,7 +132,7 @@ public partial class Picking3d
 
         // De-Initialization
         //--------------------------------------------------------------------------------------
-        CloseWindow();
+        CloseWindow();        // Close window and OpenGL context
         //--------------------------------------------------------------------------------------
 
         return 0;

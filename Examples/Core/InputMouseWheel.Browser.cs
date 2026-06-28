@@ -45,7 +45,7 @@ public partial class InputMouseWheel : IExample
             DrawRectangle(GetScreenWidth() / 2 - 40, _boxPositionY, 80, 80, Color.Maroon);
 
             DrawText("Use mouse wheel to move the cube up and down!", 10, 10, 20, Color.Gray);
-            DrawText($"Box position Y: {_boxPositionY}", 10, 40, 20, Color.LightGray);
+            DrawText($"Box position Y: {_boxPositionY:000}", 10, 40, 20, Color.LightGray);
 
             EndDrawing();
         }

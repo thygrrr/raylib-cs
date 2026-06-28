@@ -1,11 +1,15 @@
 /*******************************************************************************************
 *
-*   raylib [textures] example - Texture source and destination rectangles
+*   raylib [textures] example - srcrec dstrec
 *
-*   This example has been created using raylib 1.3 (www.raylib.com)
-*   raylib is licensed under an unmodified zlib/libpng license (View raylib.h for details)
+*   Example complexity rating: [★★★☆] 3/4
 *
-*   Copyright (c) 2015 Ramon Santamaria (@raysan5)
+*   Example originally created with raylib 1.3, last time updated with raylib 1.3
+*
+*   Example licensed under an unmodified zlib/libpng license, which is an OSI-certified,
+*   BSD-like license that allows static linking with closed source software
+*
+*   Copyright (c) 2015-2025 Ramon Santamaria (@raysan5)
 *
 ********************************************************************************************/
 
@@ -23,22 +27,22 @@ public partial class SrcRecDstRec
         const int screenWidth = 800;
         const int screenHeight = 450;
 
-        string title = "raylib [textures] examples - texture source and destination rectangles";
-        InitWindow(screenWidth, screenHeight, title);
+        InitWindow(screenWidth, screenHeight, "raylib [textures] example - srcrec dstrec");
 
         // NOTE: Textures MUST be loaded after Window initialization (OpenGL context is required)
-        Texture2D scarfy = LoadTexture("resources/scarfy.png");
+
+        Texture2D scarfy = LoadTexture("resources/scarfy.png");        // Texture loading
 
         int frameWidth = scarfy.Width / 6;
         int frameHeight = scarfy.Height;
 
-        // NOTE: Source rectangle (part of the texture to use for drawing)
+        // Source rectangle (part of the texture to use for drawing)
         Rectangle sourceRec = new(0, 0, frameWidth, frameHeight);
 
-        // NOTE: Destination rectangle (screen rectangle where drawing part of texture)
+        // Destination rectangle (screen rectangle where drawing part of texture)
         Rectangle destRec = new(screenWidth / 2, screenHeight / 2, frameWidth * 2, frameHeight * 2);
 
-        // NOTE: Origin of the texture (rotation/scale point), it's relative to destination rectangle size
+        // Origin of the texture (rotation/scale point), it's relative to destination rectangle size
         Vector2 origin = new(frameWidth, frameHeight);
 
         int rotation = 0;
@@ -47,7 +51,7 @@ public partial class SrcRecDstRec
         //--------------------------------------------------------------------------------------
 
         // Main game loop
-        while (!WindowShouldClose())
+        while (!WindowShouldClose())    // Detect window close button or ESC key
         {
             // Update
             //----------------------------------------------------------------------------------
@@ -77,9 +81,9 @@ public partial class SrcRecDstRec
 
         // De-Initialization
         //--------------------------------------------------------------------------------------
-        UnloadTexture(scarfy);
+        UnloadTexture(scarfy);        // Texture unloading
 
-        CloseWindow();
+        CloseWindow();                // Close window and OpenGL context
         //--------------------------------------------------------------------------------------
 
         return 0;

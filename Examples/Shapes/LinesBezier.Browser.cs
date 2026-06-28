@@ -30,31 +30,61 @@ public partial class LinesBezier : IExample
         private const int screenWidth = 800;
         private const int screenHeight = 450;
 
-        private Vector2 _start;
-        private Vector2 _end;
+        private Vector2 _startPoint;
+        private Vector2 _endPoint;
+        private bool _moveStartPoint;
+        private bool _moveEndPoint;
 
         public void Init()
         {
-            _start = new Vector2(0, 0);
-            _end = new Vector2(screenWidth, screenHeight);
+            _startPoint = new Vector2(30, 30);
+            _endPoint = new Vector2(screenWidth - 30, screenHeight - 30);
+            _moveStartPoint = false;
+            _moveEndPoint = false;
         }
 
         public void Update()
         {
-            if (IsMouseButtonDown(MouseButton.Left))
+            Vector2 mouse = GetMousePosition();
+
+            if (CheckCollisionPointCircle(mouse, _startPoint, 10.0f) && IsMouseButtonDown(MouseButton.Left))
             {
-                _start = GetMousePosition();
+                _moveStartPoint = true;
             }
-            else if (IsMouseButtonDown(MouseButton.Right))
+            else if (CheckCollisionPointCircle(mouse, _endPoint, 10.0f) && IsMouseButtonDown(MouseButton.Left))
             {
-                _end = GetMousePosition();
+                _moveEndPoint = true;
+            }
+
+            if (_moveStartPoint)
+            {
+                _startPoint = mouse;
+                if (IsMouseButtonReleased(MouseButton.Left))
+                {
+                    _moveStartPoint = false;
+                }
+            }
+
+            if (_moveEndPoint)
+            {
+                _endPoint = mouse;
+                if (IsMouseButtonReleased(MouseButton.Left))
+                {
+                    _moveEndPoint = false;
+                }
             }
 
             BeginDrawing();
             ClearBackground(Color.RayWhite);
 
-            DrawText("USE MOUSE LEFT-RIGHT CLICK to DEFINE LINE START and END POINTS", 15, 20, 20, Color.Gray);
-            DrawLineBezier(_start, _end, 2.0f, Color.Red);
+            DrawText("MOVE START-END POINTS WITH MOUSE", 15, 20, 20, Color.Gray);
+
+            // Draw line Cubic Bezier, in-out interpolation (easing), no control points
+            DrawLineBezier(_startPoint, _endPoint, 4.0f, Color.Blue);
+
+            // Draw start-end spline circles with some details
+            DrawCircleV(_startPoint, CheckCollisionPointCircle(mouse, _startPoint, 10.0f) ? 14.0f : 8.0f, _moveStartPoint ? Color.Red : Color.Blue);
+            DrawCircleV(_endPoint, CheckCollisionPointCircle(mouse, _endPoint, 10.0f) ? 14.0f : 8.0f, _moveEndPoint ? Color.Red : Color.Blue);
 
             EndDrawing();
         }

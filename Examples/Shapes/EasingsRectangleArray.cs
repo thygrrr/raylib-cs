@@ -1,14 +1,18 @@
 /*******************************************************************************************
 *
-*   raylib [shapes] example - easings rectangle array
+*   raylib [shapes] example - easings rectangles
+*
+*   Example complexity rating: [★★★☆] 3/4
 *
 *   NOTE: This example requires 'easings.h' library, provided on raylib/src. Just copy
-*   the library to same directory as example or make sure it's available on include path.
+*   the library to same directory as example or make sure it's available on include path
 *
-*   This example has been created using raylib 2.0 (www.raylib.com)
-*   raylib is licensed under an unmodified zlib/libpng license (View raylib.h for details)
+*   Example originally created with raylib 2.0, last time updated with raylib 2.5
 *
-*   Copyright (c) 2014-2019 Ramon Santamaria (@raysan5)
+*   Example licensed under an unmodified zlib/libpng license, which is an OSI-certified,
+*   BSD-like license that allows static linking with closed source software
+*
+*   Copyright (c) 2014-2025 Ramon Santamaria (@raysan5)
 *
 ********************************************************************************************/
 
@@ -35,7 +39,7 @@ public partial class EasingsRectangleArray
         const int screenWidth = 800;
         const int screenHeight = 450;
 
-        InitWindow(screenWidth, screenHeight, "raylib [shapes] example - easings rectangle array");
+        InitWindow(screenWidth, screenHeight, "raylib [shapes] example - easings rectangles");
 
         Rectangle[] recs = new Rectangle[MaxRecsX * MaxRecsY];
 
@@ -43,8 +47,8 @@ public partial class EasingsRectangleArray
         {
             for (int x = 0; x < MaxRecsX; x++)
             {
-                recs[y * MaxRecsX + x].X = RecsWidth / 2 + RecsWidth * x;
-                recs[y * MaxRecsX + x].Y = RecsHeight / 2 + RecsHeight * y;
+                recs[y * MaxRecsX + x].X = RecsWidth / 2.0f + RecsWidth * x;
+                recs[y * MaxRecsX + x].Y = RecsHeight / 2.0f + RecsHeight * y;
                 recs[y * MaxRecsX + x].Width = RecsWidth;
                 recs[y * MaxRecsX + x].Height = RecsHeight;
             }
@@ -52,15 +56,13 @@ public partial class EasingsRectangleArray
 
         float rotation = 0.0f;
         int framesCounter = 0;
+        int state = 0;                  // Rectangles animation state: 0-Playing, 1-Finished
 
-        // Rectangles animation state: 0-Playing, 1-Finished
-        int state = 0;
-
-        SetTargetFPS(60);
+        SetTargetFPS(60);                   // Set our game to run at 60 frames-per-second
         //--------------------------------------------------------------------------------------
 
         // Main game loop
-        while (!WindowShouldClose())
+        while (!WindowShouldClose())        // Detect window close button or ESC key
         {
             // Update
             //----------------------------------------------------------------------------------
@@ -133,7 +135,7 @@ public partial class EasingsRectangleArray
 
         // De-Initialization
         //--------------------------------------------------------------------------------------
-        CloseWindow();
+        CloseWindow();        // Close window and OpenGL context
         //--------------------------------------------------------------------------------------
 
         return 0;

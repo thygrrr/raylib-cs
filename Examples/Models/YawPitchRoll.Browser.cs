@@ -53,6 +53,10 @@ public partial class YawPitchRoll : IExample
             // Model loading
             _model = LoadModel("resources/models/obj/plane.obj");
             _texture = LoadTexture("resources/models/obj/plane_diffuse.png");
+
+            // Force Repeat to avoid issue on Web version
+            SetTextureWrap(_texture, TextureWrap.Repeat);
+
             _model.Materials[0].Maps[(int)MaterialMapIndex.Diffuse].Texture = _texture;
 
             _pitch = 0.0f;
@@ -64,7 +68,7 @@ public partial class YawPitchRoll : IExample
         {
             // Update
 
-            // Plane roll (x-axis) controls
+            // Plane pitch (x-axis) controls
             if (IsKeyDown(KeyboardKey.Down))
             {
                 _pitch += 0.6f;
@@ -106,7 +110,7 @@ public partial class YawPitchRoll : IExample
                 }
             }
 
-            // Plane pitch (z-axis) controls
+            // Plane roll (z-axis) controls
             if (IsKeyDown(KeyboardKey.Left))
             {
                 _roll += 1.0f;

@@ -2,10 +2,14 @@
 *
 *   raylib [textures] example - sprite button
 *
-*   This example has been created using raylib 2.5 (www.raylib.com)
-*   raylib is licensed under an unmodified zlib/libpng license (View raylib.h for details)
+*   Example complexity rating: [★★☆☆] 2/4
 *
-*   Copyright (c) 2019 Ramon Santamaria (@raysan5)
+*   Example originally created with raylib 2.5, last time updated with raylib 2.5
+*
+*   Example licensed under an unmodified zlib/libpng license, which is an OSI-certified,
+*   BSD-like license that allows static linking with closed source software
+*
+*   Copyright (c) 2019-2025 Ramon Santamaria (@raysan5)
 *
 ********************************************************************************************/
 
@@ -28,10 +32,10 @@ public partial class SpriteButton
 
         InitWindow(screenWidth, screenHeight, "raylib [textures] example - sprite button");
 
-        InitAudioDevice();
+        InitAudioDevice();      // Initialize audio device
 
-        Sound fxButton = LoadSound("resources/audio/buttonfx.wav");
-        Texture2D button = LoadTexture("resources/button.png");
+        Sound fxButton = LoadSound("resources/audio/buttonfx.wav");   // Load button sound
+        Texture2D button = LoadTexture("resources/button.png"); // Load button texture
 
         // Define frame rectangle for drawing
         int frameHeight = button.Height / NumFrames;
@@ -57,7 +61,7 @@ public partial class SpriteButton
         //--------------------------------------------------------------------------------------
 
         // Main game loop
-        while (!WindowShouldClose())
+        while (!WindowShouldClose())    // Detect window close button or ESC key
         {
             // Update
             //----------------------------------------------------------------------------------
@@ -101,8 +105,7 @@ public partial class SpriteButton
             BeginDrawing();
             ClearBackground(Color.RayWhite);
 
-            // Draw button frame
-            DrawTextureRec(button, sourceRec, new Vector2(btnBounds.X, btnBounds.Y), Color.White);
+            DrawTextureRec(button, sourceRec, new Vector2(btnBounds.X, btnBounds.Y), Color.White); // Draw button frame
 
             EndDrawing();
             //----------------------------------------------------------------------------------
@@ -110,11 +113,12 @@ public partial class SpriteButton
 
         // De-Initialization
         //--------------------------------------------------------------------------------------
-        UnloadTexture(button);
-        UnloadSound(fxButton);
+        UnloadTexture(button);  // Unload button texture
+        UnloadSound(fxButton);  // Unload sound
 
-        CloseAudioDevice();
-        CloseWindow();
+        CloseAudioDevice();     // Close audio device
+
+        CloseWindow();          // Close window and OpenGL context
         //--------------------------------------------------------------------------------------
 
         return 0;

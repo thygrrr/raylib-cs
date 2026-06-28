@@ -38,8 +38,9 @@ public partial class WriteDepth : IExample
 
         public void Init()
         {
-            // The shader inverts the depth buffer by writing into it by `gl_FragDepth = 1 - gl_FragCoord.z;`
-            _shader = LoadShader(null, $"resources/shaders/glsl{GLSL_VERSION}/write_depth.fs");
+            // Load depth writing shader
+            // NOTE: The shader inverts the depth buffer by writing into it by `gl_FragDepth = 1 - gl_FragCoord.z;`
+            _shader = LoadShader(null, $"resources/shaders/glsl{GLSL_VERSION}/depth_write.fs");
 
             // Use customized function to create writable depth texture buffer
             _target = LoadRenderTextureDepthTex(screenWidth, screenHeight);

@@ -2,10 +2,14 @@
 *
 *   raylib [shapes] example - collision area
 *
-*   This example has been created using raylib 2.5 (www.raylib.com)
-*   raylib is licensed under an unmodified zlib/libpng license (View raylib.h for details)
+*   Example complexity rating: [★★☆☆] 2/4
 *
-*   Copyright (c) 2013-2019 Ramon Santamaria (@raysan5)
+*   Example originally created with raylib 2.5, last time updated with raylib 2.5
+*
+*   Example licensed under an unmodified zlib/libpng license, which is an OSI-certified,
+*   BSD-like license that allows static linking with closed source software
+*
+*   Copyright (c) 2013-2025 Ramon Santamaria (@raysan5)
 *
 ********************************************************************************************/
 
@@ -25,24 +29,24 @@ public partial class CollisionArea
         InitWindow(screenWidth, screenHeight, "raylib [shapes] example - collision area");
 
         // Box A: Moving box
-        Rectangle boxA = new(10, GetScreenHeight() / 2 - 50, 200, 100);
+        Rectangle boxA = new(10, GetScreenHeight() / 2.0f - 50, 200, 100);
         int boxASpeedX = 4;
 
         // Box B: Mouse moved box
-        Rectangle boxB = new(GetScreenWidth() / 2 - 30, GetScreenHeight() / 2 - 30, 60, 60);
-        Rectangle boxCollision = new();
+        Rectangle boxB = new(GetScreenWidth() / 2.0f - 30, GetScreenHeight() / 2.0f - 30, 60, 60);
 
-        int screenUpperLimit = 40;
+        Rectangle boxCollision = new(); // Collision rectangle
 
-        // Movement pause
-        bool pause = false;
-        bool collision = false;
+        int screenUpperLimit = 40;      // Top menu limits
 
-        SetTargetFPS(60);
+        bool pause = false;             // Movement pause
+        bool collision = false;         // Collision detection
+
+        SetTargetFPS(60);               // Set our game to run at 60 frames-per-second
         //----------------------------------------------------------
 
         // Main game loop
-        while (!WindowShouldClose())
+        while (!WindowShouldClose())    // Detect window close button or ESC key
         {
             // Update
             //-----------------------------------------------------
@@ -122,6 +126,9 @@ public partial class CollisionArea
                 DrawText(text, GetScreenWidth() / 2 - 100, screenUpperLimit + 10, 20, Color.Black);
             }
 
+            // Draw help instructions
+            DrawText("Press SPACE to PAUSE/RESUME", 20, screenHeight - 35, 20, Color.LightGray);
+
             DrawFPS(10, 10);
 
             EndDrawing();
@@ -130,7 +137,7 @@ public partial class CollisionArea
 
         // De-Initialization
         //---------------------------------------------------------
-        CloseWindow();
+        CloseWindow();        // Close window and OpenGL context
         //----------------------------------------------------------
 
         return 0;

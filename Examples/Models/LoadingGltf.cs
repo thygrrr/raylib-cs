@@ -38,32 +38,34 @@ public partial class LoadingGltf
 
         // Define the camera to look into our 3d world
         Camera3D camera = new();
-        camera.Position = new Vector3(6.0f, 6.0f, 6.0f);
-        camera.Target = new Vector3(0.0f, 2.0f, 0.0f);
-        camera.Up = new Vector3(0.0f, 1.0f, 0.0f);
-        camera.FovY = 45.0f;
-        camera.Projection = CameraProjection.Perspective;
+        camera.Position = new Vector3(6.0f, 6.0f, 6.0f);    // Camera position
+        camera.Target = new Vector3(0.0f, 2.0f, 0.0f);      // Camera looking at point
+        camera.Up = new Vector3(0.0f, 1.0f, 0.0f);          // Camera up vector (rotation towards target)
+        camera.FovY = 45.0f;                                // Camera field-of-view Y
+        camera.Projection = CameraProjection.Perspective;   // Camera projection type
 
+        // Load model
         Model model = LoadModel("resources/models/gltf/robot.glb");
-        Vector3 position = new(0.0f, 0.0f, 0.0f);
+        Vector3 position = new(0.0f, 0.0f, 0.0f); // Set model world position
 
-        // Load animation data
+        // Load model animations
         var anims = LoadModelAnimations("resources/models/gltf/robot.glb");
 
         // Animation playing variables
-        int animIndex = 0;
-        float animCurrentFrame = 0.0f;
+        int animIndex = 0;          // Current animation playing
+        float animCurrentFrame = 0.0f;  // Current animation frame
 
-        SetTargetFPS(60);
+        SetTargetFPS(60);                   // Set our game to run at 60 frames-per-second
         //--------------------------------------------------------------------------------------
 
         // Main game loop
-        while (!WindowShouldClose())
+        while (!WindowShouldClose())        // Detect window close button or ESC key
         {
             // Update
             //----------------------------------------------------------------------------------
             UpdateCamera(ref camera, CameraMode.Orbital);
 
+            // Select current animation
             if (IsKeyPressed(KeyboardKey.Right))
             {
                 animIndex = (animIndex + 1) % anims.Length;
@@ -105,10 +107,10 @@ public partial class LoadingGltf
 
         // De-Initialization
         //--------------------------------------------------------------------------------------
-        UnloadModelAnimations(anims);
-        UnloadModel(model);
+        UnloadModelAnimations(anims); // Unload model animations data
+        UnloadModel(model);         // Unload model
 
-        CloseWindow();
+        CloseWindow();              // Close window and OpenGL context
         //--------------------------------------------------------------------------------------
 
         return 0;

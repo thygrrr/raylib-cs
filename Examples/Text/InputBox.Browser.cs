@@ -32,7 +32,7 @@ public partial class InputBox : IExample
         private const int screenWidth = 800;
         private const int screenHeight = 450;
 
-        // NOTE: One extra space required for line ending char '\0'
+        // NOTE: One extra space required for null terminator char '\0'
         private char[] _name;
         private int _letterCount;
 
@@ -43,7 +43,7 @@ public partial class InputBox : IExample
 
         public void Init()
         {
-            _name = new char[MaxInputChars];
+            _name = new char[MaxInputChars + 1];
             _letterCount = 0;
 
             _textBox = new(screenWidth / 2 - 100, 180, 225, 50);
@@ -68,20 +68,21 @@ public partial class InputBox : IExample
                 // Set the window's cursor to the I-Beam
                 SetMouseCursor(MouseCursor.IBeam);
 
-                // Check if more characters have been pressed on the same frame
+                // Get char pressed (unicode character) on the queue
                 int key = GetCharPressed();
 
+                // Check if more characters have been pressed on the same frame
                 while (key > 0)
                 {
                     // NOTE: Only allow keys in range [32..125]
                     if ((key >= 32) && (key <= 125) && (_letterCount < MaxInputChars))
                     {
                         _name[_letterCount] = (char)key;
+                        _name[_letterCount + 1] = '\0'; // Add null terminator at the end of the string
                         _letterCount++;
                     }
 
-                    // Check next character in the queue
-                    key = GetCharPressed();
+                    key = GetCharPressed();  // Check next character in the queue
                 }
 
                 if (IsKeyPressed(KeyboardKey.Backspace))

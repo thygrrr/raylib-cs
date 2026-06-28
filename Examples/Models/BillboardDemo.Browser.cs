@@ -29,26 +29,28 @@ public partial class BillboardDemo : IExample
 
         private Camera3D _camera;
 
-        // Our texture billboard
+        // Our billboard texture
         private Texture2D _bill;
 
-        // Position of billboard billboard
+        // Position of static / rotating billboard
         private Vector3 _billPositionStatic;
         private Vector3 _billPositionRotating;
 
-        // Entire billboard texture, source is used to take a segment from a larger texture.
+        // Entire billboard texture, source is used to take a segment from a larger texture
         private Rectangle _source;
 
         // NOTE: Billboard locked on axis-Y
         private Vector3 _billUp;
 
+        // Set the height of the rotating billboard to 1.0 with the aspect ratio fixed
+        private Vector2 _size;
+
         // Rotate around origin
         // Here we choose to rotate around the image center
-        // NOTE: (-1, 1) is the range where origin.X, origin.Y is inside the texture
-        private Vector2 _rotateOrigin;
+        private Vector2 _origin;
 
         // Distance is needed for the correct billboard draw order
-        // Larger distance (further away from the camera) should be drawn prior to smaller distance.
+        // Larger distance (further away from the camera) should be drawn prior to smaller distance
         private float _distanceStatic;
         private float _distanceRotating;
 
@@ -64,21 +66,24 @@ public partial class BillboardDemo : IExample
             _camera.FovY = 45.0f;
             _camera.Projection = CameraProjection.Perspective;
 
-            // Our texture billboard
+            // Our billboard texture
             _bill = LoadTexture("resources/billboard.png");
 
-            // Position of billboard billboard
+            // Position of static / rotating billboard
             _billPositionStatic = new(0.0f, 2.0f, 0.0f);
             _billPositionRotating = new(1.0f, 2.0f, 1.0f);
 
-            // Entire billboard texture, source is used to take a segment from a larger texture.
+            // Entire billboard texture, source is used to take a segment from a larger texture
             _source = new(0.0f, 0.0f, (float)_bill.Width, (float)_bill.Height);
 
             // NOTE: Billboard locked on axis-Y
             _billUp = new(0.0f, 1.0f, 0.0f);
 
+            // Set the height of the rotating billboard to 1.0 with the aspect ratio fixed
+            _size = new(_source.Width / _source.Height, 1.0f);
+
             // Rotate around origin
-            _rotateOrigin = Vector2.Zero;
+            _origin = _size * 0.5f;
 
             _distanceStatic = 0.0f;
             _distanceRotating = 0.0f;
@@ -106,31 +111,11 @@ public partial class BillboardDemo : IExample
             if (_distanceStatic > _distanceRotating)
             {
                 DrawBillboard(_camera, _bill, _billPositionStatic, 2.0f, Color.White);
-                DrawBillboardPro(
-                    _camera,
-                    _bill,
-                    _source,
-                    _billPositionRotating,
-                    _billUp,
-                    new Vector2(1.0f, 1.0f),
-                    _rotateOrigin,
-                    _rotation,
-                    Color.White
-                );
+                DrawBillboardPro(_camera, _bill, _source, _billPositionRotating, _billUp, _size, _origin, _rotation, Color.White);
             }
             else
             {
-                DrawBillboardPro(
-                    _camera,
-                    _bill,
-                    _source,
-                    _billPositionRotating,
-                    _billUp,
-                    new Vector2(1.0f, 1.0f),
-                    _rotateOrigin,
-                    _rotation,
-                    Color.White
-                );
+                DrawBillboardPro(_camera, _bill, _source, _billPositionRotating, _billUp, _size, _origin, _rotation, Color.White);
                 DrawBillboard(_camera, _bill, _billPositionStatic, 2.0f, Color.White);
             }
 

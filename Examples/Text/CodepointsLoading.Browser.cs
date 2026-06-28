@@ -60,6 +60,8 @@ partial class CodepointsLoading : IExample
             // Set bilinear scale filter for better font scaling
             SetTextureFilter(_font.Texture, TextureFilter.Bilinear);
 
+            SetTextLineSpacing(20);
+
             _showFontAtlas = false;
         }
 

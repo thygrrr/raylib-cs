@@ -42,7 +42,7 @@ public partial class TextureOutline : IExample
 
             _outlineSize = 2.0f;
 
-            // Normalized red color
+            // Normalized RED color
             float[] outlineColor = new[] { 1.0f, 0.0f, 0.0f, 1.0f };
             float[] textureSize = { (float)_texture.Width, (float)_texture.Height };
 
@@ -96,8 +96,8 @@ public partial class TextureOutline : IExample
             EndShaderMode();
 
             DrawText("Shader-based\ntexture\noutline", 10, 10, 20, Color.Gray);
-
-            DrawText($"Outline size: {_outlineSize} px", 10, 120, 20, Color.Maroon);
+            DrawText("Scroll mouse wheel to\nchange outline size", 10, 72, 20, Color.Gray);
+            DrawText($"Outline size: {(int)_outlineSize} px", 10, 120, 20, Color.Maroon);
 
             DrawFPS(710, 10);
 

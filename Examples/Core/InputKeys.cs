@@ -27,15 +27,15 @@ public partial class InputKeys
         const int screenWidth = 800;
         const int screenHeight = 450;
 
-        InitWindow(screenWidth, screenHeight, "raylib [core] example - keyboard input");
+        InitWindow(screenWidth, screenHeight, "raylib [core] example - input keys");
 
         Vector2 ballPosition = new((float)screenWidth / 2, (float)screenHeight / 2);
 
-        SetTargetFPS(60);       // Set target frames-per-second
+        SetTargetFPS(60);               // Set our game to run at 60 frames-per-second
         //--------------------------------------------------------------------------------------
 
         // Main game loop
-        while (!WindowShouldClose())
+        while (!WindowShouldClose())    // Detect window close button or ESC key
         {
             // Update
             //----------------------------------------------------------------------------------
@@ -75,7 +75,7 @@ public partial class InputKeys
 
         // De-Initialization
         //--------------------------------------------------------------------------------------
-        CloseWindow();
+        CloseWindow();        // Close window and OpenGL context
         //--------------------------------------------------------------------------------------
 
         return 0;

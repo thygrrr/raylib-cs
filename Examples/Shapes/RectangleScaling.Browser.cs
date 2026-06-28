@@ -54,8 +54,7 @@ public partial class RectangleScaling : IExample
                 MOUSE_SCALE_MARK_SIZE
             );
 
-            if (CheckCollisionPointRec(_mousePosition, _rec) &&
-                CheckCollisionPointRec(_mousePosition, area))
+            if (CheckCollisionPointRec(_mousePosition, area))
             {
                 _mouseScaleReady = true;
                 if (IsMouseButtonPressed(MouseButton.Left))
@@ -75,6 +74,7 @@ public partial class RectangleScaling : IExample
                 _rec.Width = (_mousePosition.X - _rec.X);
                 _rec.Height = (_mousePosition.Y - _rec.Y);
 
+                // Check minimum rec size
                 if (_rec.Width < MOUSE_SCALE_MARK_SIZE)
                 {
                     _rec.Width = MOUSE_SCALE_MARK_SIZE;
@@ -82,6 +82,16 @@ public partial class RectangleScaling : IExample
                 if (_rec.Height < MOUSE_SCALE_MARK_SIZE)
                 {
                     _rec.Height = MOUSE_SCALE_MARK_SIZE;
+                }
+
+                // Check maximum rec size
+                if (_rec.Width > (GetScreenWidth() - _rec.X))
+                {
+                    _rec.Width = GetScreenWidth() - _rec.X;
+                }
+                if (_rec.Height > (GetScreenHeight() - _rec.Y))
+                {
+                    _rec.Height = GetScreenHeight() - _rec.Y;
                 }
 
                 if (IsMouseButtonReleased(MouseButton.Left))
@@ -94,7 +104,7 @@ public partial class RectangleScaling : IExample
             ClearBackground(Color.RayWhite);
 
             DrawText("Scale rectangle dragging from bottom-right corner!", 10, 10, 20, Color.Gray);
-            DrawRectangleRec(_rec, ColorAlpha(Color.Green, 0.5f));
+            DrawRectangleRec(_rec, Fade(Color.Green, 0.5f));
 
             if (_mouseScaleReady)
             {

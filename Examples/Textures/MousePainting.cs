@@ -1,13 +1,17 @@
 /*******************************************************************************************
 *
-*   raylib [textures] example - Mouse painting
+*   raylib [textures] example - mouse painting
 *
-*   This example has been created using raylib 2.5 (www.raylib.com)
-*   raylib is licensed under an unmodified zlib/libpng license (View raylib.h for details)
+*   Example complexity rating: [★★★☆] 3/4
+*
+*   Example originally created with raylib 3.0, last time updated with raylib 3.0
 *
 *   Example contributed by Chris Dill (@MysteriousSpace) and reviewed by Ramon Santamaria (@raysan5)
 *
-*   Copyright (c) 2019 Chris Dill (@MysteriousSpace) and Ramon Santamaria (@raysan5)
+*   Example licensed under an unmodified zlib/libpng license, which is an OSI-certified,
+*   BSD-like license that allows static linking with closed source software
+*
+*   Copyright (c) 2019-2025 Chris Dill (@MysteriousSpace) and Ramon Santamaria (@raysan5)
 *
 ********************************************************************************************/
 
@@ -27,7 +31,7 @@ public partial class MousePainting
 
         InitWindow(screenWidth, screenHeight, "raylib [textures] example - mouse painting");
 
-        // Colours to choose from
+        // Colors to choose from
         Color[] colors = new Color[] {
                 Color.RayWhite,
                 Color.Yellow,
@@ -68,7 +72,8 @@ public partial class MousePainting
         int colorSelected = 0;
         int colorSelectedPrev = colorSelected;
         int colorMouseHover = 0;
-        int brushSize = 20;
+        float brushSize = 20.0f;
+        bool mouseWasPressed = false;
 
         Rectangle btnSaveRec = new(750, 10, 40, 30);
         bool btnSaveMouseHover = false;
@@ -87,7 +92,7 @@ public partial class MousePainting
         //--------------------------------------------------------------------------------------
 
         // Main game loop
-        while (!WindowShouldClose())
+        while (!WindowShouldClose())    // Detect window close button or ESC key
         {
             // Update
             //----------------------------------------------------------------------------------
@@ -133,7 +138,7 @@ public partial class MousePainting
             }
 
             // Change brush size
-            brushSize += (int)(GetMouseWheelMove() * 5);
+            brushSize += GetMouseWheelMove() * 5;
             if (brushSize < 2)
             {
                 brushSize = 2;
@@ -152,7 +157,7 @@ public partial class MousePainting
                 EndTextureMode();
             }
 
-            if (IsMouseButtonDown(MouseButton.Left))
+            if (IsMouseButtonDown(MouseButton.Left) || (GetGestureDetected() == Gesture.Drag))
             {
                 // Paint circle into render texture
                 // NOTE: To avoid discontinuous circles, we could store
@@ -165,9 +170,16 @@ public partial class MousePainting
 
                 EndTextureMode();
             }
-            else if (IsMouseButtonDown(MouseButton.Right))
+
+            if (IsMouseButtonDown(MouseButton.Right))
             {
-                colorSelected = 0;
+                if (!mouseWasPressed)
+                {
+                    colorSelectedPrev = colorSelected;
+                    colorSelected = 0;
+                }
+
+                mouseWasPressed = true;
 
                 // Erase circle from render texture
                 BeginTextureMode(target);
@@ -178,9 +190,10 @@ public partial class MousePainting
 
                 EndTextureMode();
             }
-            else
+            else if (IsMouseButtonReleased(MouseButton.Right) && mouseWasPressed)
             {
                 colorSelected = colorSelectedPrev;
+                mouseWasPressed = false;
             }
 
             // Check mouse hover save button
@@ -231,7 +244,7 @@ public partial class MousePainting
             {
                 if (IsMouseButtonDown(MouseButton.Right))
                 {
-                    DrawCircleLines((int)mousePos.X, (int)mousePos.Y, brushSize, colors[colorSelected]);
+                    DrawCircleLines((int)mousePos.X, (int)mousePos.Y, brushSize, Color.Gray);
                 }
                 else
                 {
@@ -253,7 +266,7 @@ public partial class MousePainting
 
             if (colorMouseHover >= 0)
             {
-                DrawRectangleRec(colorsRecs[colorMouseHover], ColorAlpha(Color.White, 0.6f));
+                DrawRectangleRec(colorsRecs[colorMouseHover], Fade(Color.White, 0.6f));
             }
 
             Rectangle rec = new(
@@ -271,9 +284,9 @@ public partial class MousePainting
             // Draw save image message
             if (showSaveMessage)
             {
-                DrawRectangle(0, 0, GetScreenWidth(), GetScreenHeight(), ColorAlpha(Color.RayWhite, 0.8f));
+                DrawRectangle(0, 0, GetScreenWidth(), GetScreenHeight(), Fade(Color.RayWhite, 0.8f));
                 DrawRectangle(0, 150, GetScreenWidth(), 80, Color.Black);
-                DrawText("IMAGE SAVED:  my_amazing_texture_painting.png", 150, 180, 20, Color.RayWhite);
+                DrawText("IMAGE SAVED!", 150, 180, 20, Color.RayWhite);
             }
 
             EndDrawing();
@@ -282,9 +295,9 @@ public partial class MousePainting
 
         // De-Initialization
         //--------------------------------------------------------------------------------------
-        UnloadRenderTexture(target);
+        UnloadRenderTexture(target);    // Unload render texture
 
-        CloseWindow();
+        CloseWindow();                  // Close window and OpenGL context
         //--------------------------------------------------------------------------------------
 
         return 0;

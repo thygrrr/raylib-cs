@@ -37,7 +37,7 @@ public partial class ImageText : IExample
         public void Init()
         {
             // TTF Font loading with custom generation parameters
-            _font = LoadFontEx("resources/fonts/KAISG.ttf", 64, null, 95);
+            _font = LoadFontEx("resources/fonts/KAISG.ttf", 64, null, 0);
 
             Image parrots = LoadImage("resources/parrots.png");
 
@@ -49,7 +49,7 @@ public partial class ImageText : IExample
                 new Vector2(20, 20),
                 _font.BaseSize,
                 0,
-                Color.White
+                Color.Red
             );
 
             // Image converted to texture, uploaded to GPU memory (VRAM)
@@ -83,7 +83,7 @@ public partial class ImageText : IExample
                 DrawTexture(_font.Texture, screenWidth / 2 - _font.Texture.Width / 2, 50, Color.Black);
             }
 
-            DrawText("PRESS SPACE to SEE USED SPRITEFONT ", 290, 420, 10, Color.DarkGray);
+            DrawText("PRESS SPACE to SHOW FONT ATLAS USED", 290, 420, 10, Color.DarkGray);
 
             EndDrawing();
         }

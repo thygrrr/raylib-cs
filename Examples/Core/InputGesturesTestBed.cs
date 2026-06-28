@@ -1,34 +1,30 @@
 /*******************************************************************************************
- *
- *   raylib [core] example - input gestures testbed
- *
- *   Example complexity rating: [★★★☆] 3/4
- *
- *   Example originally created with raylib 5.0, last time updated with raylib 6.0
- *
- *   Example contributed by ubkp (@ubkp) and reviewed by Ramon Santamaria (@raysan5)
- *
- *   Example licensed under an unmodified zlib/libpng license, which is an OSI-certified,
- *   BSD-like license that allows static linking with closed source software
- *
- *   Copyright (c) 2023-2025 ubkp (@ubkp)
- *
- ********************************************************************************************/
+*
+*   raylib [core] example - input gestures testbed
+*
+*   Example complexity rating: [★★★☆] 3/4
+*
+*   Example originally created with raylib 5.0, last time updated with raylib 6.0
+*
+*   Example contributed by ubkp (@ubkp) and reviewed by Ramon Santamaria (@raysan5)
+*
+*   Example licensed under an unmodified zlib/libpng license, which is an OSI-certified,
+*   BSD-like license that allows static linking with closed source software
+*
+*   Copyright (c) 2023-2025 ubkp (@ubkp)
+*
+********************************************************************************************/
 
+using System;
 using System.Numerics;
+using static Raylib_cs.Raylib;
 
 namespace Examples.Core;
-
-using static Raylib_cs.Raylib;
 
 public partial class InputGesturesTestBed
 {
     public const int GESTURE_LOG_SIZE = 20;
     public const int MAX_TOUCH_COUNT = 32;
-
-    //------------------------------------------------------------------------------------
-    // Program main entry point
-    //------------------------------------------------------------------------------------
 
     public static int Main()
     {
@@ -52,7 +48,7 @@ public partial class InputGesturesTestBed
         {
             gestureLog[i] = new string(new char[12]);
         }
-        ;
+
         // NOTE: The index for the inverted circular queue (moving from last to first direction, then looping around)
         int gestureLogIndex = GESTURE_LOG_SIZE;
         Gesture previousGesture = 0;
@@ -201,8 +197,7 @@ public partial class InputGesturesTestBed
             finalVector = new Vector2(
                 (angleLength * MathF.Sin(currentAngleRadians)) + protractorPosition.X,
                 (angleLength * MathF.Cos(currentAngleRadians)) + protractorPosition.Y
-            )
-            ;
+            );
 
             // Handle touch and mouse pointer points
             Vector2[] touchPosition = new Vector2[MAX_TOUCH_COUNT];
@@ -409,6 +404,7 @@ public partial class InputGesturesTestBed
         return 0;
     }
 
+    // Get text string for gesture value
     static string GetGestureName(int gesture)
     {
         switch (gesture)

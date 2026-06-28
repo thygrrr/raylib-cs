@@ -41,13 +41,15 @@ public partial class Camera3dFree : IExample
             _camera.Projection = CameraProjection.Perspective;
 
             _cubePosition = new Vector3(0.0f, 0.0f, 0.0f);
+
+            DisableCursor();
         }
 
         public void Update()
         {
             UpdateCamera(ref _camera, CameraMode.Free);
 
-            if (IsKeyDown(KeyboardKey.Z))
+            if (IsKeyPressed(KeyboardKey.Z))
             {
                 _camera.Target = new Vector3(0.0f, 0.0f, 0.0f);
             }
@@ -64,15 +66,13 @@ public partial class Camera3dFree : IExample
 
             EndMode3D();
 
-            DrawRectangle(10, 10, 320, 133, ColorAlpha(Color.SkyBlue, 0.5f));
-            DrawRectangleLines(10, 10, 320, 133, Color.Blue);
+            DrawRectangle(10, 10, 320, 93, Fade(Color.SkyBlue, 0.5f));
+            DrawRectangleLines(10, 10, 320, 93, Color.Blue);
 
             DrawText("Free camera default controls:", 20, 20, 10, Color.Black);
             DrawText("- Mouse Wheel to Zoom in-out", 40, 40, 10, Color.DarkGray);
             DrawText("- Mouse Wheel Pressed to Pan", 40, 60, 10, Color.DarkGray);
-            DrawText("- Alt + Mouse Wheel Pressed to Rotate", 40, 80, 10, Color.DarkGray);
-            DrawText("- Alt + Ctrl + Mouse Wheel Pressed for Smooth Zoom", 40, 100, 10, Color.DarkGray);
-            DrawText("- Z to zoom to (0, 0, 0)", 40, 120, 10, Color.DarkGray);
+            DrawText("- Z to zoom to (0, 0, 0)", 40, 80, 10, Color.DarkGray);
 
             EndDrawing();
         }

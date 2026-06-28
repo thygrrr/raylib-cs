@@ -50,23 +50,23 @@ public partial class HybridRender : IExample
 
         public void Init()
         {
-            // This shader calculates pixel depth and color using raymarch
+            // This Shader calculates pixel depth and color using raymarch
             _shdrRaymarch = LoadShader(null, $"resources/shaders/glsl{GLSL_VERSION}/hybrid_raymarch.fs");
 
             // This Shader is a standard rasterization fragment shader with the addition of depth writing
             // You are required to write depth for all shaders if one shader does it
             _shdrRaster = LoadShader(null, $"resources/shaders/glsl{GLSL_VERSION}/hybrid_raster.fs");
 
-            // Declare struct used to store camera locs
+            // Declare Struct used to store camera locs
             _marchLocs = new();
 
-            // Fill the struct with shader locs.
+            // Fill the struct with shader locs
             _marchLocs.CamPos = GetShaderLocation(_shdrRaymarch, "camPos");
             _marchLocs.CamDir = GetShaderLocation(_shdrRaymarch, "camDir");
             _marchLocs.ScreenCenter = GetShaderLocation(_shdrRaymarch, "screenCenter");
 
-            // Transfer screenCenter position to shader. Which is used to calculate ray direction.
-            Vector2 screenCenter = new(screenWidth / 2, screenHeight / 2);
+            // Transfer screenCenter position to shader. Which is used to calculate ray direction
+            Vector2 screenCenter = new(screenWidth / 2.0f, screenHeight / 2.0f);
             SetShaderValue(
                 _shdrRaymarch,
                 _marchLocs.ScreenCenter,
@@ -74,7 +74,7 @@ public partial class HybridRender : IExample
                 ShaderUniformDataType.Vec2
             );
 
-            // Use customized function to create writable depth texture buffer
+            // Use Customized function to create writable depth texture buffer
             _target = LoadRenderTextureDepthTex(screenWidth, screenHeight);
 
             // Define the camera to look into our 3d world
@@ -85,7 +85,7 @@ public partial class HybridRender : IExample
             _camera.FovY = 45.0f;
             _camera.Projection = CameraProjection.Perspective;
 
-            // Camera FOV is pre-calculated in the camera Distance.
+            // Camera FOV is pre-calculated in the camera distance
             _camDist = 1.0f / (MathF.Tan(_camera.FovY * 0.5f * DEG2RAD));
         }
 
@@ -93,7 +93,7 @@ public partial class HybridRender : IExample
         {
             UpdateCamera(ref _camera, CameraMode.Orbital);
 
-            // Update Camera Postion in the ray march shader.
+            // Update Camera Postion in the ray march shader
             SetShaderValue(
                 _shdrRaymarch,
                 _marchLocs.CamPos,
@@ -101,7 +101,7 @@ public partial class HybridRender : IExample
                 ShaderUniformDataType.Vec3
             );
 
-            // Update Camera Looking Vector. Vector length determines FOV.
+            // Update Camera Looking Vector. Vector length determines FOV
             Vector3 camDir = Vector3.Normalize(_camera.Target - _camera.Position) * _camDist;
             SetShaderValue(_shdrRaymarch, _marchLocs.CamDir, camDir, ShaderUniformDataType.Vec3);
 

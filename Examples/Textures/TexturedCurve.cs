@@ -1,3 +1,20 @@
+/*******************************************************************************************
+*
+*   raylib [textures] example - textured curve
+*
+*   Example complexity rating: [★★★☆] 3/4
+*
+*   Example originally created with raylib 4.5, last time updated with raylib 4.5
+*
+*   Example contributed by Jeffery Myers (@JeffM2501) and reviewed by Ramon Santamaria (@raysan5)
+*
+*   Example licensed under an unmodified zlib/libpng license, which is an OSI-certified,
+*   BSD-like license that allows static linking with closed source software
+*
+*   Copyright (c) 2022-2025 Jeffery Myers (@JeffM2501) and Ramon Santamaria (@raysan5)
+*
+********************************************************************************************/
+
 using System;
 using System.Numerics;
 using static Raylib_cs.Raylib;
@@ -35,7 +52,7 @@ public unsafe partial class TexturedCurve
         const int screenHeight = 450;
 
         SetConfigFlags(ConfigFlags.VSyncHint | ConfigFlags.Msaa4xHint);
-        InitWindow(screenWidth, screenHeight, "raylib [textures] examples - textured curve");
+        InitWindow(screenWidth, screenHeight, "raylib [textures] example - textured curve");
 
         // Load the road texture
         texRoad = LoadTexture("resources/road.png");
@@ -201,8 +218,8 @@ public unsafe partial class TexturedCurve
             // The right hand normal to the delta vector
             Vector2 normal = Vector2.Normalize(new Vector2(-delta.Y, delta.X));
 
-            // The v teXture coordinate of the segment (add up the length of all the segments so far)
-            float v = previousV + delta.Length();
+            // The v texture coordinate of the segment (add up the length of all the segments so far)
+            float v = previousV + delta.Length() / (texRoad.Height * 2);
 
             // Make sure the start point has a normal
             if (!tangentSet)
@@ -211,7 +228,7 @@ public unsafe partial class TexturedCurve
                 tangentSet = true;
             }
 
-            // EXtend out the normals from the previous and current points to get the quad for this segment
+            // Extend out the normals from the previous and current points to get the quad for this segment
             Vector2 prevPosNormal = previous + (previousTangent * curveWidth);
             Vector2 prevNegNormal = previous + (previousTangent * -curveWidth);
 
@@ -239,7 +256,7 @@ public unsafe partial class TexturedCurve
 
             Rlgl.End();
 
-            // The current step is the start of the neXt step
+            // The current step is the start of the next step
             previous = current;
             previousTangent = normal;
             previousV = v;
@@ -253,7 +270,7 @@ public unsafe partial class TexturedCurve
             showCurve = !showCurve;
         }
 
-        // Update with
+        // Update width
         if (IsKeyPressed(KeyboardKey.Equal))
         {
             curveWidth += 2;

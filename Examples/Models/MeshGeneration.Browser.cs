@@ -36,14 +36,14 @@ public partial class MeshGeneration : IExample
 
         public void Init()
         {
-            // We generate a isChecked image for texturing
+            // We generate a checked image for texturing
             Image isChecked = GenImageChecked(2, 2, 1, 1, Color.Red, Color.Green);
             _texture = LoadTextureFromImage(isChecked);
             UnloadImage(isChecked);
 
             _models = new Model[9];
 
-            _models[0] = LoadModelFromMesh(GenMeshPlane(2, 2, 5, 5));
+            _models[0] = LoadModelFromMesh(GenMeshPlane(2, 2, 4, 3));
             _models[1] = LoadModelFromMesh(GenMeshCube(2.0f, 1.0f, 2.0f));
             _models[2] = LoadModelFromMesh(GenMeshSphere(2, 32, 32));
             _models[3] = LoadModelFromMesh(GenMeshHemiSphere(2, 16, 16));
@@ -53,7 +53,9 @@ public partial class MeshGeneration : IExample
             _models[7] = LoadModelFromMesh(GenMeshPoly(5, 2.0f));
             _models[8] = LoadModelFromMesh(GenMeshCustom());
 
-            // Set isChecked texture as default diffuse component for all models material
+            // NOTE: Generated meshes could be exported using ExportMesh()
+
+            // Set checked texture as default diffuse component for all models material
             for (int i = 0; i < _models.Length; i++)
             {
                 // Set map diffuse texture
@@ -81,8 +83,24 @@ public partial class MeshGeneration : IExample
 
             if (IsMouseButtonPressed(MouseButton.Left))
             {
-                // Cycle between the textures
-                _currentModel = (_currentModel + 1) % _models.Length;
+                _currentModel = (_currentModel + 1) % _models.Length; // Cycle between the textures
+            }
+
+            if (IsKeyPressed(KeyboardKey.Right))
+            {
+                _currentModel++;
+                if (_currentModel >= _models.Length)
+                {
+                    _currentModel = 0;
+                }
+            }
+            else if (IsKeyPressed(KeyboardKey.Left))
+            {
+                _currentModel--;
+                if (_currentModel < 0)
+                {
+                    _currentModel = _models.Length - 1;
+                }
             }
 
             // Draw
@@ -92,13 +110,12 @@ public partial class MeshGeneration : IExample
             BeginMode3D(_camera);
 
             DrawModel(_models[_currentModel], _position, 1.0f, Color.White);
-
             DrawGrid(10, 1.0f);
 
             EndMode3D();
 
-            DrawRectangle(30, 400, 310, 30, ColorAlpha(Color.SkyBlue, 0.5f));
-            DrawRectangleLines(30, 400, 310, 30, ColorAlpha(Color.DarkBlue, 0.5f));
+            DrawRectangle(30, 400, 310, 30, Fade(Color.SkyBlue, 0.5f));
+            DrawRectangleLines(30, 400, 310, 30, Fade(Color.DarkBlue, 0.5f));
             DrawText("MOUSE LEFT BUTTON to CYCLE PROCEDURAL MODELS", 40, 410, 10, Color.Blue);
 
             switch (_currentModel)
@@ -128,7 +145,7 @@ public partial class MeshGeneration : IExample
                     DrawText("POLY", 680, 10, 20, Color.DarkBlue);
                     break;
                 case 8:
-                    DrawText("Custom (triagnle)", 580, 10, 20, Color.DarkBlue);
+                    DrawText("Custom (triangle)", 580, 10, 20, Color.DarkBlue);
                     break;
                 default:
                     break;
@@ -139,6 +156,8 @@ public partial class MeshGeneration : IExample
 
         public void Unload()
         {
+            UnloadTexture(_texture);
+
             for (int i = 0; i < _models.Length; i++)
             {
                 UnloadModel(_models[i]);

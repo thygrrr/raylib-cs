@@ -64,7 +64,7 @@ public partial class Camera2dDemo : IExample
 
             _camera = new Camera2D();
             _camera.Target = new Vector2(_player.X + 20, _player.Y + 20);
-            _camera.Offset = new Vector2(screenWidth / 2, screenHeight / 2);
+            _camera.Offset = new Vector2(screenWidth / 2.0f, screenHeight / 2.0f);
             _camera.Rotation = 0.0f;
             _camera.Zoom = 1.0f;
         }
@@ -81,10 +81,10 @@ public partial class Camera2dDemo : IExample
                 _player.X -= 2;
             }
 
-            // Camera3D target follows player
+            // Camera target follows player
             _camera.Target = new Vector2(_player.X + 20, _player.Y + 20);
 
-            // Camera3D rotation controls
+            // Camera rotation controls
             if (IsKeyDown(KeyboardKey.A))
             {
                 _camera.Rotation--;
@@ -104,8 +104,9 @@ public partial class Camera2dDemo : IExample
                 _camera.Rotation = -40;
             }
 
-            // Camera3D zoom controls
-            _camera.Zoom += ((float)GetMouseWheelMove() * 0.05f);
+            // Camera zoom controls
+            // Uses log scaling to provide consistent zoom speed
+            _camera.Zoom = MathF.Exp(MathF.Log(_camera.Zoom) + ((float)GetMouseWheelMove() * 0.1f));
 
             if (_camera.Zoom > 3.0f)
             {
@@ -116,7 +117,7 @@ public partial class Camera2dDemo : IExample
                 _camera.Zoom = 0.1f;
             }
 
-            // Camera3D reset (zoom and rotation)
+            // Camera reset (zoom and rotation)
             if (IsKeyPressed(KeyboardKey.R))
             {
                 _camera.Zoom = 1.0f;
@@ -137,29 +138,23 @@ public partial class Camera2dDemo : IExample
 
             DrawRectangleRec(_player, Color.Red);
 
-            DrawRectangle((int)_camera.Target.X, -500, 1, (int)(screenHeight * 4), Color.Green);
-            DrawLine(
-                (int)(-screenWidth * 10),
-                (int)_camera.Target.Y,
-                (int)(screenWidth * 10),
-                (int)_camera.Target.Y,
-                Color.Green
-            );
+            DrawLine((int)_camera.Target.X, -screenHeight * 10, (int)_camera.Target.X, screenHeight * 10, Color.Green);
+            DrawLine(-screenWidth * 10, (int)_camera.Target.Y, screenWidth * 10, (int)_camera.Target.Y, Color.Green);
 
             EndMode2D();
 
             DrawText("SCREEN AREA", 640, 10, 20, Color.Red);
 
-            DrawRectangle(0, 0, (int)screenWidth, 5, Color.Red);
-            DrawRectangle(0, 5, 5, (int)screenHeight - 10, Color.Red);
-            DrawRectangle((int)screenWidth - 5, 5, 5, (int)screenHeight - 10, Color.Red);
-            DrawRectangle(0, (int)screenHeight - 5, (int)screenWidth, 5, Color.Red);
+            DrawRectangle(0, 0, screenWidth, 5, Color.Red);
+            DrawRectangle(0, 5, 5, screenHeight - 10, Color.Red);
+            DrawRectangle(screenWidth - 5, 5, 5, screenHeight - 10, Color.Red);
+            DrawRectangle(0, screenHeight - 5, screenWidth, 5, Color.Red);
 
-            DrawRectangle(10, 10, 250, 113, ColorAlpha(Color.SkyBlue, 0.5f));
+            DrawRectangle(10, 10, 250, 113, Fade(Color.SkyBlue, 0.5f));
             DrawRectangleLines(10, 10, 250, 113, Color.Blue);
 
-            DrawText("Free 2d camera controls:", 20, 20, 10, Color.Black);
-            DrawText("- Right/Left to move Offset", 40, 40, 10, Color.DarkGray);
+            DrawText("Free 2D camera controls:", 20, 20, 10, Color.Black);
+            DrawText("- Right/Left to move player", 40, 40, 10, Color.DarkGray);
             DrawText("- Mouse Wheel to Zoom in-out", 40, 60, 10, Color.DarkGray);
             DrawText("- A / S to Rotate", 40, 80, 10, Color.DarkGray);
             DrawText("- R to reset Zoom and Rotation", 40, 100, 10, Color.DarkGray);

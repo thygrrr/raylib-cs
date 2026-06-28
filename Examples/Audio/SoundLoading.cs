@@ -1,13 +1,15 @@
 /*******************************************************************************************
 *
-*   raylib [audio] example - Sound loading and playing
+*   raylib [audio] example - sound loading
 *
-*   NOTE: This example requires OpenAL Soft library installed
+*   Example complexity rating: [★☆☆☆] 1/4
 *
-*   This example has been created using raylib 1.0 (www.raylib.com)
-*   raylib is licensed under an unmodified zlib/libpng license (View raylib.h for details)
+*   Example originally created with raylib 1.1, last time updated with raylib 3.5
 *
-*   Copyright (c) 2014 Ramon Santamaria (@raysan5)
+*   Example licensed under an unmodified zlib/libpng license, which is an OSI-certified,
+*   BSD-like license that allows static linking with closed source software
+*
+*   Copyright (c) 2014-2025 Ramon Santamaria (@raysan5)
 *
 ********************************************************************************************/
 
@@ -24,28 +26,29 @@ public partial class SoundLoading
         const int screenWidth = 800;
         const int screenHeight = 450;
 
-        InitWindow(screenWidth, screenHeight, "raylib [audio] example - sound loading and playing");
-        InitAudioDevice();
+        InitWindow(screenWidth, screenHeight, "raylib [audio] example - sound loading");
 
-        Sound fxWav = LoadSound("resources/audio/sound.wav");
-        Sound fxOgg = LoadSound("resources/audio/target.ogg");
+        InitAudioDevice();      // Initialize audio device
 
-        SetTargetFPS(60);
+        Sound fxWav = LoadSound("resources/audio/sound.wav");         // Load WAV audio file
+        Sound fxOgg = LoadSound("resources/audio/target.ogg");        // Load OGG audio file
+
+        SetTargetFPS(60);               // Set our game to run at 60 frames-per-second
         //--------------------------------------------------------------------------------------
 
         // Main game loop
-        while (!WindowShouldClose())
+        while (!WindowShouldClose())    // Detect window close button or ESC key
         {
             // Update
             //----------------------------------------------------------------------------------
             if (IsKeyPressed(KeyboardKey.Space))
             {
-                PlaySound(fxWav);
+                PlaySound(fxWav);      // Play WAV sound
             }
 
             if (IsKeyPressed(KeyboardKey.Enter))
             {
-                PlaySound(fxOgg);
+                PlaySound(fxOgg);      // Play OGG sound
             }
             //----------------------------------------------------------------------------------
 
@@ -63,12 +66,12 @@ public partial class SoundLoading
 
         // De-Initialization
         //--------------------------------------------------------------------------------------
-        UnloadSound(fxWav);
-        UnloadSound(fxOgg);
+        UnloadSound(fxWav);     // Unload sound data
+        UnloadSound(fxOgg);     // Unload sound data
 
-        CloseAudioDevice();
+        CloseAudioDevice();     // Close audio device
 
-        CloseWindow();
+        CloseWindow();          // Close window and OpenGL context
         //--------------------------------------------------------------------------------------
 
         return 0;

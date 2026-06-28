@@ -45,9 +45,9 @@ public partial class FontSpritefont : IExample
         public void Init()
         {
             // NOTE: Textures/Fonts MUST be loaded after Window initialization (OpenGL context is required)
-            _font1 = LoadFont("resources/fonts/custom_mecha.png");
-            _font2 = LoadFont("resources/fonts/custom_alagard.png");
-            _font3 = LoadFont("resources/fonts/custom_jupiter_crash.png");
+            _font1 = LoadFont("resources/custom_mecha.png");
+            _font2 = LoadFont("resources/custom_alagard.png");
+            _font3 = LoadFont("resources/custom_jupiter_crash.png");
 
             _fontPosition1 = new(
                 screenWidth / 2 - MeasureTextEx(_font1, Msg1, _font1.BaseSize, -3).X / 2,

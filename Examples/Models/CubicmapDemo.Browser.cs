@@ -36,6 +36,7 @@ public partial class CubicmapDemo : IExample
         private Texture2D _texture;
         private Model _model;
         private Vector3 _mapPosition;
+        private bool _pause;
 
         public void Init()
         {
@@ -60,13 +61,24 @@ public partial class CubicmapDemo : IExample
             Raylib.SetMaterialTexture(ref _model, 0, MaterialMapIndex.Albedo, ref _texture);
 
             _mapPosition = new(-16.0f, 0.0f, -8.0f);
+
             UnloadImage(image);
+
+            _pause = false;
         }
 
         public void Update()
         {
             // Update
-            UpdateCamera(ref _camera, CameraMode.Orbital);
+            if (IsKeyPressed(KeyboardKey.P))
+            {
+                _pause = !_pause;
+            }
+
+            if (!_pause)
+            {
+                UpdateCamera(ref _camera, CameraMode.Orbital);
+            }
 
             // Draw
             BeginDrawing();

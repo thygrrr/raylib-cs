@@ -39,7 +39,7 @@ public partial class EasingsBoxAnim : IExample
 
         public void Init()
         {
-            _rec = new Rectangle(GetScreenWidth() / 2, -100, 100, 100);
+            _rec = new Rectangle(GetScreenWidth() / 2.0f, -100, 100, 100);
             _rotation = 0.0f;
             _alpha = 1.0f;
 
@@ -57,7 +57,7 @@ public partial class EasingsBoxAnim : IExample
 
                     // NOTE: Remember that 3rd parameter of easing function refers to
                     // desired value variation, do not confuse it with expected final value!
-                    _rec.Y = EaseElasticOut(_framesCounter, -100, GetScreenHeight() / 2 + 100, 120);
+                    _rec.Y = EaseElasticOut(_framesCounter, -100, GetScreenHeight() / 2.0f + 100, 120);
 
                     if (_framesCounter >= 120)
                     {
@@ -117,7 +117,7 @@ public partial class EasingsBoxAnim : IExample
             // Reset animation at any moment
             if (IsKeyPressed(KeyboardKey.Space))
             {
-                _rec = new Rectangle(GetScreenWidth() / 2, -100, 100, 100);
+                _rec = new Rectangle(GetScreenWidth() / 2.0f, -100, 100, 100);
                 _rotation = 0.0f;
                 _alpha = 1.0f;
                 _state = 0;
@@ -131,7 +131,7 @@ public partial class EasingsBoxAnim : IExample
                 _rec,
                 new Vector2(_rec.Width / 2, _rec.Height / 2),
                 _rotation,
-                ColorAlpha(Color.Black, _alpha)
+                Fade(Color.Black, _alpha)
             );
             DrawText("PRESS [SPACE] TO RESET BOX ANIMATION!", 10, GetScreenHeight() - 25, 20, Color.LightGray);
 

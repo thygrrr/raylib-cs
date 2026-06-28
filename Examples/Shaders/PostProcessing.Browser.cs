@@ -84,8 +84,8 @@ public partial class PostProcessing : IExample
             _camera.FovY = 45.0f;
             _camera.Projection = CameraProjection.Perspective;
 
-            _model = LoadModel("resources/models/obj/church.obj");
-            _texture = LoadTexture("resources/models/obj/church_diffuse.png");
+            _model = LoadModel("resources/models/church.obj");
+            _texture = LoadTexture("resources/models/church_diffuse.png");
 
             // Set model diffuse texture
             SetMaterialTexture(ref _model, 0, MaterialMapIndex.Albedo, ref _texture);
@@ -158,7 +158,7 @@ public partial class PostProcessing : IExample
             // End drawing to texture (now we have a texture available for next passes)
             EndTextureMode();
 
-            // Render previously generated texture using selected postpro shader
+            // Render generated texture using selected postprocessing shader
             BeginShaderMode(_shaders[_currentShader]);
 
             // NOTE: Render texture must be y-flipped due to default OpenGL coordinates (left-bottom)
@@ -171,7 +171,7 @@ public partial class PostProcessing : IExample
 
             EndShaderMode();
 
-            DrawRectangle(0, 9, 580, 30, ColorAlpha(Color.LightGray, 0.7f));
+            DrawRectangle(0, 9, 580, 30, Fade(Color.LightGray, 0.7f));
 
             DrawText("(c) Church 3D model by Alberto Cano", screenWidth - 200, screenHeight - 20, 10, Color.Gray);
 

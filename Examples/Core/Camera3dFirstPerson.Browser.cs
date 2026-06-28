@@ -39,11 +39,13 @@ public partial class Camera3dFirstPerson : IExample
         {
             // Define the camera to look into our 3d world (position, target, up vector)
             _camera = new Camera3D();
-            _camera.Position = new Vector3(4.0f, 2.0f, 4.0f);
-            _camera.Target = new Vector3(0.0f, 1.8f, 0.0f);
+            _camera.Position = new Vector3(0.0f, 2.0f, 4.0f);
+            _camera.Target = new Vector3(0.0f, 2.0f, 0.0f);
             _camera.Up = new Vector3(0.0f, 1.0f, 0.0f);
             _camera.FovY = 60.0f;
             _camera.Projection = CameraProjection.Perspective;
+
+            _cameraMode = CameraMode.FirstPerson;
 
             // Generates some random columns
             _heights = new float[MaxColumns];
@@ -53,11 +55,11 @@ public partial class Camera3dFirstPerson : IExample
             for (int i = 0; i < MaxColumns; i++)
             {
                 _heights[i] = (float)GetRandomValue(1, 12);
-                _positions[i] = new Vector3(GetRandomValue(-15, 15), _heights[i] / 2, GetRandomValue(-15, 15));
+                _positions[i] = new Vector3(GetRandomValue(-15, 15), _heights[i] / 2.0f, GetRandomValue(-15, 15));
                 _colors[i] = new Color(GetRandomValue(20, 255), GetRandomValue(10, 55), 30, 255);
             }
 
-            _cameraMode = CameraMode.FirstPerson;
+            DisableCursor();
         }
 
         public void Update()
@@ -117,7 +119,7 @@ public partial class Camera3dFirstPerson : IExample
 
             // Update camera computes movement internally depending on the camera mode
             // Some default standard keyboard/mouse inputs are hardcoded to simplify use
-            // For advance camera controls, it's reecommended to compute camera movement manually
+            // For advanced camera controls, it's recommended to compute camera movement manually
             UpdateCamera(ref _camera, _cameraMode);
 
             BeginDrawing();
@@ -154,8 +156,8 @@ public partial class Camera3dFirstPerson : IExample
             EndMode3D();
 
             // Draw info boxes
-            DrawRectangle(5, 5, 330, 100, ColorAlpha(Color.SkyBlue, 0.5f));
-            DrawRectangleLines(10, 10, 330, 100, Color.Blue);
+            DrawRectangle(5, 5, 330, 100, Fade(Color.SkyBlue, 0.5f));
+            DrawRectangleLines(5, 5, 330, 100, Color.Blue);
 
             DrawText("Camera controls:", 15, 15, 10, Color.Black);
             DrawText("- Move keys: W, A, S, D, Space, Left-Ctrl", 15, 30, 10, Color.Black);

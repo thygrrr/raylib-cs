@@ -50,13 +50,13 @@ public partial class ImageDrawing : IExample
 
             // Draw on the image with a few image draw methods
             ImageDrawPixel(ref parrots, 10, 10, Color.RayWhite);
-            ImageDrawCircle(ref parrots, 10, 10, 5, Color.RayWhite);
+            ImageDrawCircleLines(ref parrots, 10, 10, 5, Color.RayWhite);
             ImageDrawRectangle(ref parrots, 5, 20, 10, 10, Color.RayWhite);
 
             UnloadImage(cat);
 
-            // Load custom font for frawing on image
-            Font font = LoadFont("resources/fonts/custom_jupiter_crash.png");
+            // Load custom font for drawing on image
+            Font font = LoadFont("resources/custom_jupiter_crash.png");
 
             // Draw over image using custom font
             ImageDrawTextEx(ref parrots, font, "PARROTS & CAT", new Vector2(300, 230), font.BaseSize, -2, Color.White);
@@ -79,9 +79,7 @@ public partial class ImageDrawing : IExample
             DrawRectangleLines(x, y - 40, _texture.Width, _texture.Height, Color.DarkGray);
 
             DrawText("We are drawing only one texture from various images composed!", 240, 350, 10, Color.DarkGray);
-
-            string text = "Source images have been cropped, scaled, flipped and copied one over the other.";
-            DrawText(text, 90, 370, 10, Color.DarkGray);
+            DrawText("Source images have been cropped, scaled, flipped and copied one over the other.", 190, 370, 10, Color.DarkGray);
 
             EndDrawing();
         }

@@ -1,3 +1,20 @@
+/*******************************************************************************************
+*
+*   raylib [text] example - rectangle bounds
+*
+*   Example complexity rating: [★★★★] 4/4
+*
+*   Example originally created with raylib 2.5, last time updated with raylib 4.0
+*
+*   Example contributed by Vlad Adrian (@demizdor) and reviewed by Ramon Santamaria (@raysan5)
+*
+*   Example licensed under an unmodified zlib/libpng license, which is an OSI-certified,
+*   BSD-like license that allows static linking with closed source software
+*
+*   Copyright (c) 2018-2025 Vlad Adrian (@demizdor) and Ramon Santamaria (@raysan5)
+*
+********************************************************************************************/
+
 using System.Numerics;
 using static Raylib_cs.Raylib;
 
@@ -12,17 +29,16 @@ public partial class RectangleBounds
         const int screenWidth = 800;
         const int screenHeight = 450;
 
-        InitWindow(screenWidth, screenHeight, "raylib [text] example - draw text inside a rectangle");
+        InitWindow(screenWidth, screenHeight, "raylib [text] example - rectangle bounds");
 
-        string text = "";
-        text += "Text cannot escape this container ...word wrap also works when active so here's a long text for testing.";
-        text += "\n\nLorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor ";
-        text += "incididunt ut labore et dolore magna aliqua. Nec ullamcorper sit amet risus nullam eget felis eget.";
+        string text = "Text cannot escape\tthis container\t...word wrap also works when active so here's " +
+            "a long text for testing.\n\nLorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod " +
+            "tempor incididunt ut labore et dolore magna aliqua. Nec ullamcorper sit amet risus nullam eget felis eget.";
 
         bool resizing = false;
         bool wordWrap = true;
 
-        Rectangle container = new(25, 25, screenWidth - 50, screenHeight - 250);
+        Rectangle container = new(25.0f, 25.0f, screenWidth - 50.0f, screenHeight - 250.0f);
         Rectangle resizer = new(
             container.X + container.Width - 17,
             container.Y + container.Height - 17,
@@ -31,20 +47,20 @@ public partial class RectangleBounds
         );
 
         // Minimum width and heigh for the container rectangle
-        const int minWidth = 60;
-        const int minHeight = 60;
-        const int maxWidth = screenWidth - 50;
-        const int maxHeight = screenHeight - 160;
+        const float minWidth = 60;
+        const float minHeight = 60;
+        const float maxWidth = screenWidth - 50.0f;
+        const float maxHeight = screenHeight - 160.0f;
 
-        Vector2 lastMouse = new(0.0f, 0.0f);
-        Color borderColor = Color.Maroon;
-        Font font = GetFontDefault();
+        Vector2 lastMouse = new(0.0f, 0.0f); // Stores last mouse coordinates
+        Color borderColor = Color.Maroon;    // Container border color
+        Font font = GetFontDefault();        // Get default system font
 
-        SetTargetFPS(60);
+        SetTargetFPS(60);                   // Set our game to run at 60 frames-per-second
         //--------------------------------------------------------------------------------------
 
         // Main game loop
-        while (!WindowShouldClose())
+        while (!WindowShouldClose())        // Detect window close button or ESC key
         {
             // Update
             //----------------------------------------------------------------------------------
@@ -58,7 +74,7 @@ public partial class RectangleBounds
             // Check if the mouse is inside the container and toggle border color
             if (CheckCollisionPointRec(mouse, container))
             {
-                borderColor = ColorAlpha(Color.Maroon, 0.4f);
+                borderColor = Fade(Color.Maroon, 0.4f);
             }
             else if (!resizing)
             {
@@ -73,10 +89,10 @@ public partial class RectangleBounds
                     resizing = false;
                 }
 
-                int width = (int)(container.Width + (mouse.X - lastMouse.X));
+                float width = container.Width + (mouse.X - lastMouse.X);
                 container.Width = (width > minWidth) ? ((width < maxWidth) ? width : maxWidth) : minWidth;
 
-                int height = (int)(container.Height + (mouse.Y - lastMouse.Y));
+                float height = container.Height + (mouse.Y - lastMouse.Y);
                 container.Height = (height > minHeight) ? ((height < maxHeight) ? height : maxHeight) : minHeight;
             }
             else
@@ -100,8 +116,7 @@ public partial class RectangleBounds
             BeginDrawing();
             ClearBackground(Color.RayWhite);
 
-            // Draw container border
-            DrawRectangleLinesEx(container, 3, borderColor);
+            DrawRectangleLinesEx(container, 3, borderColor);    // Draw container border
 
             // Draw text in container (add some padding)
             DrawTextBoxed(
@@ -114,7 +129,7 @@ public partial class RectangleBounds
                 Color.Gray
             );
 
-            DrawRectangleRec(resizer, borderColor);
+            DrawRectangleRec(resizer, borderColor);             // Draw the resize box
 
             // Draw bottom info
             DrawRectangle(0, screenHeight - 54, screenWidth, 54, Color.Gray);
@@ -140,7 +155,7 @@ public partial class RectangleBounds
 
         // De-Initialization
         //--------------------------------------------------------------------------------------
-        CloseWindow();
+        CloseWindow();        // Close window and OpenGL context
         //--------------------------------------------------------------------------------------
 
         return 0;

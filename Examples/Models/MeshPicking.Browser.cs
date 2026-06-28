@@ -122,7 +122,7 @@ public partial class MeshPicking : IExample
             // Get ray and test against objects
             Ray ray = GetScreenToWorldRay(GetMousePosition(), _camera);
 
-            // Check ray collision aginst ground quad
+            // Check ray collision against ground quad
             RayCollision groundHitInfo = GetRayCollisionQuad(ray, _g0, _g1, _g2, _g3);
             if (groundHitInfo.Hit && (groundHitInfo.Distance < collision.Distance))
             {
@@ -193,6 +193,8 @@ public partial class MeshPicking : IExample
             BeginMode3D(_camera);
 
             // Draw the tower
+            // WARNING: If scale is different than 1.0f,
+            // not considered by GetRayCollisionModel()
             DrawModel(_tower, _towerPos, 1.0f, Color.White);
 
             // Draw the test triangle
@@ -238,7 +240,7 @@ public partial class MeshPicking : IExample
 
                 DrawText($"Hit Norm: {collision.Normal}", 10, ypos + 30, 10, Color.Black);
 
-                if (triHitInfo.Hit)
+                if (triHitInfo.Hit && hitObjectName == "Triangle")
                 {
                     DrawText($"Barycenter: {_bary}", 10, ypos + 45, 10, Color.Black);
                 }

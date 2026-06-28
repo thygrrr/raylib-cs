@@ -59,8 +59,7 @@ public partial class BasicScreenManager : IExample
                     {
                         // TODO: Update LOGO screen variables here!
 
-                        // Count frames
-                        _framesCounter++;
+                        _framesCounter++;    // Count frames
 
                         // Wait for 2 seconds (120 frames) before jumping to TITLE screen
                         if (_framesCounter > 120)

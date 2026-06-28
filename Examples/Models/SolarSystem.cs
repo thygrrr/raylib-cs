@@ -1,13 +1,17 @@
 /*******************************************************************************************
 *
-*   raylib [models] example - rlgl module usage with push/pop matrix transformations
+*   raylib [models] example - rlgl solar system
 *
-*   This example uses [rlgl] module funtionality (pseudo-OpenGL 1.1 style coding)
+*   Example complexity rating: [★★★★] 4/4
 *
-*   This example has been created using raylib 2.5 (www.raylib.com)
-*   raylib is licensed under an unmodified zlib/libpng license (View raylib.h for details)
+*   NOTE: This example uses [rlgl] module functionality (pseudo-OpenGL 1.1 style coding)
 *
-*   Copyright (c) 2018 Ramon Santamaria (@raysan5)
+*   Example originally created with raylib 2.5, last time updated with raylib 4.0
+*
+*   Example licensed under an unmodified zlib/libpng license, which is an OSI-certified,
+*   BSD-like license that allows static linking with closed source software
+*
+*   Copyright (c) 2018-2025 Ramon Santamaria (@raysan5)
 *
 ********************************************************************************************/
 
@@ -32,26 +36,22 @@ public partial class SolarSystem
         const float moonRadius = 0.16f;
         const float moonOrbitRadius = 1.5f;
 
-        InitWindow(screenWidth, screenHeight, "raylib [models] example - rlgl module usage with push/pop matrix transformations");
+        InitWindow(screenWidth, screenHeight, "raylib [models] example - rlgl solar system");
 
         // Define the camera to look into our 3d world
         Camera3D camera = new();
-        camera.Position = new Vector3(16.0f, 16.0f, 16.0f);
-        camera.Target = new Vector3(0.0f, 0.0f, 0.0f);
-        camera.Up = new Vector3(0.0f, 1.0f, 0.0f);
-        camera.FovY = 45.0f;
-        camera.Projection = CameraProjection.Perspective;
+        camera.Position = new Vector3(16.0f, 16.0f, 16.0f); // Camera position
+        camera.Target = new Vector3(0.0f, 0.0f, 0.0f);      // Camera looking at point
+        camera.Up = new Vector3(0.0f, 1.0f, 0.0f);          // Camera up vector (rotation towards target)
+        camera.FovY = 45.0f;                                // Camera field-of-view Y
+        camera.Projection = CameraProjection.Perspective;   // Camera projection type
 
-        // General system rotation speed
-        float rotationSpeed = 0.2f;
-        // Rotation of earth around itself (days) in degrees
-        float earthRotation = 0.0f;
-        // Rotation of earth around the Sun (years) in degrees
-        float earthOrbitRotation = 0.0f;
-        // Rotation of moon around itself
-        float moonRotation = 0.0f;
-        // Rotation of moon around earth in degrees
-        float moonOrbitRotation = 0.0f;
+        float rotationSpeed = 0.2f;         // General system rotation speed
+
+        float earthRotation = 0.0f;         // Rotation of earth around itself (days) in degrees
+        float earthOrbitRotation = 0.0f;    // Rotation of earth around the Sun (years) in degrees
+        float moonRotation = 0.0f;          // Rotation of moon around itself
+        float moonOrbitRotation = 0.0f;     // Rotation of moon around earth in degrees
 
         SetTargetFPS(60);
         //--------------------------------------------------------------------------------------
@@ -61,8 +61,6 @@ public partial class SolarSystem
         {
             // Update
             //----------------------------------------------------------------------------------
-            UpdateCamera(ref camera, CameraMode.Free);
-
             earthRotation += (5.0f * rotationSpeed);
             earthOrbitRotation += (365 / 360.0f * (5.0f * rotationSpeed) * rotationSpeed);
             moonRotation += (2.0f * rotationSpeed);
@@ -88,8 +86,6 @@ public partial class SolarSystem
             Rlgl.Rotatef(earthOrbitRotation, 0.0f, 1.0f, 0.0f);
             // Translation for Earth orbit
             Rlgl.Translatef(earthOrbitRadius, 0.0f, 0.0f);
-            // Rotation for Earth orbit around Sun inverted
-            Rlgl.Rotatef(-earthOrbitRotation, 0.0f, 1.0f, 0.0f);
 
             Rlgl.PushMatrix();
             // Rotation for Earth itself
@@ -105,8 +101,6 @@ public partial class SolarSystem
             Rlgl.Rotatef(moonOrbitRotation, 0.0f, 1.0f, 0.0f);
             // Translation for Moon orbit
             Rlgl.Translatef(moonOrbitRadius, 0.0f, 0.0f);
-            // Rotation for Moon orbit around Earth inverted
-            Rlgl.Rotatef(-moonOrbitRotation, 0.0f, 1.0f, 0.0f);
             // Rotation for Moon itself
             Rlgl.Rotatef(moonRotation, 0.0f, 1.0f, 0.0f);
             // Scale Moon
@@ -122,7 +116,7 @@ public partial class SolarSystem
                 earthOrbitRadius,
                 new Vector3(1, 0, 0),
                 90.0f,
-                ColorAlpha(Color.Red, 0.5f)
+                Fade(Color.Red, 0.5f)
             );
             DrawGrid(20, 1.0f);
 

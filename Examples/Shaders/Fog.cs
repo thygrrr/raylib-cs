@@ -1,27 +1,22 @@
 /*******************************************************************************************
 *
-*   raylib [shaders] example - fog
+*   raylib [shaders] example - fog rendering
+*
+*   Example complexity rating: [★★★☆] 3/4
 *
 *   NOTE: This example requires raylib OpenGL 3.3 or ES2 versions for shaders support,
-*         OpenGL 1.1 does not support shaders, recompile raylib to OpenGL 3.3 version.
+*         OpenGL 1.1 does not support shaders, recompile raylib to OpenGL 3.3 version
 *
-*   NOTE: Shaders used in this example are #version 330 (OpenGL 3.3).
+*   NOTE: Shaders used in this example are #version 330 (OpenGL 3.3)
 *
-*   This example has been created using raylib 2.5 (www.raylib.com)
-*   raylib is licensed under an unmodified zlib/libpng license (View raylib.h for details)
+*   Example originally created with raylib 2.5, last time updated with raylib 3.7
 *
-*   Example contributed by Chris Camacho (@codifies) and reviewed by Ramon Santamaria (@raysan5)
+*   Example contributed by Chris Camacho (@chriscamacho) and reviewed by Ramon Santamaria (@raysan5)
 *
-*   Chris Camacho (@codifies -  http://bedroomcoders.co.uk/) notes:
+*   Example licensed under an unmodified zlib/libpng license, which is an OSI-certified,
+*   BSD-like license that allows static linking with closed source software
 *
-*   This is based on the PBR lighting example, but greatly simplified to aid learning...
-*   actually there is very little of the PBR example left!
-*   When I first looked at the bewildering complexity of the PBR example I feared
-*   I would never understand how I could do simple lighting with raylib however its
-*   a testement to the authors of raylib (including rlights.h) that the example
-*   came together fairly quickly.
-*
-*   Copyright (c) 2019 Chris Camacho (@codifies) and Ramon Santamaria (@raysan5)
+*   Copyright (c) 2019-2025 Chris Camacho (@chriscamacho) and Ramon Santamaria (@raysan5)
 *
 ********************************************************************************************/
 
@@ -34,6 +29,8 @@ namespace Examples.Shaders;
 
 public partial class Fog
 {
+    const int GLSL_VERSION = 330;
+
     public unsafe static int Main()
     {
         // Initialization
@@ -43,7 +40,7 @@ public partial class Fog
 
         // Enable Multi Sampling Anti Aliasing 4x (if available)
         SetConfigFlags(ConfigFlags.Msaa4xHint);
-        InitWindow(screenWidth, screenHeight, "raylib [shaders] example - fog");
+        InitWindow(screenWidth, screenHeight, "raylib [shaders] example - fog rendering");
 
         // Define the camera to look into our 3d world
         Camera3D camera = new();
@@ -65,7 +62,10 @@ public partial class Fog
         Raylib.SetMaterialTexture(ref modelC, 0, MaterialMapIndex.Albedo, ref texture);
 
         // Load shader and set up some uniforms
-        Shader shader = LoadShader("resources/shaders/glsl330/lighting.vs", "resources/shaders/glsl330/fog.fs");
+        Shader shader = LoadShader(
+            $"resources/shaders/glsl{GLSL_VERSION}/lighting.vs",
+            $"resources/shaders/glsl{GLSL_VERSION}/fog.fs"
+        );
         shader.Locs[(int)ShaderLocationIndex.MatrixModel] = GetShaderLocation(shader, "matModel");
         shader.Locs[(int)ShaderLocationIndex.VectorView] = GetShaderLocation(shader, "viewPos");
 
@@ -77,6 +77,10 @@ public partial class Fog
             new float[] { 0.2f, 0.2f, 0.2f, 1.0f },
             ShaderUniformDataType.Vec4
         );
+
+        Vector4 fogColor = ColorNormalize(Color.Gray);
+        int fogColorLoc = GetShaderLocation(shader, "fogColor");
+        Raylib.SetShaderValue(shader, fogColorLoc, fogColor, ShaderUniformDataType.Vec4);
 
         float fogDensity = 0.15f;
         int fogDensityLoc = GetShaderLocation(shader, "fogDensity");
@@ -153,7 +157,7 @@ public partial class Fog
             EndMode3D();
 
             DrawText(
-                $"Use up/down to change fog density [{fogDensity:F2}]",
+                $"Use KEY_UP/KEY_DOWN to change fog density [{fogDensity:F2}]",
                 10,
                 10,
                 20,

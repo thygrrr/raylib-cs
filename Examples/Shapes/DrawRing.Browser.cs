@@ -32,25 +32,23 @@ public partial class DrawRing : IExample
         private Vector2 _center;
         private float _innerRadius;
         private float _outerRadius;
-        private int _startAngle;
-        private int _endAngle;
-        private int _segments;
-        private int _minSegments;
+        private float _startAngle;
+        private float _endAngle;
+        private float _segments;
         private bool _drawRing;
         private bool _drawRingLines;
         private bool _drawCircleLines;
 
         public void Init()
         {
-            _center = new Vector2((GetScreenWidth() - 300) / 2, GetScreenHeight() / 2);
+            _center = new Vector2((GetScreenWidth() - 300) / 2.0f, GetScreenHeight() / 2.0f);
 
             _innerRadius = 80.0f;
             _outerRadius = 190.0f;
 
-            _startAngle = 0;
-            _endAngle = 360;
-            _segments = 0;
-            _minSegments = 4;
+            _startAngle = 0.0f;
+            _endAngle = 360.0f;
+            _segments = 0.0f;
 
             _drawRing = true;
             _drawRingLines = false;
@@ -64,8 +62,8 @@ public partial class DrawRing : IExample
             BeginDrawing();
             ClearBackground(Color.RayWhite);
 
-            DrawLine(500, 0, 500, GetScreenHeight(), ColorAlpha(Color.LightGray, 0.6f));
-            DrawRectangle(500, 0, GetScreenWidth() - 500, GetScreenHeight(), ColorAlpha(Color.LightGray, 0.3f));
+            DrawLine(500, 0, 500, GetScreenHeight(), Fade(Color.LightGray, 0.6f));
+            DrawRectangle(500, 0, GetScreenWidth() - 500, GetScreenHeight(), Fade(Color.LightGray, 0.3f));
 
             if (_drawRing)
             {
@@ -75,8 +73,8 @@ public partial class DrawRing : IExample
                     _outerRadius,
                     _startAngle,
                     _endAngle,
-                    _segments,
-                    ColorAlpha(Color.Maroon, 0.3f)
+                    (int)_segments,
+                    Fade(Color.Maroon, 0.3f)
                 );
             }
             if (_drawRingLines)
@@ -87,8 +85,8 @@ public partial class DrawRing : IExample
                     _outerRadius,
                     _startAngle,
                     _endAngle,
-                    _segments,
-                    ColorAlpha(Color.Black, 0.4f)
+                    (int)_segments,
+                    Fade(Color.Black, 0.4f)
                 );
             }
             if (_drawCircleLines)
@@ -98,14 +96,14 @@ public partial class DrawRing : IExample
                     _outerRadius,
                     _startAngle,
                     _endAngle,
-                    _segments,
-                    ColorAlpha(Color.Black, 0.4f)
+                    (int)_segments,
+                    Fade(Color.Black, 0.4f)
                 );
             }
 
-            _minSegments = (int)MathF.Ceiling((_endAngle - _startAngle) / 90);
-            Color color = (_segments >= _minSegments) ? Color.Maroon : Color.DarkGray;
-            DrawText($"MODE: {((_segments >= _minSegments) ? "MANUAL" : "AUTO")}", 600, 270, 10, color);
+            int minSegments = (int)MathF.Ceiling((_endAngle - _startAngle) / 90);
+            Color color = (_segments >= minSegments) ? Color.Maroon : Color.DarkGray;
+            DrawText($"MODE: {((_segments >= minSegments) ? "MANUAL" : "AUTO")}", 600, 270, 10, color);
 
             DrawFPS(10, 10);
 

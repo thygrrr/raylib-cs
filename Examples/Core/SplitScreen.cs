@@ -1,13 +1,17 @@
 /*******************************************************************************************
 *
-*   raylib [core] example - split screen
+*   raylib [core] example - 3d camera split screen
 *
-*   This example has been created using raylib 3.7 (www.raylib.com)
-*   raylib is licensed under an unmodified zlib/libpng license (View raylib.h for details)
+*   Example complexity rating: [★★★☆] 3/4
+*
+*   Example originally created with raylib 3.7, last time updated with raylib 4.0
 *
 *   Example contributed by Jeffery Myers (@JeffM2501) and reviewed by Ramon Santamaria (@raysan5)
 *
-*   Copyright (c) 2021 Jeffery Myers (@JeffM2501)
+*   Example licensed under an unmodified zlib/libpng license, which is an OSI-certified,
+*   BSD-like license that allows static linking with closed source software
+*
+*   Copyright (c) 2021-2025 Jeffery Myers (@JeffM2501)
 *
 ********************************************************************************************/
 
@@ -16,9 +20,8 @@ using static Raylib_cs.Raylib;
 
 namespace Examples.Core;
 
-public unsafe partial class SplitScreen
+public partial class SplitScreen
 {
-    static Texture2D TextureGrid;
     static Camera3D CameraPlayer1;
     static Camera3D CameraPlayer2;
 
@@ -28,9 +31,8 @@ public unsafe partial class SplitScreen
         int count = 5;
         float spacing = 4;
 
-        // Grid of cube trees on a plane to make a "world"
-        // Simple world plane
-        DrawPlane(new Vector3(0, 0, 0), new Vector2(50, 50), Color.Beige);
+        // Draw scene: grid of cube trees on a plane to make a "world"
+        DrawPlane(new Vector3(0, 0, 0), new Vector2(50, 50), Color.Beige); // Simple world plane
 
         for (float x = -count * spacing; x <= count * spacing; x += spacing)
         {
@@ -53,14 +55,7 @@ public unsafe partial class SplitScreen
         const int screenWidth = 800;
         const int screenHeight = 450;
 
-        InitWindow(screenWidth, screenHeight, "raylib [core] example - split screen");
-
-        // Generate a simple texture to use for trees
-        Image img = GenImageChecked(256, 256, 32, 32, Color.DarkGray, Color.White);
-        TextureGrid = LoadTextureFromImage(img);
-        UnloadImage(img);
-        SetTextureFilter(TextureGrid, TextureFilter.Anisotropic16X);
-        SetTextureWrap(TextureGrid, TextureWrap.Clamp);
+        InitWindow(screenWidth, screenHeight, "raylib [core] example - 3d camera split screen");
 
         // Setup player 1 camera and screen
         CameraPlayer1.FovY = 45.0f;
@@ -88,16 +83,16 @@ public unsafe partial class SplitScreen
             (float)-screenPlayer1.Texture.Height
         );
 
-        SetTargetFPS(60);
+        SetTargetFPS(60);               // Set our game to run at 60 frames-per-second
         //--------------------------------------------------------------------------------------
 
         // Main game loop
-        while (!WindowShouldClose())
+        while (!WindowShouldClose())    // Detect window close button or ESC key
         {
             // Update
             //----------------------------------------------------------------------------------
             // If anyone moves this frame, how far will they move based on the time since the last frame
-            // this moves thigns at 10 world units per second, regardless of the actual FPS
+            // this moves things at 10 world units per second, regardless of the actual FPS
             float offsetThisFrame = 10.0f * GetFrameTime();
 
             // Move Player1 forward and backwards (no turning)
@@ -135,7 +130,8 @@ public unsafe partial class SplitScreen
             DrawScene();
             EndMode3D();
 
-            DrawText("PLAYER 1 W/S to move", 10, 10, 20, Color.Red);
+            DrawRectangle(0, 0, GetScreenWidth() / 2, 40, Fade(Color.RayWhite, 0.8f));
+            DrawText("PLAYER1: W/S to move", 10, 10, 20, Color.Maroon);
             EndTextureMode();
 
             // Draw Player2 view to the render texture
@@ -146,7 +142,8 @@ public unsafe partial class SplitScreen
             DrawScene();
             EndMode3D();
 
-            DrawText("PLAYER 2 UP/DOWN to move", 10, 10, 20, Color.Blue);
+            DrawRectangle(0, 0, GetScreenWidth() / 2, 40, Fade(Color.RayWhite, 0.8f));
+            DrawText("PLAYER2: UP/DOWN to move", 10, 10, 20, Color.DarkBlue);
             EndTextureMode();
 
             // Draw both views render textures to the screen side by side
@@ -156,16 +153,16 @@ public unsafe partial class SplitScreen
             DrawTextureRec(screenPlayer1.Texture, splitScreenRect, new Vector2(0, 0), Color.White);
             DrawTextureRec(screenPlayer2.Texture, splitScreenRect, new Vector2(screenWidth / 2.0f, 0), Color.White);
 
+            DrawRectangle(GetScreenWidth() / 2 - 2, 0, 4, GetScreenHeight(), Color.LightGray);
             EndDrawing();
         }
 
         // De-Initialization
         //--------------------------------------------------------------------------------------
-        UnloadRenderTexture(screenPlayer1);
-        UnloadRenderTexture(screenPlayer2);
-        UnloadTexture(TextureGrid);
+        UnloadRenderTexture(screenPlayer1); // Unload render texture
+        UnloadRenderTexture(screenPlayer2); // Unload render texture
 
-        CloseWindow();
+        CloseWindow();                      // Close window and OpenGL context
         //--------------------------------------------------------------------------------------
 
         return 0;

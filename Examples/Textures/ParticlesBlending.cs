@@ -1,11 +1,15 @@
 /*******************************************************************************************
 *
-*   raylib example - particles blending
+*   raylib [textures] example - particles blending
 *
-*   This example has been created using raylib 1.7 (www.raylib.com)
-*   raylib is licensed under an unmodified zlib/libpng license (View raylib.h for details)
+*   Example complexity rating: [★☆☆☆] 1/4
 *
-*   Copyright (c) 2017 Ramon Santamaria (@raysan5)
+*   Example originally created with raylib 1.7, last time updated with raylib 3.5
+*
+*   Example licensed under an unmodified zlib/libpng license, which is an OSI-certified,
+*   BSD-like license that allows static linking with closed source software
+*
+*   Copyright (c) 2017-2025 Ramon Santamaria (@raysan5)
 *
 ********************************************************************************************/
 
@@ -66,7 +70,7 @@ public partial class ParticlesBlending
         //--------------------------------------------------------------------------------------
 
         // Main game loop
-        while (!WindowShouldClose())
+        while (!WindowShouldClose())    // Detect window close button or ESC key
         {
             // Update
             //----------------------------------------------------------------------------------
@@ -74,7 +78,7 @@ public partial class ParticlesBlending
             // Activate one particle every frame and Update active particles
             // NOTE: Particles initial position should be mouse position when activated
             // NOTE: Particles fall down with gravity and rotation... and disappear after 2 seconds (alpha = 0)
-            // NOTE: When a particle disappears, active = false and it can be reused.
+            // NOTE: When a particle disappears, active = false and it can be reused
             for (int i = 0; i < mouseTail.Length; i++)
             {
                 if (!mouseTail[i].Active)
@@ -138,7 +142,7 @@ public partial class ParticlesBlending
                         smoke.Width * mouseTail[i].Size / 2,
                         smoke.Height * mouseTail[i].Size / 2
                     );
-                    Color color = ColorAlpha(mouseTail[i].Color, mouseTail[i].Alpha);
+                    Color color = Fade(mouseTail[i].Color, mouseTail[i].Alpha);
                     DrawTexturePro(smoke, source, dest, position, mouseTail[i].Rotation, color);
                 }
             }
@@ -164,7 +168,7 @@ public partial class ParticlesBlending
         //--------------------------------------------------------------------------------------
         UnloadTexture(smoke);
 
-        CloseWindow();
+        CloseWindow();        // Close window and OpenGL context
         //--------------------------------------------------------------------------------------
 
         return 0;

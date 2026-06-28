@@ -1,13 +1,17 @@
 /*******************************************************************************************
 *
-*   raylib [textures] example - Image processing
+*   raylib [textures] example - image processing
+*
+*   Example complexity rating: [★★★☆] 3/4
 *
 *   NOTE: Images are loaded in CPU memory (RAM); textures are loaded in GPU memory (VRAM)
 *
-*   This example has been created using raylib 1.4 (www.raylib.com)
-*   raylib is licensed under an unmodified zlib/libpng license (View raylib.h for details)
+*   Example originally created with raylib 1.4, last time updated with raylib 3.5
 *
-*   Copyright (c) 2016 Ramon Santamaria (@raysan5)
+*   Example licensed under an unmodified zlib/libpng license, which is an OSI-certified,
+*   BSD-like license that allows static linking with closed source software
+*
+*   Copyright (c) 2016-2025 Ramon Santamaria (@raysan5)
 *
 ********************************************************************************************/
 
@@ -54,9 +58,10 @@ public partial class ImageProcessing
         InitWindow(screenWidth, screenHeight, "raylib [textures] example - image processing");
 
         // NOTE: Textures MUST be loaded after Window initialization (OpenGL context is required)
-        Image imageOrigin = LoadImage("resources/parrots.png");
-        ImageFormat(ref imageOrigin, PixelFormat.UncompressedR8G8B8A8);
-        Texture2D texture = LoadTextureFromImage(imageOrigin);
+
+        Image imageOrigin = LoadImage("resources/parrots.png");   // Loaded in CPU memory (RAM)
+        ImageFormat(ref imageOrigin, PixelFormat.UncompressedR8G8B8A8);         // Format image to RGBA 32bit (required for texture update) <-- ISSUE
+        Texture2D texture = LoadTextureFromImage(imageOrigin);    // Image converted to texture, GPU memory (VRAM)
 
         Image imageCopy = ImageCopy(imageOrigin);
 
@@ -68,14 +73,14 @@ public partial class ImageProcessing
 
         for (int i = 0; i < NumProcesses; i++)
         {
-            toggleRecs[i] = new Rectangle(40, 50 + 32 * i, 150, 30);
+            toggleRecs[i] = new Rectangle(40.0f, (float)(50 + 32 * i), 150.0f, 30.0f);
         }
 
         SetTargetFPS(60);
         //---------------------------------------------------------------------------------------
 
         // Main game loop
-        while (!WindowShouldClose())
+        while (!WindowShouldClose())    // Detect window close button or ESC key
         {
             // Update
             //----------------------------------------------------------------------------------
@@ -122,10 +127,11 @@ public partial class ImageProcessing
                 textureReload = true;
             }
 
+            // Reload texture when required
             if (textureReload)
             {
-                UnloadImage(imageCopy);
-                imageCopy = ImageCopy(imageOrigin);
+                UnloadImage(imageCopy);                // Unload image-copy data
+                imageCopy = ImageCopy(imageOrigin);    // Restore image-copy from image-origin
 
                 // NOTE: Image processing is a costly CPU process to be done every frame,
                 // If image processing is required in a frame-basis, it should be done
@@ -160,10 +166,9 @@ public partial class ImageProcessing
                         break;
                 }
 
-                // Get pixel data from image (RGBA 32bit)
-                Color* pixels = LoadImageColors(imageCopy);
-                UpdateTexture(texture, pixels);
-                UnloadImageColors(pixels);
+                Color* pixels = LoadImageColors(imageCopy);    // Load pixel data from image (RGBA 32bit)
+                UpdateTexture(texture, pixels);                // Update texture with new image data
+                UnloadImageColors(pixels);                     // Unload pixels data from RAM
 
                 textureReload = false;
             }
@@ -179,13 +184,13 @@ public partial class ImageProcessing
             // Draw rectangles
             for (int i = 0; i < NumProcesses; i++)
             {
-                DrawRectangleRec(toggleRecs[i], (i == (int)currentProcess) ? Color.SkyBlue : Color.LightGray);
+                DrawRectangleRec(toggleRecs[i], ((i == (int)currentProcess) || (i == mouseHoverRec)) ? Color.SkyBlue : Color.LightGray);
                 DrawRectangleLines(
                     (int)toggleRecs[i].X,
                     (int)toggleRecs[i].Y,
                     (int)toggleRecs[i].Width,
                     (int)toggleRecs[i].Height,
-                    (i == (int)currentProcess) ? Color.Blue : Color.Gray
+                    ((i == (int)currentProcess) || (i == mouseHoverRec)) ? Color.Blue : Color.Gray
                 );
 
                 int labelX = (int)(toggleRecs[i].X + toggleRecs[i].Width / 2);
@@ -194,7 +199,7 @@ public partial class ImageProcessing
                     (int)(labelX - MeasureText(processText[i], 10) / 2),
                     (int)toggleRecs[i].Y + 11,
                     10,
-                    (i == (int)currentProcess) ? Color.DarkBlue : Color.DarkGray
+                    ((i == (int)currentProcess) || (i == mouseHoverRec)) ? Color.DarkBlue : Color.DarkGray
                 );
             }
 
@@ -209,11 +214,11 @@ public partial class ImageProcessing
 
         // De-Initialization
         //--------------------------------------------------------------------------------------
-        UnloadTexture(texture);
-        UnloadImage(imageOrigin);
-        UnloadImage(imageCopy);
+        UnloadTexture(texture);       // Unload texture from VRAM
+        UnloadImage(imageOrigin);     // Unload image-origin from RAM
+        UnloadImage(imageCopy);       // Unload image-copy from RAM
 
-        CloseWindow();
+        CloseWindow();                // Close window and OpenGL context
         //--------------------------------------------------------------------------------------
 
         return 0;

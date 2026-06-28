@@ -34,17 +34,19 @@ public partial class DeltaTime
 
         int currentFps = 60;
 
+        // Store the position for the both of the circles
         Vector2 deltaCircle = new Vector2(0, (float)screenHeight / 3.0f);
         Vector2 frameCircle = new Vector2(0, (float)screenHeight * (2.0f / 3.0f));
 
-        SetTargetFPS(60);
-        //--------------------------------------------------------------------------------------
-
+        // The speed applied to both circles
         const float speed = 10.0f;
         const float circleRadius = 32.0f;
 
+        SetTargetFPS(currentFps);
+        //--------------------------------------------------------------------------------------
+
         // Main game loop
-        while (!WindowShouldClose())
+        while (!WindowShouldClose()) // Detect window close button or ESC key
         {
             // Update
             //----------------------------------------------------------------------------------
@@ -122,7 +124,7 @@ public partial class DeltaTime
 
         // De-Initialization
         //--------------------------------------------------------------------------------------
-        CloseWindow();
+        CloseWindow();        // Close window and OpenGL context
         //--------------------------------------------------------------------------------------
 
         return 0;

@@ -92,11 +92,11 @@ public partial class Camera2dPlatformer : IExample
 
             _camera = new();
             _camera.Target = _player.Position;
-            _camera.Offset = new Vector2(screenWidth / 2, screenHeight / 2);
+            _camera.Offset = new Vector2(screenWidth / 2.0f, screenHeight / 2.0f);
             _camera.Rotation = 0.0f;
             _camera.Zoom = 1.0f;
 
-            // Store callbacks to the multiple update camera functions
+            // Store pointers to the multiple update camera functions
             _cameraUpdaters = new CameraUpdaterCallback[]
             {
                 UpdateCameraCenter,
@@ -160,18 +160,21 @@ public partial class Camera2dPlatformer : IExample
                 DrawRectangleRec(_envItems[i].Rect, _envItems[i].Color);
             }
 
-            Rectangle playerRect = new(_player.Position.X - 20, _player.Position.Y - 40, 40, 40);
+            Rectangle playerRect = new(_player.Position.X - 20, _player.Position.Y - 40, 40.0f, 40.0f);
             DrawRectangleRec(playerRect, Color.Red);
+
+            DrawCircleV(_player.Position, 5.0f, Color.Gold);
 
             EndMode2D();
 
             DrawText("Controls:", 20, 20, 10, Color.Black);
             DrawText("- Right/Left to move", 40, 40, 10, Color.DarkGray);
             DrawText("- Space to jump", 40, 60, 10, Color.DarkGray);
-            DrawText("- Mouse Wheel to Zoom in-out, R to reset zoom", 40, 80, 10, Color.DarkGray);
-            DrawText("- C to change camera mode", 40, 100, 10, Color.DarkGray);
-            DrawText("Current camera mode:", 20, 120, 10, Color.Black);
-            DrawText(_cameraDescriptions[_cameraOption], 40, 140, 10, Color.DarkGray);
+            DrawText("- Mouse Wheel to Zoom in-out", 40, 80, 10, Color.DarkGray);
+            DrawText("- R to reset position + zoom", 40, 100, 10, Color.DarkGray);
+            DrawText("- C to change camera mode", 40, 120, 10, Color.DarkGray);
+            DrawText("Current camera mode:", 20, 140, 10, Color.Black);
+            DrawText(_cameraDescriptions[_cameraOption], 40, 160, 10, Color.DarkGray);
 
             EndDrawing();
         }
@@ -212,6 +215,7 @@ public partial class Camera2dPlatformer : IExample
                     hitObstacle = 1;
                     player.Speed = 0.0f;
                     player.Position.Y = ei.Rect.Y;
+                    break;
                 }
             }
 
@@ -236,7 +240,7 @@ public partial class Camera2dPlatformer : IExample
             int height
         )
         {
-            camera.Offset = new Vector2(width / 2, height / 2);
+            camera.Offset = new Vector2(width / 2.0f, height / 2.0f);
             camera.Target = player.Position;
         }
 
@@ -249,7 +253,7 @@ public partial class Camera2dPlatformer : IExample
             int height)
         {
             camera.Target = player.Position;
-            camera.Offset = new Vector2(width / 2, height / 2);
+            camera.Offset = new Vector2(width / 2.0f, height / 2.0f);
             float minX = 1000, minY = 1000, maxX = -1000, maxY = -1000;
 
             for (int i = 0; i < envItems.Length; i++)
@@ -266,22 +270,22 @@ public partial class Camera2dPlatformer : IExample
 
             if (max.X < width)
             {
-                camera.Offset.X = width - (max.X - width / 2);
+                camera.Offset.X = width - (max.X - width / 2.0f);
             }
 
             if (max.Y < height)
             {
-                camera.Offset.Y = height - (max.Y - height / 2);
+                camera.Offset.Y = height - (max.Y - height / 2.0f);
             }
 
             if (min.X > 0)
             {
-                camera.Offset.X = width / 2 - min.X;
+                camera.Offset.X = width / 2.0f - min.X;
             }
 
             if (min.Y > 0)
             {
-                camera.Offset.Y = height / 2 - min.Y;
+                camera.Offset.Y = height / 2.0f - min.Y;
             }
         }
 
@@ -298,7 +302,7 @@ public partial class Camera2dPlatformer : IExample
             const float minEffectLength = 10;
             const float fractionSpeed = 0.8f;
 
-            camera.Offset = new Vector2(width / 2, height / 2);
+            camera.Offset = new Vector2(width / 2.0f, height / 2.0f);
             Vector2 diff = Vector2Subtract(player.Position, camera.Target);
             float length = Vector2Length(diff);
 
@@ -322,7 +326,7 @@ public partial class Camera2dPlatformer : IExample
             int eveningOut = 0;
             float evenOutTarget = 0.0f;
 
-            camera.Offset = new Vector2(width / 2, height / 2);
+            camera.Offset = new Vector2(width / 2.0f, height / 2.0f);
             camera.Target.X = player.Position.X;
 
             if (eveningOut != 0)

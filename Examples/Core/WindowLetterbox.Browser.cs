@@ -77,12 +77,13 @@ public partial class WindowLetterbox : IExample
             Vector2 max = new((float)gamescreenWidth, (float)gamescreenHeight);
             virtualMouse = Vector2.Clamp(virtualMouse, Vector2.Zero, max);
 
-            BeginDrawing();
-            ClearBackground(Color.Black);
+            // Apply the same transformation as the virtual mouse to the real mouse (i.e. to work with raygui)
+            //SetMouseOffset(-(GetScreenWidth() - (gamescreenWidth*scale))*0.5f, -(GetScreenHeight() - (gamescreenHeight*scale))*0.5f);
+            //SetMouseScale(1/scale, 1/scale);
 
             // Draw everything in the render texture, note this will not be rendered on screen, yet
             BeginTextureMode(_target);
-            ClearBackground(Color.RayWhite);
+            ClearBackground(Color.RayWhite);  // Clear render texture background color
 
             for (int i = 0; i < 10; i++)
             {
@@ -97,12 +98,15 @@ public partial class WindowLetterbox : IExample
                 Color.White
             );
 
-            DrawText($"Default Mouse: [{(int)mouse.X} {(int)mouse.Y}]", 350, 25, 20, Color.Green);
-            DrawText($"Virtual Mouse: [{(int)virtualMouse.X}, {(int)virtualMouse.Y}]", 350, 55, 20, Color.Yellow);
+            DrawText($"Default Mouse: [{(int)mouse.X} , {(int)mouse.Y}]", 350, 25, 20, Color.Green);
+            DrawText($"Virtual Mouse: [{(int)virtualMouse.X} , {(int)virtualMouse.Y}]", 350, 55, 20, Color.Yellow);
 
             EndTextureMode();
 
-            // Draw RenderTexture2D to window, properly scaled
+            BeginDrawing();
+            ClearBackground(Color.Black);     // Clear screen background
+
+            // Draw render texture to screen, properly scaled
             Rectangle sourceRec = new(
                 0.0f,
                 0.0f,

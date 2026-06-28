@@ -87,7 +87,7 @@ public partial class Polygon : IExample
             BeginDrawing();
             ClearBackground(Color.RayWhite);
 
-            DrawText("Textured Polygon", 20, 20, 20, Color.DarkGray);
+            DrawText("textured polygon", 20, 20, 20, Color.DarkGray);
             Vector2 center = new(screenWidth / 2, screenHeight / 2);
             DrawTexturePoly(_texture, center, _positions, _texcoords, _positions.Length, Color.White);
 
@@ -112,9 +112,7 @@ public partial class Polygon : IExample
         )
         {
             Rlgl.SetTexture(texture.Id);
-
-            // Texturing is only supported on RL_QUADS
-            Rlgl.Begin(DrawMode.Quads);
+            Rlgl.Begin(DrawMode.Triangles);
 
             Rlgl.Color4ub(tint.R, tint.G, tint.B, tint.A);
 
@@ -125,9 +123,6 @@ public partial class Polygon : IExample
 
                 Rlgl.TexCoord2f(texcoords[i].X, texcoords[i].Y);
                 Rlgl.Vertex2f(points[i].X + center.X, points[i].Y + center.Y);
-
-                Rlgl.TexCoord2f(texcoords[i + 1].X, texcoords[i + 1].Y);
-                Rlgl.Vertex2f(points[i + 1].X + center.X, points[i + 1].Y + center.Y);
 
                 Rlgl.TexCoord2f(texcoords[i + 1].X, texcoords[i + 1].Y);
                 Rlgl.Vertex2f(points[i + 1].X + center.X, points[i + 1].Y + center.Y);

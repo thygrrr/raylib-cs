@@ -2,10 +2,14 @@
 *
 *   raylib [textures] example - sprite explosion
 *
-*   This example has been created using raylib 2.5 (www.raylib.com)
-*   raylib is licensed under an unmodified zlib/libpng license (View raylib.h for details)
+*   Example complexity rating: [★★☆☆] 2/4
 *
-*   Copyright (c) 2019 Anata and Ramon Santamaria (@raysan5)
+*   Example originally created with raylib 2.5, last time updated with raylib 3.5
+*
+*   Example licensed under an unmodified zlib/libpng license, which is an OSI-certified,
+*   BSD-like license that allows static linking with closed source software
+*
+*   Copyright (c) 2019-2025 Ramon Santamaria (@raysan5)
 *
 ********************************************************************************************/
 
@@ -36,13 +40,8 @@ public partial class SpriteExplosion
         Texture2D explosion = LoadTexture("resources/explosion.png");
 
         // Init variables for animation
-
-        // Sprite one frame rectangle width
-        int frameWidth = explosion.Width / NumFramesPerLine;
-
-        // Sprite one frame rectangle height
-        int frameHeight = explosion.Height / NumLines;
-
+        int frameWidth = explosion.Width / NumFramesPerLine;   // Sprite one frame rectangle width
+        int frameHeight = explosion.Height / NumLines;         // Sprite one frame rectangle height
         int currentFrame = 0;
         int currentLine = 0;
 
@@ -52,11 +51,11 @@ public partial class SpriteExplosion
         bool active = false;
         int framesCounter = 0;
 
-        SetTargetFPS(120);
-        //--------------------------------------------------------------------------------------
+        SetTargetFPS(60);               // Set our game to run at 60 frames-per-second
+        //---------------------------------------------------------------------------------------
 
         // Main game loop
-        while (!WindowShouldClose())
+        while (!WindowShouldClose())    // Detect window close button or ESC key
         {
             // Update
             //----------------------------------------------------------------------------------
@@ -119,12 +118,12 @@ public partial class SpriteExplosion
 
         // De-Initialization
         //--------------------------------------------------------------------------------------
-        UnloadTexture(explosion);
-        UnloadSound(fxBoom);
+        UnloadTexture(explosion);   // Unload texture
+        UnloadSound(fxBoom);        // Unload sound
 
         CloseAudioDevice();
 
-        CloseWindow();
+        CloseWindow();              // Close window and OpenGL context
         //--------------------------------------------------------------------------------------
 
         return 0;

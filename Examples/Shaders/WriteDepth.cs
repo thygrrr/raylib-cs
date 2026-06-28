@@ -1,6 +1,8 @@
 /*******************************************************************************************
 *
-*   raylib [shaders] example - Depth buffer writing
+*   raylib [shaders] example - depth writing
+*
+*   Example complexity rating: [★★☆☆] 2/4
 *
 *   Example originally created with raylib 4.2, last time updated with raylib 4.2
 *
@@ -9,7 +11,7 @@
 *   Example licensed under an unmodified zlib/libpng license, which is an OSI-certified,
 *   BSD-like license that allows static linking with closed source software
 *
-*   Copyright (c) 2022-2023 Buğra Alptekin Sarı (@BugraAlptekinSari)
+*   Copyright (c) 2022-2025 Buğra Alptekin Sarı (@BugraAlptekinSari)
 *
 ********************************************************************************************/
 
@@ -29,27 +31,27 @@ public partial class WriteDepth
         const int screenWidth = 800;
         const int screenHeight = 450;
 
-        InitWindow(screenWidth, screenHeight, "raylib [shaders] example - write depth buffer");
-
-        // The shader inverts the depth buffer by writing into it by `gl_FragDepth = 1 - gl_FragCoord.z;`
-        Shader shader = LoadShader(null, $"resources/shaders/glsl{GLSL_VERSION}/write_depth.fs");
-
-        // Use customized function to create writable depth texture buffer
-        RenderTexture2D target = LoadRenderTextureDepthTex(screenWidth, screenHeight);
+        InitWindow(screenWidth, screenHeight, "raylib [shaders] example - depth writing");
 
         // Define the camera to look into our 3d world
         Camera3D camera;
-        camera.Position = new Vector3(2.0f, 2.0f, 3.0f);
-        camera.Target = new Vector3(0.0f, 0.5f, 0.0f);
-        camera.Up = new Vector3(0.0f, 1.0f, 0.0f);
-        camera.FovY = 45.0f;
-        camera.Projection = CameraProjection.Perspective;
+        camera.Position = new Vector3(2.0f, 2.0f, 3.0f);    // Camera position
+        camera.Target = new Vector3(0.0f, 0.5f, 0.0f);      // Camera looking at point
+        camera.Up = new Vector3(0.0f, 1.0f, 0.0f);          // Camera up vector (rotation towards target)
+        camera.FovY = 45.0f;                                // Camera field-of-view Y
+        camera.Projection = CameraProjection.Perspective;   // Camera projection type
 
-        SetTargetFPS(60);
+        // Load custom render texture with writable depth texture buffer
+        RenderTexture2D target = LoadRenderTextureDepthTex(screenWidth, screenHeight);
+
+        // Load depth writing shader
+        // NOTE: The shader inverts the depth buffer by writing into it by `gl_FragDepth = 1 - gl_FragCoord.z;`
+        Shader shader = LoadShader(null, $"resources/shaders/glsl{GLSL_VERSION}/depth_write.fs");
+        SetTargetFPS(60);                   // Set our game to run at 60 frames-per-second
         //--------------------------------------------------------------------------------------
 
         // Main game loop
-        while (!WindowShouldClose())
+        while (!WindowShouldClose())        // Detect window close button or ESC key
         {
             // Update
             //----------------------------------------------------------------------------------
@@ -59,7 +61,7 @@ public partial class WriteDepth
             // Draw
             //----------------------------------------------------------------------------------
 
-            // Draw into our custom render texture (framebuffer)
+            // Draw into our custom render texture
             BeginTextureMode(target);
             ClearBackground(Color.White);
 
@@ -76,7 +78,7 @@ public partial class WriteDepth
             EndMode3D();
             EndTextureMode();
 
-            // Draw custom render texture
+            // Draw into screen our custom render texture
             BeginDrawing();
             ClearBackground(Color.RayWhite);
 
@@ -97,7 +99,7 @@ public partial class WriteDepth
         UnloadRenderTextureDepthTex(target);
         UnloadShader(shader);
 
-        CloseWindow();
+        CloseWindow();        // Close window and OpenGL context
         //--------------------------------------------------------------------------------------
 
         return 0;

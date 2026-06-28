@@ -1,12 +1,17 @@
 /*******************************************************************************************
 *
-*   raylib [models] example - Mesh picking in 3d mode, ground plane, triangle, mesh
+*   raylib [models] example - mesh picking
 *
-*   This example has been created using raylib 1.7 (www.raylib.com)
-*   raylib is licensed under an unmodified zlib/libpng license (View raylib.h for details)
+*   Example complexity rating: [★★★☆] 3/4
 *
-*   Copyright (c) 2015 Ramon Santamaria (@raysan5)
-*   Example contributed by Joel Davis (@joeld42)
+*   Example originally created with raylib 1.7, last time updated with raylib 4.0
+*
+*   Example contributed by Joel Davis (@joeld42) and reviewed by Ramon Santamaria (@raysan5)
+*
+*   Example licensed under an unmodified zlib/libpng license, which is an OSI-certified,
+*   BSD-like license that allows static linking with closed source software
+*
+*   Copyright (c) 2017-2025 Joel Davis (@joeld42) and Ramon Santamaria (@raysan5)
 *
 ********************************************************************************************/
 
@@ -101,7 +106,7 @@ public partial class MeshPicking
             // Get ray and test against objects
             ray = GetScreenToWorldRay(GetMousePosition(), camera);
 
-            // Check ray collision aginst ground quad
+            // Check ray collision against ground quad
             RayCollision groundHitInfo = GetRayCollisionQuad(ray, g0, g1, g2, g3);
             if (groundHitInfo.Hit && (groundHitInfo.Distance < collision.Distance))
             {
@@ -174,6 +179,8 @@ public partial class MeshPicking
             BeginMode3D(camera);
 
             // Draw the tower
+            // WARNING: If scale is different than 1.0f,
+            // not considered by GetRayCollisionModel()
             DrawModel(tower, towerPos, 1.0f, Color.White);
 
             // Draw the test triangle
@@ -219,7 +226,7 @@ public partial class MeshPicking
 
                 DrawText($"Hit Norm: {collision.Normal}", 10, ypos + 30, 10, Color.Black);
 
-                if (triHitInfo.Hit)
+                if (triHitInfo.Hit && hitObjectName == "Triangle")
                 {
                     DrawText($"Barycenter: {bary}", 10, ypos + 45, 10, Color.Black);
                 }

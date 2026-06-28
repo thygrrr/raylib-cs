@@ -1,18 +1,22 @@
 /*******************************************************************************************
 *
-*   raylib [shaders] example - julia sets
+*   raylib [shaders] example - julia set
+*
+*   Example complexity rating: [★★★☆] 3/4
 *
 *   NOTE: This example requires raylib OpenGL 3.3 or ES2 versions for shaders support,
-*         OpenGL 1.1 does not support shaders, recompile raylib to OpenGL 3.3 version.
+*         OpenGL 1.1 does not support shaders, recompile raylib to OpenGL 3.3 version
 *
-*   NOTE: Shaders used in this example are #version 330 (OpenGL 3.3).
+*   NOTE: Shaders used in this example are #version 330 (OpenGL 3.3)
 *
-*   This example has been created using raylib 2.5 (www.raylib.com)
-*   raylib is licensed under an unmodified zlib/libpng license (View raylib.h for details)
+*   Example originally created with raylib 2.5, last time updated with raylib 4.0
 *
-*   Example contributed by eggmund (@eggmund) and reviewed by Ramon Santamaria (@raysan5)
+*   Example contributed by Josh Colclough (@joshcol9232) and reviewed by Ramon Santamaria (@raysan5)
 *
-*   Copyright (c) 2019 eggmund (@eggmund) and Ramon Santamaria (@raysan5)
+*   Example licensed under an unmodified zlib/libpng license, which is an OSI-certified,
+*   BSD-like license that allows static linking with closed source software
+*
+*   Copyright (c) 2019-2025 Josh Colclough (@joshcol9232) and Ramon Santamaria (@raysan5)
 *
 ********************************************************************************************/
 
@@ -46,7 +50,7 @@ public partial class JuliaSet
 
         const float startingZoom = 0.75f;
 
-        InitWindow(screenWidth, screenHeight, "raylib [shaders] example - julia sets");
+        InitWindow(screenWidth, screenHeight, "raylib [shaders] example - julia set");
 
         // Load julia set shader
         // NOTE: Defining 0 (NULL) for vertex shader forces usage of internal default vertex shader
@@ -128,11 +132,12 @@ public partial class JuliaSet
                 Raylib.SetShaderValue(shader, cLoc, c, ShaderUniformDataType.Vec2);
             }
 
+            // If "R" is pressed, reset zoom and offset
             if (IsKeyPressed(KeyboardKey.R))
             {
                 zoom = startingZoom;
-                offset[0] = 1f;
-                offset[1] = 1f;
+                offset[0] = 0.0f;
+                offset[1] = 0.0f;
                 Raylib.SetShaderValue(shader, zoomLoc, zoom, ShaderUniformDataType.Float);
                 Raylib.SetShaderValue(shader, offsetLoc, offset, ShaderUniformDataType.Vec2);
             }
@@ -186,33 +191,35 @@ public partial class JuliaSet
             }
 
             // Increment c value with time
-            float amount = GetFrameTime() * incrementSpeed * 0.0005f;
-            c[0] += amount;
-            c[1] += amount;
+            float dc = GetFrameTime() * incrementSpeed * 0.0005f;
+            c[0] += dc;
+            c[1] += dc;
 
             Raylib.SetShaderValue(shader, cLoc, c, ShaderUniformDataType.Vec2);
+            //----------------------------------------------------------------------------------
 
+            // Draw
+            //----------------------------------------------------------------------------------
             // Using a render texture to draw Julia set
-            // Enable drawing to texture
             BeginTextureMode(target);
             ClearBackground(Color.Black);
 
             // Draw a rectangle in shader mode to be used as shader canvas
-            // NOTE: Rectangle uses font Color.white character texture coordinates,
+            // NOTE: Rectangle uses font white character texture coordinates,
             // so shader can not be applied here directly because input vertexTexCoord
             // do not represent full screen coordinates (space where want to apply shader)
             DrawRectangle(0, 0, GetScreenWidth(), GetScreenHeight(), Color.Black);
             EndTextureMode();
 
-            // Draw
-            //----------------------------------------------------------------------------------
             BeginDrawing();
             ClearBackground(Color.Black);
 
             // Draw the saved texture and rendered julia set with shader
             // NOTE: We do not invert texture on Y, already considered inside shader
             BeginShaderMode(shader);
-            DrawTexture(target.Texture, 0, 0, Color.White);
+            // WARNING: If FLAG_WINDOW_HIGHDPI is enabled, HighDPI monitor scaling should be considered
+            // when rendering the RenderTexture2D to fit in the HighDPI scaled Window
+            DrawTextureEx(target.Texture, new Vector2(0.0f, 0.0f), 0.0f, 1.0f, Color.White);
             EndShaderMode();
 
             if (showControls)
@@ -221,7 +228,7 @@ public partial class JuliaSet
                 DrawText("Press KEY_F1 to toggle these controls", 10, 30, 10, Color.RayWhite);
                 DrawText("Press KEYS [1 - 6] to change point of interest", 10, 45, 10, Color.RayWhite);
                 DrawText("Press KEY_LEFT | KEY_RIGHT to change speed", 10, 60, 10, Color.RayWhite);
-                DrawText("Press KEY_SPACE to pause movement animation", 10, 75, 10, Color.RayWhite);
+                DrawText("Press KEY_SPACE to stop movement animation", 10, 75, 10, Color.RayWhite);
                 DrawText("Press KEY_R to recenter the camera", 10, 90, 10, Color.RayWhite);
             }
 

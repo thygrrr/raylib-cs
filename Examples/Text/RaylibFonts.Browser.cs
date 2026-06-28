@@ -42,14 +42,14 @@ public partial class RaylibFonts : IExample
             // NOTE: Textures MUST be loaded after Window initialization (OpenGL context is required)
             _fonts = new Font[MaxFonts];
 
-            _fonts[0] = LoadFont("resources/fonts/alagard.png");
-            _fonts[1] = LoadFont("resources/fonts/pixelplay.png");
-            _fonts[2] = LoadFont("resources/fonts/mecha.png");
-            _fonts[3] = LoadFont("resources/fonts/setback.png");
-            _fonts[4] = LoadFont("resources/fonts/romulus.png");
-            _fonts[5] = LoadFont("resources/fonts/pixantiqua.png");
-            _fonts[6] = LoadFont("resources/fonts/alpha_beta.png");
-            _fonts[7] = LoadFont("resources/fonts/jupiter_crash.png");
+            _fonts[0] = LoadFont("resources/sprite_fonts/alagard.png");
+            _fonts[1] = LoadFont("resources/sprite_fonts/pixelplay.png");
+            _fonts[2] = LoadFont("resources/sprite_fonts/mecha.png");
+            _fonts[3] = LoadFont("resources/sprite_fonts/setback.png");
+            _fonts[4] = LoadFont("resources/sprite_fonts/romulus.png");
+            _fonts[5] = LoadFont("resources/sprite_fonts/pixantiqua.png");
+            _fonts[6] = LoadFont("resources/sprite_fonts/alpha_beta.png");
+            _fonts[7] = LoadFont("resources/sprite_fonts/jupiter_crash.png");
 
             _messages = new string[MaxFonts] {
                 "ALAGARD FONT designed by Hewett Tsoi",
@@ -94,8 +94,8 @@ public partial class RaylibFonts : IExample
             BeginDrawing();
             ClearBackground(Color.RayWhite);
 
-            DrawText("free fonts included with raylib", 250, 20, 20, Color.DarkGray);
-            DrawLine(220, 50, 590, 50, Color.DarkGray);
+            DrawText("free sprite fonts included with raylib", 220, 20, 20, Color.DarkGray);
+            DrawLine(220, 50, 600, 50, Color.DarkGray);
 
             for (int i = 0; i < MaxFonts; i++)
             {

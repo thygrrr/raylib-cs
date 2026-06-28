@@ -71,7 +71,7 @@ public partial class FollowingEyes : IExample
 
         private static void ClampIris(ref Vector2 iris, Vector2 sclera)
         {
-            if (!CheckCollisionPointCircle(iris, sclera, ScleraRadius - 20))
+            if (!CheckCollisionPointCircle(iris, sclera, ScleraRadius - IrisRadius))
             {
                 float angle = MathF.Atan2(iris.Y - sclera.Y, iris.X - sclera.X);
                 iris.X = sclera.X + (ScleraRadius - IrisRadius) * MathF.Cos(angle);

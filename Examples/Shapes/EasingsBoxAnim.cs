@@ -1,11 +1,15 @@
 /*******************************************************************************************
 *
-*   raylib [shapes] example - easings box anim
+*   raylib [shapes] example - easings box
 *
-*   This example has been created using raylib 2.5 (www.raylib.com)
-*   raylib is licensed under an unmodified zlib/libpng license (View raylib.h for details)
+*   Example complexity rating: [★★☆☆] 2/4
 *
-*   Copyright (c) 2014-2019 Ramon Santamaria (@raysan5)
+*   Example originally created with raylib 2.5, last time updated with raylib 2.5
+*
+*   Example licensed under an unmodified zlib/libpng license, which is an OSI-certified,
+*   BSD-like license that allows static linking with closed source software
+*
+*   Copyright (c) 2014-2025 Ramon Santamaria (@raysan5)
 *
 ********************************************************************************************/
 
@@ -24,33 +28,32 @@ public partial class EasingsBoxAnim
         const int screenWidth = 800;
         const int screenHeight = 450;
 
-        InitWindow(screenWidth, screenHeight, "raylib [shapes] example - easings box anim");
+        InitWindow(screenWidth, screenHeight, "raylib [shapes] example - easings box");
 
         // Box variables to be animated with easings
-        Rectangle rec = new(GetScreenWidth() / 2, -100, 100, 100);
+        Rectangle rec = new(GetScreenWidth() / 2.0f, -100, 100, 100);
         float rotation = 0.0f;
         float alpha = 1.0f;
 
         int state = 0;
         int framesCounter = 0;
 
-        SetTargetFPS(60);
+        SetTargetFPS(60);                   // Set our game to run at 60 frames-per-second
         //--------------------------------------------------------------------------------------
 
         // Main game loop
-        while (!WindowShouldClose())
+        while (!WindowShouldClose())        // Detect window close button or ESC key
         {
             // Update
             //----------------------------------------------------------------------------------
             switch (state)
             {
-                // Move box down to center of screen
-                case 0:
-                    framesCounter += 1;
+                case 0:     // Move box down to center of screen
+                    framesCounter++;
 
                     // NOTE: Remember that 3rd parameter of easing function refers to
                     // desired value variation, do not confuse it with expected final value!
-                    rec.Y = Easings.EaseElasticOut(framesCounter, -100, GetScreenHeight() / 2 + 100, 120);
+                    rec.Y = Easings.EaseElasticOut(framesCounter, -100, GetScreenHeight() / 2.0f + 100, 120);
 
                     if (framesCounter >= 120)
                     {
@@ -58,9 +61,8 @@ public partial class EasingsBoxAnim
                         state = 1;
                     }
                     break;
-                // Scale box to an horizontal bar
-                case 1:
-                    framesCounter += 1;
+                case 1:     // Scale box to an horizontal bar
+                    framesCounter++;
                     rec.Height = Easings.EaseBounceOut(framesCounter, 100, -90, 120);
                     rec.Width = Easings.EaseBounceOut(framesCounter, 100, GetScreenWidth(), 120);
 
@@ -70,9 +72,8 @@ public partial class EasingsBoxAnim
                         state = 2;
                     }
                     break;
-                // Rotate horizontal bar rectangle
-                case 2:
-                    framesCounter += 1;
+                case 2:     // Rotate horizontal bar rectangle
+                    framesCounter++;
                     rotation = Easings.EaseQuadOut(framesCounter, 0.0f, 270.0f, 240);
 
                     if (framesCounter >= 240)
@@ -81,9 +82,8 @@ public partial class EasingsBoxAnim
                         state = 3;
                     }
                     break;
-                // Increase bar size to fill all screen
-                case 3:
-                    framesCounter += 1;
+                case 3:     // Increase bar size to fill all screen
+                    framesCounter++;
                     rec.Height = Easings.EaseCircOut(framesCounter, 10, GetScreenWidth(), 120);
 
                     if (framesCounter >= 120)
@@ -92,8 +92,7 @@ public partial class EasingsBoxAnim
                         state = 4;
                     }
                     break;
-                // Fade out animation
-                case 4:
+                case 4:     // Fade out animation
                     framesCounter++;
                     alpha = Easings.EaseSineOut(framesCounter, 1.0f, -1.0f, 160);
 
@@ -110,7 +109,7 @@ public partial class EasingsBoxAnim
             // Reset animation at any moment
             if (IsKeyPressed(KeyboardKey.Space))
             {
-                rec = new Rectangle(GetScreenWidth() / 2, -100, 100, 100);
+                rec = new Rectangle(GetScreenWidth() / 2.0f, -100, 100, 100);
                 rotation = 0.0f;
                 alpha = 1.0f;
                 state = 0;
@@ -127,7 +126,7 @@ public partial class EasingsBoxAnim
                 rec,
                 new Vector2(rec.Width / 2, rec.Height / 2),
                 rotation,
-                ColorAlpha(Color.Black, alpha)
+                Fade(Color.Black, alpha)
             );
             DrawText("PRESS [SPACE] TO RESET BOX ANIMATION!", 10, GetScreenHeight() - 25, 20, Color.LightGray);
 
@@ -137,7 +136,7 @@ public partial class EasingsBoxAnim
 
         // De-Initialization
         //--------------------------------------------------------------------------------------
-        CloseWindow();
+        CloseWindow();        // Close window and OpenGL context
         //--------------------------------------------------------------------------------------
 
         return 0;

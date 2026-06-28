@@ -66,7 +66,7 @@ public partial class SimpleMask : IExample
 
             // Load the shader
             // NOTE: Using GLSL 100 shader version for WebGL1 (OpenGL ES 2.0)
-            _shader = LoadShader("resources/shaders/glsl100/mask.vs", "resources/shaders/glsl100/mask.fs");
+            _shader = LoadShader(null, "resources/shaders/glsl100/mask.fs");
 
             // Load and apply the diffuse texture (colour map)
             _texDiffuse = LoadTexture("resources/plasma.png");
@@ -79,9 +79,8 @@ public partial class SimpleMask : IExample
             maps = materials[0].Maps;
             maps[(int)MaterialMapIndex.Albedo].Texture = _texDiffuse;
 
-            // Using MAP_EMISSION as a spare slot to use for 2nd texture
-            // NOTE: Don't use MAP_IRRADIANCE, MAP_PREFILTER or  MAP_CUBEMAP
-            // as they are bound as cube maps
+            // Using MATERIAL_MAP_EMISSION as a spare slot to use for 2nd texture
+            // NOTE: Don't use MATERIAL_MAP_IRRADIANCE, MATERIAL_MAP_PREFILTER or  MATERIAL_MAP_CUBEMAP as they are bound as cube maps
             _texMask = LoadTexture("resources/mask.png");
 
             materials = _model1.Materials;
@@ -96,7 +95,7 @@ public partial class SimpleMask : IExample
             locs[(int)ShaderLocationIndex.MapEmission] = GetShaderLocation(_shader, "mask");
 
             // Frame is incremented each frame to animate the shader
-            _shaderFrame = GetShaderLocation(_shader, "framesCounter");
+            _shaderFrame = GetShaderLocation(_shader, "frame");
 
             // Apply the shader to the two models
             materials = _model1.Materials;
@@ -113,6 +112,8 @@ public partial class SimpleMask : IExample
 
         public void Update()
         {
+            UpdateCamera(ref _camera, CameraMode.FirstPerson);
+
             _framesCounter++;
             _rotation.X += 0.01f;
             _rotation.Y += 0.005f;
@@ -123,8 +124,6 @@ public partial class SimpleMask : IExample
 
             // Rotate one of the models
             _model1.Transform = MatrixRotateXYZ(_rotation);
-
-            UpdateCamera(ref _camera, CameraMode.Custom);
 
             BeginDrawing();
             ClearBackground(Color.DarkBlue);

@@ -43,7 +43,7 @@ public partial class ModelLoading : IExample
             // Define the camera to look into our 3d world
             _camera = new();
             _camera.Position = new Vector3(50.0f, 50.0f, 50.0f);
-            _camera.Target = new Vector3(0.0f, 10.0f, 0.0f);
+            _camera.Target = new Vector3(0.0f, 12.0f, 0.0f);
             _camera.Up = new Vector3(0.0f, 1.0f, 0.0f);
             _camera.FovY = 45.0f;
             _camera.Projection = CameraProjection.Perspective;

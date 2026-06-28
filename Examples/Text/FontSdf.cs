@@ -1,11 +1,15 @@
 /*******************************************************************************************
 *
-*   raylib [text] example - TTF loading and usage
+*   raylib [text] example - font sdf
 *
-*   This example has been created using raylib 1.3.0 (www.raylib.com)
-*   raylib is licensed under an unmodified zlib/libpng license (View raylib.h for details)
+*   Example complexity rating: [★★★☆] 3/4
 *
-*   Copyright (c) 2015 Ramon Santamaria (@raysan5)
+*   Example originally created with raylib 1.3, last time updated with raylib 4.0
+*
+*   Example licensed under an unmodified zlib/libpng license, which is an OSI-certified,
+*   BSD-like license that allows static linking with closed source software
+*
+*   Copyright (c) 2015-2025 Ramon Santamaria (@raysan5)
 *
 ********************************************************************************************/
 
@@ -18,6 +22,8 @@ namespace Examples.Text;
 
 public partial class FontSdf
 {
+    const int GlslVersion = 330;
+
     public unsafe static int Main()
     {
         // Initialization
@@ -25,9 +31,10 @@ public partial class FontSdf
         const int screenWidth = 800;
         const int screenHeight = 450;
 
-        InitWindow(screenWidth, screenHeight, "raylib [text] example - SDF fonts");
+        InitWindow(screenWidth, screenHeight, "raylib [text] example - font sdf");
 
         // NOTE: Textures/Fonts MUST be loaded after Window initialization (OpenGL context is required)
+
         string msg = "Signed Distance Fields";
 
         // Loading file to memory
@@ -40,9 +47,9 @@ public partial class FontSdf
         fontDefault.GlyphCount = 95;
 
         // Loading font data from memory data
-        // Parameters > font size: 16, no chars array provided (0), chars count: 95 (autogenerate chars array)
+        // Parameters > font size: 16, no glyphs array provided (0), glyphs count: 95 (autogenerate chars array)
         fontDefault.Glyphs = LoadFontData(fileData, (int)fileSize, 16, null, 95, FontType.Default, &fontDefault.GlyphCount);
-        // Parameters > chars count: 95, font size: 16, chars padding in image: 4 px, pack method: 0 (default)
+        // Parameters > glyphs count: 95, font size: 16, glyphs padding in image: 4 px, pack method: 0 (default)
         Image atlas = GenImageFontAtlas(fontDefault.Glyphs, &fontDefault.Recs, 95, 16, 4, 0);
         fontDefault.Texture = LoadTextureFromImage(atlas);
         UnloadImage(atlas);
@@ -51,32 +58,29 @@ public partial class FontSdf
         Font fontSDF = new();
         fontSDF.BaseSize = 16;
         fontSDF.GlyphCount = 95;
-        // Parameters > font size: 16, no chars array provided (0), chars count: 0 (defaults to 95)
+        // Parameters > font size: 16, no glyphs array provided (0), glyphs count: 0 (defaults to 95)
         fontSDF.Glyphs = LoadFontData(fileData, (int)fileSize, 16, null, 0, FontType.Sdf, &fontDefault.GlyphCount);
-        // Parameters > chars count: 95, font size: 16, chars padding in image: 0 px, pack method: 1 (Skyline algorythm)
+        // Parameters > glyphs count: 95, font size: 16, glyphs padding in image: 0 px, pack method: 1 (Skyline algorythm)
         atlas = GenImageFontAtlas(fontSDF.Glyphs, &fontSDF.Recs, 95, 16, 0, 1);
         fontSDF.Texture = LoadTextureFromImage(atlas);
         UnloadImage(atlas);
 
-        // Free memory from loaded file
-        UnloadFileData(fileData);
+        UnloadFileData(fileData);      // Free memory from loaded file
 
         // Load SDF required shader (we use default vertex shader)
-        Shader shader = LoadShader(null, "resources/shaders/glsl330/sdf.fs");
-        // Required for SDF font
-        SetTextureFilter(fontSDF.Texture, TextureFilter.Bilinear);
+        Shader shader = LoadShader(null, $"resources/shaders/glsl{GlslVersion}/sdf.fs");
+        SetTextureFilter(fontSDF.Texture, TextureFilter.Bilinear);    // Required for SDF font
 
-        Vector2 fontPosition = new(40, screenHeight / 2 - 50);
+        Vector2 fontPosition = new(40, screenHeight / 2.0f - 50);
         Vector2 textSize = new(0.0f);
         float fontSize = 16.0f;
-        // 0 - fontDefault, 1 - fontSDF
-        int currentFont = 0;
+        int currentFont = 0;            // 0 - fontDefault, 1 - fontSDF
 
-        SetTargetFPS(60);
+        SetTargetFPS(60);               // Set our game to run at 60 frames-per-second
         //--------------------------------------------------------------------------------------
 
         // Main game loop
-        while (!WindowShouldClose())
+        while (!WindowShouldClose())    // Detect window close button or ESC key
         {
             // Update
             //----------------------------------------------------------------------------------
@@ -117,9 +121,9 @@ public partial class FontSdf
             if (currentFont == 1)
             {
                 // NOTE: SDF fonts require a custom SDf shader to compute fragment color
-                BeginShaderMode(shader);
+                BeginShaderMode(shader);    // Activate SDF font shader
                 DrawTextEx(fontSDF, msg, fontPosition, fontSize, 0, Color.Black);
-                EndShaderMode();
+                EndShaderMode();            // Activate our default shader for next drawings
 
                 DrawTexture(fontSDF.Texture, 10, 10, Color.Black);
             }
@@ -139,10 +143,10 @@ public partial class FontSdf
             }
 
             DrawText("FONT SIZE: 16.0", GetScreenWidth() - 240, 20, 20, Color.DarkGray);
-            DrawText($"RENDER SIZE: {fontSize:2F}", GetScreenWidth() - 240, 50, 20, Color.DarkGray);
+            DrawText($"RENDER SIZE: {fontSize:00.00}", GetScreenWidth() - 240, 50, 20, Color.DarkGray);
             DrawText("Use MOUSE WHEEL to SCALE TEXT!", GetScreenWidth() - 240, 90, 10, Color.DarkGray);
 
-            DrawText("PRESS SPACE to USE SDF FONT VERSION!", 340, GetScreenHeight() - 30, 20, Color.Maroon);
+            DrawText("HOLD SPACE to USE SDF FONT VERSION!", 340, GetScreenHeight() - 30, 20, Color.Maroon);
 
             EndDrawing();
             //----------------------------------------------------------------------------------
@@ -150,11 +154,12 @@ public partial class FontSdf
 
         // De-Initialization
         //--------------------------------------------------------------------------------------
-        UnloadFont(fontDefault);
-        UnloadFont(fontSDF);
-        UnloadShader(shader);
+        UnloadFont(fontDefault);    // Default font unloading
+        UnloadFont(fontSDF);        // SDF font unloading
 
-        CloseWindow();
+        UnloadShader(shader);       // Unload SDF shader
+
+        CloseWindow();              // Close window and OpenGL context
         //--------------------------------------------------------------------------------------
 
         return 0;

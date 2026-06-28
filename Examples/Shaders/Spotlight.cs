@@ -1,29 +1,32 @@
 /*******************************************************************************************
 *
-*   raylib [shaders] example - Simple shader mask
+*   raylib [shaders] example - spotlight rendering
 *
-*   This example has been created using raylib 2.5 (www.raylib.com)
-*   raylib is licensed under an unmodified zlib/libpng license (View raylib.h for details)
+*   Example complexity rating: [★★☆☆] 2/4
 *
-*   Example contributed by Chris Camacho (@chriscamacho -  http://bedroomcoders.co.uk/)
-*   and reviewed by Ramon Santamaria (@raysan5)
+*   Example originally created with raylib 2.5, last time updated with raylib 3.7
 *
-*   Copyright (c) 2019 Chris Camacho (@chriscamacho) and Ramon Santamaria (@raysan5)
+*   Example contributed by Chris Camacho (@chriscamacho) and reviewed by Ramon Santamaria (@raysan5)
+*
+*   Example licensed under an unmodified zlib/libpng license, which is an OSI-certified,
+*   BSD-like license that allows static linking with closed source software
+*
+*   Copyright (c) 2019-2025 Chris Camacho (@chriscamacho) and Ramon Santamaria (@raysan5)
 *
 ********************************************************************************************
 *
-*   The shader makes alpha holes in the forground to give the apearance of a top
+*   The shader makes alpha holes in the forground to give the appearance of a top
 *   down look at a spotlight casting a pool of light...
 *
 *   The right hand side of the screen there is just enough light to see whats
 *   going on without the spot light, great for a stealth type game where you
-*   have to avoid the spotlights.
+*   have to avoid the spotlights
 *
-*   The left hand side of the screen is in pitch dark except for where the spotlights are.
+*   The left hand side of the screen is in pitch dark except for where the spotlights are
 *
 *   Although this example doesn't scale like the letterbox example, you could integrate
 *   the two techniques, but by scaling the actual colour of the render texture rather
-*   than using alpha as a mask.
+*   than using alpha as a mask
 *
 ********************************************************************************************/
 
@@ -35,6 +38,8 @@ namespace Examples.Shaders;
 
 public partial class Spotlight
 {
+    const int GlslVersion = 330;
+
     // NOTE: It must be the same as define in shader
     const int MaxSpots = 3;
     const int MaxStars = 400;
@@ -67,7 +72,7 @@ public partial class Spotlight
         const int screenWidth = 800;
         const int screenHeight = 450;
 
-        InitWindow(screenWidth, screenHeight, "raylib - shader spotlight");
+        InitWindow(screenWidth, screenHeight, "raylib [shaders] example - spotlight rendering");
         HideCursor();
 
         Texture2D texRay = LoadTexture("resources/raysan.png");
@@ -91,7 +96,7 @@ public partial class Spotlight
         int frameCounter = 0;
 
         // Use default vert shader
-        Shader shdrSpot = LoadShader(null, "resources/shaders/glsl330/spotlight.fs");
+        Shader shdrSpot = LoadShader(null, $"resources/shaders/glsl{GlslVersion}/spotlight.fs");
 
         // Get the locations of spots in the shader
         Spot[] spots = new Spot[MaxSpots];
@@ -108,13 +113,13 @@ public partial class Spotlight
         }
 
         // Tell the shader how wide the screen is so we can have
-        // a pitch Color.black half and a dimly lit half.
+        // a pitch black half and a dimly lit half
         int wLoc = GetShaderLocation(shdrSpot, "screenWidth");
         float sw = (float)GetScreenWidth();
         Raylib.SetShaderValue(shdrSpot, wLoc, sw, ShaderUniformDataType.Float);
 
-        // Randomise the locations and velocities of the spotlights
-        // and initialise the shader locations
+        // Randomize the locations and velocities of the spotlights
+        // and initialize the shader locations
         for (int i = 0; i < MaxSpots; i++)
         {
             spots[i].pos.X = GetRandomValue(64, screenWidth - 64);
@@ -123,8 +128,8 @@ public partial class Spotlight
 
             while ((MathF.Abs(spots[i].vel.X) + MathF.Abs(spots[i].vel.Y)) < 2)
             {
-                spots[i].vel.X = GetRandomValue(-40, 40) / 10.0f;
-                spots[i].vel.Y = GetRandomValue(-40, 40) / 10.0f;
+                spots[i].vel.X = GetRandomValue(-400, 40) / 25.0f;
+                spots[i].vel.Y = GetRandomValue(-400, 40) / 25.0f;
             }
 
             spots[i].inner = 28.0f * (i + 1);
@@ -150,11 +155,11 @@ public partial class Spotlight
             );
         }
 
-        SetTargetFPS(60);
+        SetTargetFPS(60);               // Set  to run at 60 frames-per-second
         //--------------------------------------------------------------------------------------
 
         // Main game loop
-        while (!WindowShouldClose())
+        while (!WindowShouldClose())    // Detect window close button or ESC key
         {
             // Update
             //----------------------------------------------------------------------------------
@@ -217,7 +222,7 @@ public partial class Spotlight
             // Draw stars and bobs
             for (int n = 0; n < MaxStars; n++)
             {
-                // MathF.Single pixel is just too small these days!
+                // Single pixel is just too small these days!
                 DrawRectangle((int)stars[n].pos.X, (int)stars[n].pos.Y, 2, 2, Color.White);
             }
 
@@ -242,7 +247,7 @@ public partial class Spotlight
             DrawFPS(10, 10);
 
             DrawText("Move the mouse!", 10, 30, 20, Color.Green);
-            DrawText("Pitch Color.Black", (int)(screenWidth * 0.2f), screenHeight / 2, 20, Color.Green);
+            DrawText("Pitch Black", (int)(screenWidth * 0.2f), screenHeight / 2, 20, Color.Green);
             DrawText("Dark", (int)(screenWidth * 0.66f), screenHeight / 2, 20, Color.Green);
 
             EndDrawing();
@@ -270,7 +275,7 @@ public partial class Spotlight
             s.vel.Y = (float)GetRandomValue(-1000, 1000) / 100.0f;
         } while (!((MathF.Abs(s.vel.X) + (MathF.Abs(s.vel.Y)) > 1)));
 
-        s.pos += s.pos + (s.vel * new Vector2(8.0f, 8.0f));
+        s.pos += s.vel * new Vector2(8.0f, 8.0f);
     }
 
     static void UpdateStar(ref Star s)

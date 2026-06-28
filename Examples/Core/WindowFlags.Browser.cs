@@ -31,12 +31,12 @@ public partial class WindowFlags : IExample
 
         private Vector2 _ballPosition;
         private Vector2 _ballSpeed;
-        private int _ballRadius;
+        private float _ballRadius;
         private int _framesCounter;
 
         public void Init()
         {
-            _ballPosition = new Vector2(GetScreenWidth() / 2, GetScreenHeight() / 2);
+            _ballPosition = new Vector2(GetScreenWidth() / 2.0f, GetScreenHeight() / 2.0f);
             _ballSpeed = new Vector2(5.0f, 4.0f);
             _ballRadius = 20;
 
@@ -176,6 +176,11 @@ public partial class WindowFlags : IExample
                 }
             }
 
+            if (IsKeyPressed(KeyboardKey.B))
+            {
+                ToggleBorderlessWindowed();
+            }
+
             // Bouncing ball logic
             _ballPosition.X += _ballSpeed.X;
             _ballPosition.Y += _ballSpeed.Y;
@@ -220,12 +225,13 @@ public partial class WindowFlags : IExample
             DrawWindowState(TopmostWindow, "[T] FLAG_WINDOW_TOPMOST: ", 10, 220, 10);
             DrawWindowState(AlwaysRunWindow, "[A] FLAG_WINDOW_ALWAYS_RUN: ", 10, 240, 10);
             DrawWindowState(VSyncHint, "[V] FLAG_VSYNC_HINT: ", 10, 260, 10);
+            DrawWindowState(BorderlessWindowMode, "[B] FLAG_BORDERLESS_WINDOWED_MODE: ", 10, 280, 10);
 
-            DrawText("Following flags can only be set before window creation:", 10, 300, 10, Color.Gray);
+            DrawText("Following flags can only be set before window creation:", 10, 320, 10, Color.Gray);
 
-            DrawWindowState(HighDpiWindow, "[F] FLAG_WINDOW_HIGHDPI: ", 10, 320, 10);
-            DrawWindowState(TransparentWindow, "[F] FLAG_WINDOW_TRANSPARENT: ", 10, 340, 10);
-            DrawWindowState(Msaa4xHint, "[F] FLAG_MSAA_4X_HINT: ", 10, 360, 10);
+            DrawWindowState(HighDpiWindow, "FLAG_WINDOW_HIGHDPI: ", 10, 340, 10);
+            DrawWindowState(TransparentWindow, "FLAG_WINDOW_TRANSPARENT: ", 10, 360, 10);
+            DrawWindowState(Msaa4xHint, "FLAG_MSAA_4X_HINT: ", 10, 380, 10);
 
             EndDrawing();
         }
@@ -241,11 +247,11 @@ public partial class WindowFlags : IExample
 
             if (Raylib.IsWindowState(flag))
             {
-                DrawText($"{text} on", posX, posY, fontSize, onColor);
+                DrawText($"{text}on", posX, posY, fontSize, onColor);
             }
             else
             {
-                DrawText($"{text} off", posX, posY, fontSize, offColor);
+                DrawText($"{text}off", posX, posY, fontSize, offColor);
             }
         }
     }

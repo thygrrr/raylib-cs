@@ -1,13 +1,17 @@
 /*******************************************************************************************
 *
-*   raylib [shapes] example - rectangle scaling by mouse
+*   raylib [shapes] example - rectangle scaling
 *
-*   This example has been created using raylib 2.5 (www.raylib.com)
-*   raylib is licensed under an unmodified zlib/libpng license (View raylib.h for details)
+*   Example complexity rating: [★★☆☆] 2/4
+*
+*   Example originally created with raylib 2.5, last time updated with raylib 2.5
 *
 *   Example contributed by Vlad Adrian (@demizdor) and reviewed by Ramon Santamaria (@raysan5)
 *
-*   Copyright (c) 2018 Vlad Adrian (@demizdor) and Ramon Santamaria (@raysan5)
+*   Example licensed under an unmodified zlib/libpng license, which is an OSI-certified,
+*   BSD-like license that allows static linking with closed source software
+*
+*   Copyright (c) 2018-2025 Vlad Adrian (@demizdor) and Ramon Santamaria (@raysan5)
 *
 ********************************************************************************************/
 
@@ -27,19 +31,20 @@ public partial class RectangleScaling
         const int screenWidth = 800;
         const int screenHeight = 450;
 
-        InitWindow(screenWidth, screenHeight, "raylib [shapes] example - rectangle scaling mouse");
+        InitWindow(screenWidth, screenHeight, "raylib [shapes] example - rectangle scaling");
 
         Rectangle rec = new(100, 100, 200, 80);
+
         Vector2 mousePosition = new(0, 0);
 
         bool mouseScaleReady = false;
         bool mouseScaleMode = false;
 
-        SetTargetFPS(60);
+        SetTargetFPS(60);               // Set our game to run at 60 frames-per-second
         //--------------------------------------------------------------------------------------
 
         // Main game loop
-        while (!WindowShouldClose())
+        while (!WindowShouldClose())    // Detect window close button or ESC key
         {
             // Update
             //----------------------------------------------------------------------------------
@@ -52,8 +57,7 @@ public partial class RectangleScaling
                 MOUSE_SCALE_MARK_SIZE
             );
 
-            if (CheckCollisionPointRec(mousePosition, rec) &&
-                CheckCollisionPointRec(mousePosition, area))
+            if (CheckCollisionPointRec(mousePosition, area))
             {
                 mouseScaleReady = true;
                 if (IsMouseButtonPressed(MouseButton.Left))
@@ -73,6 +77,7 @@ public partial class RectangleScaling
                 rec.Width = (mousePosition.X - rec.X);
                 rec.Height = (mousePosition.Y - rec.Y);
 
+                // Check minimum rec size
                 if (rec.Width < MOUSE_SCALE_MARK_SIZE)
                 {
                     rec.Width = MOUSE_SCALE_MARK_SIZE;
@@ -80,6 +85,16 @@ public partial class RectangleScaling
                 if (rec.Height < MOUSE_SCALE_MARK_SIZE)
                 {
                     rec.Height = MOUSE_SCALE_MARK_SIZE;
+                }
+
+                // Check maximum rec size
+                if (rec.Width > (GetScreenWidth() - rec.X))
+                {
+                    rec.Width = GetScreenWidth() - rec.X;
+                }
+                if (rec.Height > (GetScreenHeight() - rec.Y))
+                {
+                    rec.Height = GetScreenHeight() - rec.Y;
                 }
 
                 if (IsMouseButtonReleased(MouseButton.Left))
@@ -95,7 +110,8 @@ public partial class RectangleScaling
             ClearBackground(Color.RayWhite);
 
             DrawText("Scale rectangle dragging from bottom-right corner!", 10, 10, 20, Color.Gray);
-            DrawRectangleRec(rec, ColorAlpha(Color.Green, 0.5f));
+
+            DrawRectangleRec(rec, Fade(Color.Green, 0.5f));
 
             if (mouseScaleReady)
             {
@@ -114,7 +130,7 @@ public partial class RectangleScaling
 
         // De-Initialization
         //--------------------------------------------------------------------------------------
-        CloseWindow();
+        CloseWindow();        // Close window and OpenGL context
         //--------------------------------------------------------------------------------------
 
         return 0;

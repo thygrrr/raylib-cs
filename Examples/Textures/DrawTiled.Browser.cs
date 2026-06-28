@@ -53,8 +53,7 @@ public partial class DrawTiled : IExample
             // NOTE: Textures MUST be loaded after Window initialization (OpenGL context is required)
             _texPattern = LoadTexture("resources/patterns.png");
 
-            // Makes the texture smoother when upscaled
-            SetTextureFilter(_texPattern, TextureFilter.Trilinear);
+            SetTextureFilter(_texPattern, TextureFilter.Bilinear); // Makes the texture smoother when upscaled
 
             // Coordinates for all patterns inside the texture
             _recPattern = new[] {
@@ -219,15 +218,15 @@ public partial class DrawTiled : IExample
             }
 
             DrawText("Scale (UP/DOWN to change)", 2 + MarginSize, 80 + 256 + MarginSize, 10, Color.Black);
-            DrawText($"{_scale}x", 2 + MarginSize, 92 + 256 + MarginSize, 20, Color.Black);
+            DrawText($"{_scale:F2}x", 2 + MarginSize, 92 + 256 + MarginSize, 20, Color.Black);
 
             DrawText("Rotation (LEFT/RIGHT to change)", 2 + MarginSize, 122 + 256 + MarginSize, 10, Color.Black);
-            DrawText($"{_rotation} degrees", 2 + MarginSize, 134 + 256 + MarginSize, 20, Color.Black);
+            DrawText($"{_rotation:F0} degrees", 2 + MarginSize, 134 + 256 + MarginSize, 20, Color.Black);
 
             DrawText("Press [SPACE] to reset", 2 + MarginSize, 164 + 256 + MarginSize, 10, Color.DarkBlue);
 
             // Draw FPS
-            DrawText($"{GetFPS()}", 2 + MarginSize, 2 + MarginSize, 20, Color.Black);
+            DrawText($"{GetFPS()} FPS", 2 + MarginSize, 2 + MarginSize, 20, Color.Black);
             EndDrawing();
         }
 

@@ -1,13 +1,17 @@
 /*******************************************************************************************
 *
-*   raylib [models] example - Waving cubes
+*   raylib [models] example - waving cubes
 *
-*   This example has been created using raylib 2.5 (www.raylib.com)
-*   raylib is licensed under an unmodified zlib/libpng license (View raylib.h for details)
+*   Example complexity rating: [★★★☆] 3/4
+*
+*   Example originally created with raylib 2.5, last time updated with raylib 3.7
 *
 *   Example contributed by Codecat (@codecat) and reviewed by Ramon Santamaria (@raysan5)
 *
-*   Copyright (c) 2019 Codecat (@codecat) and Ramon Santamaria (@raysan5)
+*   Example licensed under an unmodified zlib/libpng license, which is an OSI-certified,
+*   BSD-like license that allows static linking with closed source software
+*
+*   Copyright (c) 2019-2025 Codecat (@codecat) and Ramon Santamaria (@raysan5)
 *
 ********************************************************************************************/
 
@@ -30,11 +34,11 @@ public partial class WavingCubes
 
         // Initialize the camera
         Camera3D camera = new();
-        camera.Position = new Vector3(30.0f, 20.0f, 30.0f);
-        camera.Target = new Vector3(0.0f, 0.0f, 0.0f);
-        camera.Up = new Vector3(0.0f, 1.0f, 0.0f);
-        camera.FovY = 70.0f;
-        camera.Projection = CameraProjection.Perspective;
+        camera.Position = new Vector3(30.0f, 20.0f, 30.0f); // Camera position
+        camera.Target = new Vector3(0.0f, 0.0f, 0.0f);      // Camera looking at point
+        camera.Up = new Vector3(0.0f, 1.0f, 0.0f);          // Camera up vector (rotation towards target)
+        camera.FovY = 70.0f;                                // Camera field-of-view Y
+        camera.Projection = CameraProjection.Perspective;   // Camera projection type
 
         // Specify the amount of blocks in each direction
         const int numBlocks = 15;
@@ -87,6 +91,8 @@ public partial class WavingCubes
                         );
 
                         // Pick a color with a hue depending on cube position for the rainbow color effect
+                        // NOTE: This function is quite costly to be done per cube and frame,
+                        // pre-catching the results into a separate array could improve performance
                         Color cubeColor = ColorFromHSV((float)(((x + y + z) * 18) % 360), 0.75f, 0.9f);
 
                         // Calculate cube size

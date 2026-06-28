@@ -1,20 +1,24 @@
 /*******************************************************************************************
 *
-*   raylib [shaders] example - Texture Waves
+*   raylib [shaders] example - texture waves
+*
+*   Example complexity rating: [★★☆☆] 2/4
 *
 *   NOTE: This example requires raylib OpenGL 3.3 or ES2 versions for shaders support,
-*         OpenGL 1.1 does not support shaders, recompile raylib to OpenGL 3.3 version.
+*         OpenGL 1.1 does not support shaders, recompile raylib to OpenGL 3.3 version
 *
 *   NOTE: Shaders used in this example are #version 330 (OpenGL 3.3), to test this example
 *         on OpenGL ES 2.0 platforms (Android, Raspberry Pi, HTML5), use #version 100 shaders
 *         raylib comes with shaders ready for both versions, check raylib/shaders install folder
 *
-*   This example has been created using raylib 2.5 (www.raylib.com)
-*   raylib is licensed under an unmodified zlib/libpng license (View raylib.h for details)
+*   Example originally created with raylib 2.5, last time updated with raylib 3.7
 *
 *   Example contributed by Anata (@anatagawa) and reviewed by Ramon Santamaria (@raysan5)
 *
-*   Copyright (c) 2019 Anata (@anatagawa) and Ramon Santamaria (@raysan5)
+*   Example licensed under an unmodified zlib/libpng license, which is an OSI-certified,
+*   BSD-like license that allows static linking with closed source software
+*
+*   Copyright (c) 2019-2025 Anata (@anatagawa) and Ramon Santamaria (@raysan5)
 *
 ********************************************************************************************/
 
@@ -41,7 +45,7 @@ public partial class TextureWaves
         // Load shader and setup location points and values
         Shader shader = LoadShader(null, $"resources/shaders/glsl{GlslVersion}/wave.fs");
 
-        int secondsLoc = GetShaderLocation(shader, "secondes");
+        int secondsLoc = GetShaderLocation(shader, "seconds");
         int freqXLoc = GetShaderLocation(shader, "freqX");
         int freqYLoc = GetShaderLocation(shader, "freqY");
         int ampXLoc = GetShaderLocation(shader, "ampX");
@@ -73,11 +77,11 @@ public partial class TextureWaves
 
         float seconds = 0.0f;
 
-        SetTargetFPS(60);
+        SetTargetFPS(60);               // Set our game to run at 60 frames-per-second
         //--------------------------------------------------------------------------------------
 
         // Main game loop
-        while (!WindowShouldClose())
+        while (!WindowShouldClose())    // Detect window close button or ESC key
         {
             // Update
             //----------------------------------------------------------------------------------
@@ -104,10 +108,10 @@ public partial class TextureWaves
 
         // De-Initialization
         //--------------------------------------------------------------------------------------
-        UnloadShader(shader);
-        UnloadTexture(texture);
+        UnloadShader(shader);         // Unload shader
+        UnloadTexture(texture);       // Unload texture
 
-        CloseWindow();
+        CloseWindow();              // Close window and OpenGL context
         //--------------------------------------------------------------------------------------
 
         return 0;

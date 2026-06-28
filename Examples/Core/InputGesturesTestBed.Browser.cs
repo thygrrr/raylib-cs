@@ -409,6 +409,7 @@ public partial class InputGesturesTestBed : IExample
         {
         }
 
+        // Get text string for gesture value
         private static string GetGestureName(int gesture)
         {
             switch (gesture)

@@ -28,20 +28,19 @@ public partial class InputMouse
         const int screenWidth = 800;
         const int screenHeight = 450;
 
-        InitWindow(screenWidth, screenHeight, "raylib [core] example - mouse input");
+        InitWindow(screenWidth, screenHeight, "raylib [core] example - input mouse");
 
         Vector2 ballPosition = new(-100.0f, -100.0f);
         Color ballColor = Color.DarkBlue;
 
-        SetTargetFPS(60);
+        SetTargetFPS(60);               // Set our game to run at 60 frames-per-second
         //---------------------------------------------------------------------------------------
 
         // Main game loop
-        while (!WindowShouldClose())
+        while (!WindowShouldClose())    // Detect window close button or ESC key
         {
             // Update
             //----------------------------------------------------------------------------------
-
             if (IsKeyPressed(KeyboardKey.H))
             {
                 if (IsCursorHidden())
@@ -67,6 +66,10 @@ public partial class InputMouse
             else if (IsMouseButtonPressed(MouseButton.Right))
             {
                 ballColor = Color.DarkBlue;
+            }
+            else if (IsMouseButtonPressed(MouseButton.Side))
+            {
+                ballColor = Color.Purple;
             }
             else if (IsMouseButtonPressed(MouseButton.Extra))
             {
@@ -107,7 +110,7 @@ public partial class InputMouse
 
         // De-Initialization
         //--------------------------------------------------------------------------------------
-        CloseWindow();
+        CloseWindow();        // Close window and OpenGL context
         //--------------------------------------------------------------------------------------
 
         return 0;

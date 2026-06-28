@@ -1,20 +1,25 @@
 /*******************************************************************************************
 *
-*   raylib [text] example - Sprite font loading
+*   raylib [text] example - font spritefont
 *
-*   Loaded sprite fonts have been generated following XNA SpriteFont conventions:
+*   Example complexity rating: [★☆☆☆] 1/4
+*
+*   NOTE: Sprite fonts should be generated following this conventions:
+*
 *     - Characters must be ordered starting with character 32 (Space)
 *     - Every character must be contained within the same Rectangle height
-*     - Every character and every line must be separated the same distance
-*     - Rectangles must be defined by a magenta color background
+*     - Every character and every line must be separated by the same distance (margin/padding)
+*     - Rectangles must be defined by a MAGENTA color background
 *
-*   If following this constraints, a font can be provided just by an image,
-*   this is quite handy to avoid additional information files (like BMFonts use).
+*   Following those constraints, a font can be provided just by an image,
+*   this is quite handy to avoid additional font descriptor files (like BMFonts use)
 *
-*   This example has been created using raylib 1.0 (www.raylib.com)
-*   raylib is licensed under an unmodified zlib/libpng license (View raylib.h for details)
+*   Example originally created with raylib 1.0, last time updated with raylib 1.0
 *
-*   Copyright (c) 2014 Ramon Santamaria (@raysan5)
+*   Example licensed under an unmodified zlib/libpng license, which is an OSI-certified,
+*   BSD-like license that allows static linking with closed source software
+*
+*   Copyright (c) 2014-2025 Ramon Santamaria (@raysan5)
 *
 ********************************************************************************************/
 
@@ -32,16 +37,16 @@ public partial class FontSpritefont
         const int screenWidth = 800;
         const int screenHeight = 450;
 
-        InitWindow(screenWidth, screenHeight, "raylib [text] example - sprite font loading");
+        InitWindow(screenWidth, screenHeight, "raylib [text] example - font spritefont");
 
         string msg1 = "THIS IS A custom SPRITE FONT...";
         string msg2 = "...and this is ANOTHER CUSTOM font...";
         string msg3 = "...and a THIRD one! GREAT! :D";
 
         // NOTE: Textures/Fonts MUST be loaded after Window initialization (OpenGL context is required)
-        Font font1 = LoadFont("resources/fonts/custom_mecha.png");
-        Font font2 = LoadFont("resources/fonts/custom_alagard.png");
-        Font font3 = LoadFont("resources/fonts/custom_jupiter_crash.png");
+        Font font1 = LoadFont("resources/custom_mecha.png");          // Font loading
+        Font font2 = LoadFont("resources/custom_alagard.png");        // Font loading
+        Font font3 = LoadFont("resources/custom_jupiter_crash.png");  // Font loading
 
         Vector2 fontPosition1 = new(
             screenWidth / 2 - MeasureTextEx(font1, msg1, font1.BaseSize, -3).X / 2,
@@ -58,11 +63,11 @@ public partial class FontSpritefont
             screenHeight / 2 - font3.BaseSize / 2 + 50
         );
 
-        SetTargetFPS(60);
+        SetTargetFPS(60);               // Set our game to run at 60 frames-per-second
         //--------------------------------------------------------------------------------------
 
         // Main game loop
-        while (!WindowShouldClose())
+        while (!WindowShouldClose())    // Detect window close button or ESC key
         {
             // Update
             //----------------------------------------------------------------------------------
@@ -84,11 +89,11 @@ public partial class FontSpritefont
 
         // De-Initialization
         //--------------------------------------------------------------------------------------
-        UnloadFont(font1);
-        UnloadFont(font2);
-        UnloadFont(font3);
+        UnloadFont(font1);      // Font unloading
+        UnloadFont(font2);      // Font unloading
+        UnloadFont(font3);      // Font unloading
 
-        CloseWindow();
+        CloseWindow();          // Close window and OpenGL context
         //--------------------------------------------------------------------------------------
 
         return 0;

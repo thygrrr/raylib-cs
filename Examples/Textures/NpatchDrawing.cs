@@ -1,15 +1,19 @@
 /*******************************************************************************************
 *
-*   raylib [textures] example - N-patch drawing
+*   raylib [textures] example - npatch drawing
+*
+*   Example complexity rating: [★★★☆] 3/4
 *
 *   NOTE: Images are loaded in CPU memory (RAM); textures are loaded in GPU memory (VRAM)
 *
-*   This example has been created using raylib 2.0 (www.raylib.com)
-*   raylib is licensed under an unmodified zlib/libpng license (View raylib.h for details)
+*   Example originally created with raylib 2.0, last time updated with raylib 2.5
 *
 *   Example contributed by Jorge A. Gomes (@overdev) and reviewed by Ramon Santamaria (@raysan5)
 *
-*   Copyright (c) 2018 Jorge A. Gomes (@overdev) and Ramon Santamaria (@raysan5)
+*   Example licensed under an unmodified zlib/libpng license, which is an OSI-certified,
+*   BSD-like license that allows static linking with closed source software
+*
+*   Copyright (c) 2018-2025 Jorge A. Gomes (@overdev) and Ramon Santamaria (@raysan5)
 *
 ********************************************************************************************/
 
@@ -28,7 +32,7 @@ public partial class NpatchDrawing
         const int screenWidth = 800;
         const int screenHeight = 450;
 
-        InitWindow(screenWidth, screenHeight, "raylib [textures] example - N-patch drawing");
+        InitWindow(screenWidth, screenHeight, "raylib [textures] example - npatch drawing");
 
         // NOTE: Textures MUST be loaded after Window initialization (OpenGL context is required)
         Texture2D nPatchTexture = LoadTexture("resources/ninepatch_button.png");
@@ -42,7 +46,7 @@ public partial class NpatchDrawing
         Rectangle dstRecH = new(160.0f, 93.0f, 32.0f, 32.0f);
         Rectangle dstRecV = new(92.0f, 160.0f, 32.0f, 32.0f);
 
-        // A 9-patch (NPT_9PATCH) changes its sizes in both axis
+        // A 9-patch (NPATCH_NINE_PATCH) changes its sizes in both axis
         NPatchInfo ninePatchInfo1 = new NPatchInfo
         {
             Source = new Rectangle(0.0f, 0.0f, 64.0f, 64.0f),
@@ -62,7 +66,7 @@ public partial class NpatchDrawing
             Layout = NPatchLayout.NinePatch
         };
 
-        // A horizontal 3-patch (NPT_3PATCH_HORIZONTAL) changes its sizes along the x axis only
+        // A horizontal 3-patch (NPATCH_THREE_PATCH_HORIZONTAL) changes its sizes along the x axis only
         NPatchInfo h3PatchInfo = new NPatchInfo
         {
             Source = new Rectangle(0.0f, 64.0f, 64.0f, 64.0f),
@@ -73,7 +77,7 @@ public partial class NpatchDrawing
             Layout = NPatchLayout.ThreePatchHorizontal
         };
 
-        // A vertical 3-patch (NPT_3PATCH_VERTICAL) changes its sizes along the y axis only
+        // A vertical 3-patch (NPATCH_THREE_PATCH_VERTICAL) changes its sizes along the y axis only
         NPatchInfo v3PatchInfo = new NPatchInfo
         {
             Source = new Rectangle(0.0f, 192.0f, 64.0f, 64.0f),
@@ -88,7 +92,7 @@ public partial class NpatchDrawing
         //---------------------------------------------------------------------------------------
 
         // Main game loop
-        while (!WindowShouldClose())
+        while (!WindowShouldClose())    // Detect window close button or ESC key
         {
             // Update
             //----------------------------------------------------------------------------------
@@ -135,9 +139,9 @@ public partial class NpatchDrawing
 
         // De-Initialization
         //--------------------------------------------------------------------------------------
-        UnloadTexture(nPatchTexture);
+        UnloadTexture(nPatchTexture);       // Texture unloading
 
-        CloseWindow();
+        CloseWindow();        // Close window and OpenGL context
         //--------------------------------------------------------------------------------------
 
         return 0;

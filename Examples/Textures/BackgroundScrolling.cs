@@ -1,11 +1,15 @@
 /*******************************************************************************************
 *
-*   raylib [textures] example - Background scrolling
+*   raylib [textures] example - background scrolling
 *
-*   This example has been created using raylib 2.0 (www.raylib.com)
-*   raylib is licensed under an unmodified zlib/libpng license (View raylib.h for details)
+*   Example complexity rating: [★☆☆☆] 1/4
 *
-*   Copyright (c) 2019 Ramon Santamaria (@raysan5)
+*   Example originally created with raylib 2.0, last time updated with raylib 2.5
+*
+*   Example licensed under an unmodified zlib/libpng license, which is an OSI-certified,
+*   BSD-like license that allows static linking with closed source software
+*
+*   Copyright (c) 2019-2025 Ramon Santamaria (@raysan5)
 *
 ********************************************************************************************/
 
@@ -35,11 +39,11 @@ public partial class BackgroundScrolling
         float scrollingMid = 0.0f;
         float scrollingFore = 0.0f;
 
-        SetTargetFPS(60); // Set our game to run at 60 frames-per-second
+        SetTargetFPS(60);               // Set our game to run at 60 frames-per-second
         //--------------------------------------------------------------------------------------
 
         // Main game loop
-        while (!WindowShouldClose())
+        while (!WindowShouldClose())    // Detect window close button or ESC key
         {
             // Update
             //----------------------------------------------------------------------------------
@@ -93,10 +97,7 @@ public partial class BackgroundScrolling
             );
 
             DrawText("BACKGROUND SCROLLING & PARALLAX", 10, 10, 20, Color.Red);
-
-            int x = screenWidth - 330;
-            int y = screenHeight - 20;
-            DrawText("(c) Cyberpunk Street Environment by Luis Zuno (@ansimuz)", x, y, 10, Color.RayWhite);
+            DrawText("(c) Cyberpunk Street Environment by Luis Zuno (@ansimuz)", screenWidth - 330, screenHeight - 20, 10, Color.RayWhite);
 
             EndDrawing();
             //----------------------------------------------------------------------------------
@@ -104,11 +105,11 @@ public partial class BackgroundScrolling
 
         // De-Initialization
         //--------------------------------------------------------------------------------------
-        UnloadTexture(background);
-        UnloadTexture(midground);
-        UnloadTexture(foreground);
+        UnloadTexture(background);  // Unload background texture
+        UnloadTexture(midground);   // Unload midground texture
+        UnloadTexture(foreground);  // Unload foreground texture
 
-        CloseWindow();
+        CloseWindow();              // Close window and OpenGL context
         //--------------------------------------------------------------------------------------
 
         return 0;

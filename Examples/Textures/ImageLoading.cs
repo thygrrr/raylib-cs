@@ -1,13 +1,17 @@
 /*******************************************************************************************
 *
-*   raylib [textures] example - Image loading and texture creation
+*   raylib [textures] example - image loading
+*
+*   Example complexity rating: [★☆☆☆] 1/4
 *
 *   NOTE: Images are loaded in CPU memory (RAM); textures are loaded in GPU memory (VRAM)
 *
-*   This example has been created using raylib 1.3 (www.raylib.com)
-*   raylib is licensed under an unmodified zlib/libpng license (View raylib.h for details)
+*   Example originally created with raylib 1.3, last time updated with raylib 1.3
 *
-*   Copyright (c) 2015 Ramon Santamaria (@raysan5)
+*   Example licensed under an unmodified zlib/libpng license, which is an OSI-certified,
+*   BSD-like license that allows static linking with closed source software
+*
+*   Copyright (c) 2015-2025 Ramon Santamaria (@raysan5)
 *
 ********************************************************************************************/
 
@@ -28,14 +32,15 @@ public partial class ImageLoading
 
         // NOTE: Textures MUST be loaded after Window initialization (OpenGL context is required)
 
-        Image image = LoadImage("resources/raylib-cs_logo.png");
-        Texture2D texture = LoadTextureFromImage(image);
+        Image image = LoadImage("resources/raylib-cs_logo.png");  // Loaded in CPU memory (RAM)
+        Texture2D texture = LoadTextureFromImage(image);          // Image converted to texture, GPU memory (VRAM)
+        UnloadImage(image);   // Once image has been converted to texture and uploaded to VRAM, it can be unloaded from RAM
 
-        UnloadImage(image);
+        SetTargetFPS(60);     // Set our game to run at 60 frames-per-second
         //---------------------------------------------------------------------------------------
 
         // Main game loop
-        while (!WindowShouldClose())
+        while (!WindowShouldClose())    // Detect window close button or ESC key
         {
             // Update
             //----------------------------------------------------------------------------------
@@ -62,9 +67,9 @@ public partial class ImageLoading
 
         // De-Initialization
         //--------------------------------------------------------------------------------------
-        UnloadTexture(texture);
+        UnloadTexture(texture);       // Texture unloading
 
-        CloseWindow();
+        CloseWindow();                // Close window and OpenGL context
         //--------------------------------------------------------------------------------------
 
         return 0;

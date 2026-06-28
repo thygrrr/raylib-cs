@@ -1,11 +1,15 @@
 /*******************************************************************************************
 *
-*   raylib [shapes] example - raylib logo animation
+*   raylib [shapes] example - logo raylib anim
 *
-*   This example has been created using raylib 1.4 (www.raylib.com)
-*   raylib is licensed under an unmodified zlib/libpng license (View raylib.h for details)
+*   Example complexity rating: [★★☆☆] 2/4
 *
-*   Copyright (c) 2014 Ramon Santamaria (@raysan5)
+*   Example originally created with raylib 2.5, last time updated with raylib 4.0
+*
+*   Example licensed under an unmodified zlib/libpng license, which is an OSI-certified,
+*   BSD-like license that allows static linking with closed source software
+*
+*   Copyright (c) 2014-2025 Ramon Santamaria (@raysan5)
 *
 ********************************************************************************************/
 
@@ -22,7 +26,7 @@ public partial class LogoRaylibAnim
         const int screenWidth = 800;
         const int screenHeight = 450;
 
-        InitWindow(screenWidth, screenHeight, "raylib [shapes] example - raylib logo animation");
+        InitWindow(screenWidth, screenHeight, "raylib [shapes] example - logo raylib anim");
 
         int logoPositionX = screenWidth / 2 - 128;
         int logoPositionY = screenHeight / 2 - 128;
@@ -36,36 +40,30 @@ public partial class LogoRaylibAnim
         int bottomSideRecWidth = 16;
         int rightSideRecHeight = 16;
 
-        // Tracking animation states (State Machine)
-        int state = 0;
-
-        // Useful for fading
-        float alpha = 1.0f;
+        int state = 0;                  // Tracking animation states (State Machine)
+        float alpha = 1.0f;             // Useful for fading
 
         Color outline = new(139, 71, 135, 255);
 
-        SetTargetFPS(60);
+        SetTargetFPS(60);                   // Set our game to run at 60 frames-per-second
         //--------------------------------------------------------------------------------------
 
         // Main game loop
-        while (!WindowShouldClose())
+        while (!WindowShouldClose())        // Detect window close button or ESC key
         {
             // Update
             //----------------------------------------------------------------------------------
-            // State 0: Small box blinking
-            if (state == 0)
+            if (state == 0)                 // State 0: Small box blinking
             {
                 framesCounter++;
 
-                // Reset counter... will be used later...
                 if (framesCounter == 120)
                 {
                     state = 1;
-                    framesCounter = 0;
+                    framesCounter = 0;      // Reset counter... will be used later...
                 }
             }
-            // State 1: Top and left bars growing
-            else if (state == 1)
+            else if (state == 1)            // State 1: Top and left bars growing
             {
                 topSideRecWidth += 4;
                 leftSideRecHeight += 4;
@@ -75,8 +73,7 @@ public partial class LogoRaylibAnim
                     state = 2;
                 }
             }
-            // State 2: Bottom and right bars growing
-            else if (state == 2)
+            else if (state == 2)            // State 2: Bottom and right bars growing
             {
                 bottomSideRecWidth += 4;
                 rightSideRecHeight += 4;
@@ -86,8 +83,7 @@ public partial class LogoRaylibAnim
                     state = 3;
                 }
             }
-            // State 3: Letters appearing (one by one)
-            else if (state == 3)
+            else if (state == 3)            // State 3: Letters appearing (one by one)
             {
                 framesCounter++;
 
@@ -110,8 +106,7 @@ public partial class LogoRaylibAnim
                     }
                 }
             }
-            // State 4: Reset and Replay
-            else if (state == 4)
+            else if (state == 4)            // State 4: Reset and Replay
             {
                 if (IsKeyPressed(KeyboardKey.R))
                 {
@@ -124,9 +119,8 @@ public partial class LogoRaylibAnim
                     bottomSideRecWidth = 16;
                     rightSideRecHeight = 16;
 
-                    // Return to State 0
                     alpha = 1.0f;
-                    state = 0;
+                    state = 0;          // Return to State 0
                 }
             }
             //----------------------------------------------------------------------------------
@@ -158,17 +152,17 @@ public partial class LogoRaylibAnim
             }
             else if (state == 3)
             {
-                Color outlineFade = ColorAlpha(outline, alpha);
+                Color outlineFade = Fade(outline, alpha);
                 DrawRectangle(logoPositionX, logoPositionY, topSideRecWidth, 16, outlineFade);
                 DrawRectangle(logoPositionX, logoPositionY + 16, 16, leftSideRecHeight - 32, outlineFade);
 
                 DrawRectangle(logoPositionX + 240, logoPositionY + 16, 16, rightSideRecHeight - 32, outlineFade);
                 DrawRectangle(logoPositionX, logoPositionY + 240, bottomSideRecWidth, 16, outlineFade);
 
-                Color whiteFade = ColorAlpha(Color.RayWhite, alpha);
+                Color whiteFade = Fade(Color.RayWhite, alpha);
                 DrawRectangle(screenWidth / 2 - 112, screenHeight / 2 - 112, 224, 224, whiteFade);
 
-                Color label = ColorAlpha(new Color(155, 79, 151, 255), alpha);
+                Color label = Fade(new Color(155, 79, 151, 255), alpha);
                 string text = "raylib".SubText(0, lettersCount);
                 DrawText(text, screenWidth / 2 - 44, screenHeight / 2 + 28, 50, label);
 
@@ -185,7 +179,7 @@ public partial class LogoRaylibAnim
 
         // De-Initialization
         //--------------------------------------------------------------------------------------
-        CloseWindow();
+        CloseWindow();        // Close window and OpenGL context
         //--------------------------------------------------------------------------------------
 
         return 0;

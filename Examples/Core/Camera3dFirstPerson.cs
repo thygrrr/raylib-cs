@@ -2,10 +2,14 @@
 *
 *   raylib [core] example - 3d camera first person
 *
-*   This example has been created using raylib 1.3 (www.raylib.com)
-*   raylib is licensed under an unmodified zlib/libpng license (View raylib.h for details)
+*   Example complexity rating: [★★☆☆] 2/4
 *
-*   Copyright (c) 2015 Ramon Santamaria (@raysan5)
+*   Example originally created with raylib 1.3, last time updated with raylib 1.3
+*
+*   Example licensed under an unmodified zlib/libpng license, which is an OSI-certified,
+*   BSD-like license that allows static linking with closed source software
+*
+*   Copyright (c) 2015-2025 Ramon Santamaria (@raysan5)
 *
 ********************************************************************************************/
 
@@ -29,11 +33,13 @@ public partial class Camera3dFirstPerson
 
         // Define the camera to look into our 3d world (position, target, up vector)
         Camera3D camera = new();
-        camera.Position = new Vector3(4.0f, 2.0f, 4.0f);
-        camera.Target = new Vector3(0.0f, 1.8f, 0.0f);
-        camera.Up = new Vector3(0.0f, 1.0f, 0.0f);
-        camera.FovY = 60.0f;
-        camera.Projection = CameraProjection.Perspective;
+        camera.Position = new Vector3(0.0f, 2.0f, 4.0f);    // Camera position
+        camera.Target = new Vector3(0.0f, 2.0f, 0.0f);      // Camera looking at point
+        camera.Up = new Vector3(0.0f, 1.0f, 0.0f);          // Camera up vector (rotation towards target)
+        camera.FovY = 60.0f;                                // Camera field-of-view Y
+        camera.Projection = CameraProjection.Perspective;   // Camera projection type
+
+        CameraMode cameraMode = CameraMode.FirstPerson;
 
         // Generates some random columns
         float[] heights = new float[MaxColumns];
@@ -43,17 +49,17 @@ public partial class Camera3dFirstPerson
         for (int i = 0; i < MaxColumns; i++)
         {
             heights[i] = (float)GetRandomValue(1, 12);
-            positions[i] = new Vector3(GetRandomValue(-15, 15), heights[i] / 2, GetRandomValue(-15, 15));
+            positions[i] = new Vector3(GetRandomValue(-15, 15), heights[i] / 2.0f, GetRandomValue(-15, 15));
             colors[i] = new Color(GetRandomValue(20, 255), GetRandomValue(10, 55), 30, 255);
         }
 
-        CameraMode cameraMode = CameraMode.FirstPerson;
+        DisableCursor();                    // Limit cursor to relative movement inside the window
 
-        SetTargetFPS(60);
+        SetTargetFPS(60);                   // Set our game to run at 60 frames-per-second
         //--------------------------------------------------------------------------------------
 
         // Main game loop
-        while (!WindowShouldClose())
+        while (!WindowShouldClose())        // Detect window close button or ESC key
         {
             // Update
             //----------------------------------------------------------------------------------
@@ -112,8 +118,8 @@ public partial class Camera3dFirstPerson
 
             // Update camera computes movement internally depending on the camera mode
             // Some default standard keyboard/mouse inputs are hardcoded to simplify use
-            // For advance camera controls, it's reecommended to compute camera movement manually
-            UpdateCamera(ref camera, cameraMode);
+            // For advanced camera controls, it's recommended to compute camera movement manually
+            UpdateCamera(ref camera, cameraMode);                  // Update camera
             //----------------------------------------------------------------------------------
 
             // Draw
@@ -152,8 +158,8 @@ public partial class Camera3dFirstPerson
             EndMode3D();
 
             // Draw info boxes
-            DrawRectangle(5, 5, 330, 100, ColorAlpha(Color.SkyBlue, 0.5f));
-            DrawRectangleLines(10, 10, 330, 100, Color.Blue);
+            DrawRectangle(5, 5, 330, 100, Fade(Color.SkyBlue, 0.5f));
+            DrawRectangleLines(5, 5, 330, 100, Color.Blue);
 
             DrawText("Camera controls:", 15, 15, 10, Color.Black);
             DrawText("- Move keys: W, A, S, D, Space, Left-Ctrl", 15, 30, 10, Color.Black);
@@ -178,7 +184,7 @@ public partial class Camera3dFirstPerson
 
         // De-Initialization
         //--------------------------------------------------------------------------------------
-        CloseWindow();
+        CloseWindow();        // Close window and OpenGL context
         //--------------------------------------------------------------------------------------
 
         return 0;

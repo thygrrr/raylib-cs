@@ -2,10 +2,14 @@
 *
 *   raylib [shapes] example - following eyes
 *
-*   This example has been created using raylib 2.5 (www.raylib.com)
-*   raylib is licensed under an unmodified zlib/libpng license (View raylib.h for details)
+*   Example complexity rating: [★★☆☆] 2/4
 *
-*   Copyright (c) 2013-2019 Ramon Santamaria (@raysan5)
+*   Example originally created with raylib 2.5, last time updated with raylib 2.5
+*
+*   Example licensed under an unmodified zlib/libpng license, which is an OSI-certified,
+*   BSD-like license that allows static linking with closed source software
+*
+*   Copyright (c) 2013-2025 Ramon Santamaria (@raysan5)
 *
 ********************************************************************************************/
 
@@ -27,22 +31,22 @@ public partial class FollowingEyes
 
         InitWindow(screenWidth, screenHeight, "raylib [shapes] example - following eyes");
 
-        Vector2 scleraLeftPosition = new(GetScreenWidth() / 2 - 100, GetScreenHeight() / 2);
-        Vector2 scleraRightPosition = new(GetScreenWidth() / 2 + 100, GetScreenHeight() / 2);
+        Vector2 scleraLeftPosition = new(GetScreenWidth() / 2.0f - 100.0f, GetScreenHeight() / 2.0f);
+        Vector2 scleraRightPosition = new(GetScreenWidth() / 2.0f + 100.0f, GetScreenHeight() / 2.0f);
         float scleraRadius = 80;
 
-        Vector2 irisLeftPosition = new(GetScreenWidth() / 2 - 100, GetScreenHeight() / 2);
-        Vector2 irisRightPosition = new(GetScreenWidth() / 2 + 100, GetScreenHeight() / 2);
+        Vector2 irisLeftPosition = new(GetScreenWidth() / 2.0f - 100.0f, GetScreenHeight() / 2.0f);
+        Vector2 irisRightPosition = new(GetScreenWidth() / 2.0f + 100.0f, GetScreenHeight() / 2.0f);
         float irisRadius = 24;
 
         float angle = 0.0f;
         float dx = 0.0f, dy = 0.0f, dxx = 0.0f, dyy = 0.0f;
 
-        SetTargetFPS(60);
+        SetTargetFPS(60);                   // Set our game to run at 60 frames-per-second
         //--------------------------------------------------------------------------------------
 
         // Main game loop
-        while (!WindowShouldClose())
+        while (!WindowShouldClose())        // Detect window close button or ESC key
         {
             // Update
             //----------------------------------------------------------------------------------
@@ -50,7 +54,7 @@ public partial class FollowingEyes
             irisRightPosition = GetMousePosition();
 
             // Check not inside the left eye sclera
-            if (!CheckCollisionPointCircle(irisLeftPosition, scleraLeftPosition, scleraRadius - 20))
+            if (!CheckCollisionPointCircle(irisLeftPosition, scleraLeftPosition, scleraRadius - irisRadius))
             {
                 dx = irisLeftPosition.X - scleraLeftPosition.X;
                 dy = irisLeftPosition.Y - scleraLeftPosition.Y;
@@ -65,7 +69,7 @@ public partial class FollowingEyes
             }
 
             // Check not inside the right eye sclera
-            if (!CheckCollisionPointCircle(irisRightPosition, scleraRightPosition, scleraRadius - 20))
+            if (!CheckCollisionPointCircle(irisRightPosition, scleraRightPosition, scleraRadius - irisRadius))
             {
                 dx = irisRightPosition.X - scleraRightPosition.X;
                 dy = irisRightPosition.Y - scleraRightPosition.Y;
@@ -101,7 +105,7 @@ public partial class FollowingEyes
 
         // De-Initialization
         //--------------------------------------------------------------------------------------
-        CloseWindow();
+        CloseWindow();        // Close window and OpenGL context
         //--------------------------------------------------------------------------------------
 
         return 0;

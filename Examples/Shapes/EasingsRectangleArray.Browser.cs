@@ -52,8 +52,8 @@ public partial class EasingsRectangleArray : IExample
             {
                 for (int x = 0; x < MaxRecsX; x++)
                 {
-                    _recs[y * MaxRecsX + x].X = RecsWidth / 2 + RecsWidth * x;
-                    _recs[y * MaxRecsX + x].Y = RecsHeight / 2 + RecsHeight * y;
+                    _recs[y * MaxRecsX + x].X = RecsWidth / 2.0f + RecsWidth * x;
+                    _recs[y * MaxRecsX + x].Y = RecsHeight / 2.0f + RecsHeight * y;
                     _recs[y * MaxRecsX + x].Width = RecsWidth;
                     _recs[y * MaxRecsX + x].Height = RecsHeight;
                 }

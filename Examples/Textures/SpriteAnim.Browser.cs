@@ -98,7 +98,7 @@ public partial class SpriteAnim : IExample
             );
 
             DrawText("FRAME SPEED: ", 165, 210, 10, Color.DarkGray);
-            DrawText($"{_framesSpeed:2F} FPS", 575, 210, 10, Color.DarkGray);
+            DrawText($"{_framesSpeed:D2} FPS", 575, 210, 10, Color.DarkGray);
             DrawText("PRESS RIGHT/LEFT KEYS to CHANGE SPEED!", 290, 240, 10, Color.DarkGray);
 
             for (int i = 0; i < MaxFrameSpeed; i++)

@@ -43,7 +43,7 @@ public partial class TextureWaves : IExample
             // Load shader and setup location points and values
             _shader = LoadShader(null, $"resources/shaders/glsl{GlslVersion}/wave.fs");
 
-            _secondsLoc = GetShaderLocation(_shader, "secondes");
+            _secondsLoc = GetShaderLocation(_shader, "seconds");
             int freqXLoc = GetShaderLocation(_shader, "freqX");
             int freqYLoc = GetShaderLocation(_shader, "freqY");
             int ampXLoc = GetShaderLocation(_shader, "ampX");

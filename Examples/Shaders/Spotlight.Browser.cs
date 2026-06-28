@@ -105,13 +105,13 @@ public partial class Spotlight : IExample
             }
 
             // Tell the shader how wide the screen is so we can have
-            // a pitch Color.black half and a dimly lit half.
+            // a pitch black half and a dimly lit half
             int wLoc = GetShaderLocation(_shdrSpot, "screenWidth");
             float sw = (float)GetScreenWidth();
             SetShaderValue(_shdrSpot, wLoc, sw, ShaderUniformDataType.Float);
 
-            // Randomise the locations and velocities of the spotlights
-            // and initialise the shader locations
+            // Randomize the locations and velocities of the spotlights
+            // and initialize the shader locations
             for (int i = 0; i < MaxSpots; i++)
             {
                 _spots[i].pos.X = GetRandomValue(64, screenWidth - 64);
@@ -120,8 +120,8 @@ public partial class Spotlight : IExample
 
                 while ((MathF.Abs(_spots[i].vel.X) + MathF.Abs(_spots[i].vel.Y)) < 2)
                 {
-                    _spots[i].vel.X = GetRandomValue(-40, 40) / 10.0f;
-                    _spots[i].vel.Y = GetRandomValue(-40, 40) / 10.0f;
+                    _spots[i].vel.X = GetRandomValue(-400, 40) / 25.0f;
+                    _spots[i].vel.Y = GetRandomValue(-400, 40) / 25.0f;
                 }
 
                 _spots[i].inner = 28.0f * (i + 1);
@@ -207,7 +207,7 @@ public partial class Spotlight : IExample
             // Draw stars and bobs
             for (int n = 0; n < MaxStars; n++)
             {
-                // MathF.Single pixel is just too small these days!
+                // Single pixel is just too small these days!
                 DrawRectangle((int)_stars[n].pos.X, (int)_stars[n].pos.Y, 2, 2, Color.White);
             }
 
@@ -232,7 +232,7 @@ public partial class Spotlight : IExample
             DrawFPS(10, 10);
 
             DrawText("Move the mouse!", 10, 30, 20, Color.Green);
-            DrawText("Pitch Color.Black", (int)(screenWidth * 0.2f), screenHeight / 2, 20, Color.Green);
+            DrawText("Pitch Black", (int)(screenWidth * 0.2f), screenHeight / 2, 20, Color.Green);
             DrawText("Dark", (int)(screenWidth * 0.66f), screenHeight / 2, 20, Color.Green);
 
             EndDrawing();
@@ -254,7 +254,7 @@ public partial class Spotlight : IExample
                 s.vel.Y = (float)GetRandomValue(-1000, 1000) / 100.0f;
             } while (!((MathF.Abs(s.vel.X) + (MathF.Abs(s.vel.Y)) > 1)));
 
-            s.pos += s.pos + (s.vel * new Vector2(8.0f, 8.0f));
+            s.pos += s.vel * new Vector2(8.0f, 8.0f);
         }
 
         private static void UpdateStar(ref Star s)

@@ -1,11 +1,15 @@
 /*******************************************************************************************
 *
-*   raylib [models] example - Heightmap loading and drawing
+*   raylib [models] example - heightmap rendering
 *
-*   This example has been created using raylib 1.8 (www.raylib.com)
-*   raylib is licensed under an unmodified zlib/libpng license (View raylib.h for details)
+*   Example complexity rating: [★☆☆☆] 1/4
 *
-*   Copyright (c) 2015 Ramon Santamaria (@raysan5)
+*   Example originally created with raylib 1.8, last time updated with raylib 3.5
+*
+*   Example licensed under an unmodified zlib/libpng license, which is an OSI-certified,
+*   BSD-like license that allows static linking with closed source software
+*
+*   Copyright (c) 2015-2025 Ramon Santamaria (@raysan5)
 *
 ********************************************************************************************/
 
@@ -23,34 +27,34 @@ public partial class HeightmapDemo
         const int screenWidth = 800;
         const int screenHeight = 450;
 
-        InitWindow(screenWidth, screenHeight, "raylib [models] example - heightmap loading and drawing");
+        InitWindow(screenWidth, screenHeight, "raylib [models] example - heightmap rendering");
 
         // Define our custom camera to look into our 3d world
         Camera3D camera = new();
-        camera.Position = new Vector3(18.0f, 16.0f, 18.0f);
-        camera.Target = new Vector3(0.0f, 0.0f, 0.0f);
-        camera.Up = new Vector3(0.0f, 1.0f, 0.0f);
-        camera.FovY = 45.0f;
-        camera.Projection = CameraProjection.Perspective;
+        camera.Position = new Vector3(18.0f, 21.0f, 18.0f);     // Camera position
+        camera.Target = new Vector3(0.0f, 0.0f, 0.0f);          // Camera looking at point
+        camera.Up = new Vector3(0.0f, 1.0f, 0.0f);              // Camera up vector (rotation towards target)
+        camera.FovY = 45.0f;                                    // Camera field-of-view Y
+        camera.Projection = CameraProjection.Perspective;       // Camera projection type
 
-        Image image = LoadImage("resources/heightmap.png");
-        Texture2D texture = LoadTextureFromImage(image);
+        Image image = LoadImage("resources/heightmap.png");     // Load heightmap image (RAM)
+        Texture2D texture = LoadTextureFromImage(image);        // Convert image to texture (VRAM)
 
-        Mesh mesh = GenMeshHeightmap(image, new Vector3(16, 8, 16));
-        Model model = LoadModelFromMesh(mesh);
+        Mesh mesh = GenMeshHeightmap(image, new Vector3(16, 8, 16)); // Generate heightmap mesh (RAM and VRAM)
+        Model model = LoadModelFromMesh(mesh);                  // Load model from generated mesh
 
         // Set map diffuse texture
         Raylib.SetMaterialTexture(ref model, 0, MaterialMapIndex.Albedo, ref texture);
 
-        Vector3 mapPosition = new(-8.0f, 0.0f, -8.0f);
+        Vector3 mapPosition = new(-8.0f, 0.0f, -8.0f);          // Define model position
 
-        UnloadImage(image);
+        UnloadImage(image);             // Unload heightmap image from RAM, already uploaded to VRAM
 
-        SetTargetFPS(60);
+        SetTargetFPS(60);               // Set our game to run at 60 frames-per-second
         //--------------------------------------------------------------------------------------
 
         // Main game loop
-        while (!WindowShouldClose())
+        while (!WindowShouldClose())    // Detect window close button or ESC key
         {
             // Update
             //----------------------------------------------------------------------------------
@@ -81,10 +85,10 @@ public partial class HeightmapDemo
 
         // De-Initialization
         //--------------------------------------------------------------------------------------
-        UnloadTexture(texture);
-        UnloadModel(model);
+        UnloadTexture(texture);     // Unload texture
+        UnloadModel(model);         // Unload model
 
-        CloseWindow();
+        CloseWindow();              // Close window and OpenGL context
         //--------------------------------------------------------------------------------------
 
         return 0;

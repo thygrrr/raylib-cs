@@ -1,18 +1,22 @@
 /*******************************************************************************************
 *
-*   raylib [shaders] example - Apply a postprocessing shader to a scene
+*   raylib [shaders] example - postprocessing
+*
+*   Example complexity rating: [★★★☆] 3/4
 *
 *   NOTE: This example requires raylib OpenGL 3.3 or ES2 versions for shaders support,
-*         OpenGL 1.1 does not support shaders, recompile raylib to OpenGL 3.3 version.
+*         OpenGL 1.1 does not support shaders, recompile raylib to OpenGL 3.3 version
 *
 *   NOTE: Shaders used in this example are #version 330 (OpenGL 3.3), to test this example
 *         on OpenGL ES 2.0 platforms (Android, Raspberry Pi, HTML5), use #version 100 shaders
 *         raylib comes with shaders ready for both versions, check raylib/shaders install folder
 *
-*   This example has been created using raylib 1.3 (www.raylib.com)
-*   raylib is licensed under an unmodified zlib/libpng license (View raylib.h for details)
+*   Example originally created with raylib 1.3, last time updated with raylib 4.0
 *
-*   Copyright (c) 2015 Ramon Santamaria (@raysan5)
+*   Example licensed under an unmodified zlib/libpng license, which is an OSI-certified,
+*   BSD-like license that allows static linking with closed source software
+*
+*   Copyright (c) 2015-2025 Ramon Santamaria (@raysan5)
 *
 ********************************************************************************************/
 
@@ -66,25 +70,25 @@ public partial class PostProcessing
         const int screenWidth = 800;
         const int screenHeight = 450;
 
-        // Enable Multi Sampling Anti Aliasing 4x (if available)
-        SetConfigFlags(ConfigFlags.Msaa4xHint);
-        InitWindow(screenWidth, screenHeight, "raylib [shaders] example - postprocessing shader");
+        SetConfigFlags(ConfigFlags.Msaa4xHint);      // Enable Multi Sampling Anti Aliasing 4x (if available)
+
+        InitWindow(screenWidth, screenHeight, "raylib [shaders] example - postprocessing");
 
         // Define the camera to look into our 3d world
         Camera3D camera = new();
-        camera.Position = new Vector3(2.0f, 3.0f, 2.0f);
-        camera.Target = new Vector3(0.0f, 1.0f, 0.0f);
-        camera.Up = new Vector3(0.0f, 1.0f, 0.0f);
-        camera.FovY = 45.0f;
-        camera.Projection = CameraProjection.Perspective;
+        camera.Position = new Vector3(2.0f, 3.0f, 2.0f);    // Camera position
+        camera.Target = new Vector3(0.0f, 1.0f, 0.0f);      // Camera looking at point
+        camera.Up = new Vector3(0.0f, 1.0f, 0.0f);          // Camera up vector (rotation towards target)
+        camera.FovY = 45.0f;                                // Camera field-of-view Y
+        camera.Projection = CameraProjection.Perspective;   // Camera projection type
 
-        Model model = LoadModel("resources/models/obj/church.obj");
-        Texture2D texture = LoadTexture("resources/models/obj/church_diffuse.png");
+        Model model = LoadModel("resources/models/church.obj");                 // Load OBJ model
+        Texture2D texture = LoadTexture("resources/models/church_diffuse.png"); // Load model texture (diffuse map)
 
         // Set model diffuse texture
         Raylib.SetMaterialTexture(ref model, 0, MaterialMapIndex.Albedo, ref texture);
 
-        Vector3 position = new(0.0f, 0.0f, 0.0f);
+        Vector3 position = new(0.0f, 0.0f, 0.0f);           // Set model position
 
         // Load all postpro shaders
         // NOTE 1: All postpro shader use the base vertex shader (DEFAULT_VERTEX_SHADER)
@@ -92,7 +96,7 @@ public partial class PostProcessing
         Shader[] shaders = new Shader[(int)PostproShader.Max];
 
         // NOTE: Defining null (NULL) for vertex shader forces usage of internal default vertex shader
-        string shaderPath = "resources/shaders/glsl330";
+        string shaderPath = $"resources/shaders/glsl{GLSL_VERSION}";
         shaders[(int)PostproShader.FxGrayScale] = LoadShader(null, $"{shaderPath}/grayscale.fs");
         shaders[(int)PostproShader.FxPosterization] = LoadShader(null, $"{shaderPath}/posterization.fs");
         shaders[(int)PostproShader.FxDreamVision] = LoadShader(null, $"{shaderPath}/dream_vision.fs");
@@ -111,11 +115,11 @@ public partial class PostProcessing
         // Create a RenderTexture2D to be used for render to texture
         RenderTexture2D target = LoadRenderTexture(screenWidth, screenHeight);
 
-        SetTargetFPS(60);
+        SetTargetFPS(60);                   // Set our game to run at 60 frames-per-second
         //--------------------------------------------------------------------------------------
 
         // Main game loop
-        while (!WindowShouldClose())
+        while (!WindowShouldClose())        // Detect window close button or ESC key
         {
             // Update
             //----------------------------------------------------------------------------------
@@ -160,7 +164,7 @@ public partial class PostProcessing
             // End drawing to texture (now we have a texture available for next passes)
             EndTextureMode();
 
-            // Render previously generated texture using selected postpro shader
+            // Render generated texture using selected postprocessing shader
             BeginShaderMode(shaders[currentShader]);
 
             // NOTE: Render texture must be y-flipped due to default OpenGL coordinates (left-bottom)
@@ -173,7 +177,7 @@ public partial class PostProcessing
 
             EndShaderMode();
 
-            DrawRectangle(0, 9, 580, 30, ColorAlpha(Color.LightGray, 0.7f));
+            DrawRectangle(0, 9, 580, 30, Fade(Color.LightGray, 0.7f));
 
             DrawText("(c) Church 3D model by Alberto Cano", screenWidth - 200, screenHeight - 20, 10, Color.Gray);
 
@@ -189,16 +193,17 @@ public partial class PostProcessing
 
         // De-Initialization
         //--------------------------------------------------------------------------------------
+        // Unload all postpro shaders
         for (int i = 0; i < (int)PostproShader.Max; i++)
         {
             UnloadShader(shaders[i]);
         }
 
-        UnloadTexture(texture);
-        UnloadModel(model);
-        UnloadRenderTexture(target);
+        UnloadTexture(texture);         // Unload texture
+        UnloadModel(model);             // Unload model
+        UnloadRenderTexture(target);    // Unload render texture
 
-        CloseWindow();
+        CloseWindow();                  // Close window and OpenGL context
         //--------------------------------------------------------------------------------------
 
         return 0;

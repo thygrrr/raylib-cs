@@ -2,10 +2,16 @@
 *
 *   raylib [shapes] example - bouncing ball
 *
-*   This example has been created using raylib 1.0 (www.raylib.com)
-*   raylib is licensed under an unmodified zlib/libpng license (View raylib.h for details)
+*   Example complexity rating: [★☆☆☆] 1/4
 *
-*   Copyright (c) 2013 Ramon Santamaria (@raysan5)
+*   Example originally created with raylib 2.5, last time updated with raylib 2.5
+*
+*   Example contributed by Ramon Santamaria (@raysan5), reviewed by Jopestpe (@jopestpe)
+*
+*   Example licensed under an unmodified zlib/libpng license, which is an OSI-certified,
+*   BSD-like license that allows static linking with closed source software
+*
+*   Copyright (c) 2013-2025 Ramon Santamaria (@raysan5)
 *
 ********************************************************************************************/
 
@@ -23,23 +29,30 @@ public partial class BouncingBall
         const int screenWidth = 800;
         const int screenHeight = 450;
 
+        SetConfigFlags(ConfigFlags.Msaa4xHint);
         InitWindow(screenWidth, screenHeight, "raylib [shapes] example - bouncing ball");
 
-        Vector2 ballPosition = new(GetScreenWidth() / 2, GetScreenHeight() / 2);
+        Vector2 ballPosition = new(GetScreenWidth() / 2.0f, GetScreenHeight() / 2.0f);
         Vector2 ballSpeed = new(5.0f, 4.0f);
         int ballRadius = 20;
+        float gravity = 0.2f;
 
+        bool useGravity = true;
         bool pause = false;
         int framesCounter = 0;
 
-        SetTargetFPS(60);
+        SetTargetFPS(60);               // Set our game to run at 60 frames-per-second
         //----------------------------------------------------------
 
         // Main game loop
-        while (!WindowShouldClose())
+        while (!WindowShouldClose())    // Detect window close button or ESC key
         {
             // Update
             //-----------------------------------------------------
+            if (IsKeyPressed(KeyboardKey.G))
+            {
+                useGravity = !useGravity;
+            }
             if (IsKeyPressed(KeyboardKey.Space))
             {
                 pause = !pause;
@@ -50,6 +63,11 @@ public partial class BouncingBall
                 ballPosition.X += ballSpeed.X;
                 ballPosition.Y += ballSpeed.Y;
 
+                if (useGravity)
+                {
+                    ballSpeed.Y += gravity;
+                }
+
                 // Check walls collision for bouncing
                 if ((ballPosition.X >= (GetScreenWidth() - ballRadius)) || (ballPosition.X <= ballRadius))
                 {
@@ -57,12 +75,12 @@ public partial class BouncingBall
                 }
                 if ((ballPosition.Y >= (GetScreenHeight() - ballRadius)) || (ballPosition.Y <= ballRadius))
                 {
-                    ballSpeed.Y *= -1.0f;
+                    ballSpeed.Y *= -0.95f;
                 }
             }
             else
             {
-                framesCounter += 1;
+                framesCounter++;
             }
             //-----------------------------------------------------
 
@@ -71,14 +89,24 @@ public partial class BouncingBall
             BeginDrawing();
             ClearBackground(Color.RayWhite);
 
-            DrawCircleV(ballPosition, ballRadius, Color.Maroon);
+            DrawCircleV(ballPosition, (float)ballRadius, Color.Maroon);
             DrawText("PRESS SPACE to PAUSE BALL MOVEMENT", 10, GetScreenHeight() - 25, 20, Color.LightGray);
 
+            if (useGravity)
+            {
+                DrawText("GRAVITY: ON (Press G to disable)", 10, GetScreenHeight() - 50, 20, Color.DarkGreen);
+            }
+            else
+            {
+                DrawText("GRAVITY: OFF (Press G to enable)", 10, GetScreenHeight() - 50, 20, Color.Red);
+            }
+
             // On pause, we draw a blinking message
-            if (pause && ((framesCounter / 30) % 2) == 0)
+            if (pause && ((framesCounter / 30) % 2) != 0)
             {
                 DrawText("PAUSED", 350, 200, 30, Color.Gray);
             }
+
             DrawFPS(10, 10);
 
             EndDrawing();
@@ -87,7 +115,7 @@ public partial class BouncingBall
 
         // De-Initialization
         //---------------------------------------------------------
-        CloseWindow();
+        CloseWindow();        // Close window and OpenGL context
         //----------------------------------------------------------
 
         return 0;

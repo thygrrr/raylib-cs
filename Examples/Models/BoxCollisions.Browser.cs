@@ -136,7 +136,8 @@ public partial class BoxCollisions : IExample
 
             EndMode3D();
 
-            DrawText("Move player with cursors to collide", 220, 40, 20, Color.Gray);
+            DrawText("Move player with arrow keys to collide", 220, 40, 20, Color.Gray);
+
             DrawFPS(10, 10);
 
             EndDrawing();

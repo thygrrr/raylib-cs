@@ -40,7 +40,7 @@ public partial class FirstPersonMaze : IExample
             // Define the camera to look into our 3d world
             _camera = new();
             _camera.Position = new Vector3(0.2f, 0.4f, 0.2f);
-            _camera.Target = new Vector3(0.0f, 0.0f, 0.0f);
+            _camera.Target = new Vector3(0.185f, 0.4f, 0.0f);
             _camera.Up = new Vector3(0.0f, 1.0f, 0.0f);
             _camera.FovY = 45.0f;
             _camera.Projection = CameraProjection.Perspective;
@@ -61,6 +61,8 @@ public partial class FirstPersonMaze : IExample
             UnloadImage(imMap);
 
             _mapPosition = new(-16.0f, 0.0f, -8.0f);
+
+            DisableCursor();
         }
 
         public void Update()
@@ -72,9 +74,7 @@ public partial class FirstPersonMaze : IExample
 
             // Check player collision (we simplify to 2D collision detection)
             Vector2 playerPos = new(_camera.Position.X, _camera.Position.Z);
-
-            // Collision radius (player is modelled as a cilinder for collision)
-            float playerRadius = 0.1f;
+            float playerRadius = 0.1f;  // Collision radius (player is modelled as a cilinder for collision)
 
             int playerCellX = (int)(playerPos.X - _mapPosition.X + 0.5f);
             int playerCellY = (int)(playerPos.Y - _mapPosition.Z + 0.5f);
@@ -98,27 +98,23 @@ public partial class FirstPersonMaze : IExample
                 playerCellY = _cubicmap.Height - 1;
             }
 
-            // Check map collisions using image data and player position
-            // TODO: Improvement: Just check player surrounding cells for collision
-            for (int y = 0; y < _cubicmap.Height; y++)
+            // Check map collisions using image data and player position against surrounding cells only
+            for (int y = playerCellY - 1; y <= playerCellY + 1; y++)
             {
-                for (int x = 0; x < _cubicmap.Width; x++)
+                // Avoid map accessing out of bounds
+                if ((y >= 0) && (y < _cubicmap.Height))
                 {
-                    Color* mapPixelsData = _mapPixels;
-
-                    // Collision: Color.white pixel, only check R channel
-                    Rectangle rec = new(
-                        _mapPosition.X - 0.5f + x * 1.0f,
-                        _mapPosition.Z - 0.5f + y * 1.0f,
-                        1.0f,
-                        1.0f
-                    );
-
-                    bool collision = CheckCollisionCircleRec(playerPos, playerRadius, rec);
-                    if ((mapPixelsData[y * _cubicmap.Width + x].R == 255) && collision)
+                    for (int x = playerCellX - 1; x <= playerCellX + 1; x++)
                     {
-                        // Collision detected, reset camera position
-                        _camera.Position = oldCamPos;
+                        // NOTE: Collision: Only checking R channel for white pixel
+                        if (((x >= 0) && (x < _cubicmap.Width)) &&
+                            (_mapPixels[y * _cubicmap.Width + x].R == 255) &&
+                            (CheckCollisionCircleRec(playerPos, playerRadius,
+                            new Rectangle(_mapPosition.X - 0.5f + x * 1.0f, _mapPosition.Z - 0.5f + y * 1.0f, 1.0f, 1.0f))))
+                        {
+                            // Collision detected, reset camera position
+                            _camera.Position = oldCamPos;
+                        }
                     }
                 }
             }

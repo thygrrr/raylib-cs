@@ -1,13 +1,17 @@
 /*******************************************************************************************
 *
-*   raylib [shaders] example - Simple shader mask
+*   raylib [shaders] example - simple mask
 *
-*   This example has been created using raylib 2.5 (www.raylib.com)
-*   raylib is licensed under an unmodified zlib/libpng license (View raylib.h for details)
+*   Example complexity rating: [★★☆☆] 2/4
 *
-*   Example contributed by Chris Camacho (@codifies) and reviewed by Ramon Santamaria (@raysan5)
+*   Example originally created with raylib 2.5, last time updated with raylib 3.7
 *
-*   Copyright (c) 2019 Chris Camacho (@codifies) and Ramon Santamaria (@raysan5)
+*   Example contributed by Chris Camacho (@chriscamacho) and reviewed by Ramon Santamaria (@raysan5)
+*
+*   Example licensed under an unmodified zlib/libpng license, which is an OSI-certified,
+*   BSD-like license that allows static linking with closed source software
+*
+*   Copyright (c) 2019-2025 Chris Camacho (@chriscamacho) and Ramon Santamaria (@raysan5)
 *
 ********************************************************************************************
 *
@@ -26,6 +30,8 @@ namespace Examples.Shaders;
 
 public partial class SimpleMask
 {
+    const int GlslVersion = 330;
+
     public unsafe static int Main()
     {
         // Initialization
@@ -33,15 +39,15 @@ public partial class SimpleMask
         const int screenWidth = 800;
         const int screenHeight = 450;
 
-        InitWindow(screenWidth, screenHeight, "raylib - simple shader mask");
+        InitWindow(screenWidth, screenHeight, "raylib [shaders] example - simple mask");
 
         // Define the camera to look into our 3d world
         Camera3D camera = new();
-        camera.Position = new Vector3(0.0f, 1.0f, 2.0f);
-        camera.Target = new Vector3(0.0f, 0.0f, 0.0f);
-        camera.Up = new Vector3(0.0f, 1.0f, 0.0f);
-        camera.FovY = 45.0f;
-        camera.Projection = CameraProjection.Perspective;
+        camera.Position = new Vector3(0.0f, 1.0f, 2.0f);    // Camera position
+        camera.Target = new Vector3(0.0f, 0.0f, 0.0f);      // Camera looking at point
+        camera.Up = new Vector3(0.0f, 1.0f, 0.0f);          // Camera up vector (rotation towards target)
+        camera.FovY = 45.0f;                                // Camera field-of-view Y
+        camera.Projection = CameraProjection.Perspective;   // Camera projection type
 
         // Define our three models to show the shader on
         Mesh torus = GenMeshTorus(.3f, 1, 16, 32);
@@ -55,7 +61,7 @@ public partial class SimpleMask
         Model model3 = LoadModelFromMesh(sphere);
 
         // Load the shader
-        Shader shader = LoadShader("resources/shaders/glsl330/mask.vs", "resources/shaders/glsl330/mask.fs");
+        Shader shader = LoadShader(null, $"resources/shaders/glsl{GlslVersion}/mask.fs");
 
         // Load and apply the diffuse texture (colour map)
         Texture2D texDiffuse = LoadTexture("resources/plasma.png");
@@ -68,9 +74,8 @@ public partial class SimpleMask
         maps = materials[0].Maps;
         maps[(int)MaterialMapIndex.Albedo].Texture = texDiffuse;
 
-        // Using MAP_EMISSION as a spare slot to use for 2nd texture
-        // NOTE: Don't use MAP_IRRADIANCE, MAP_PREFILTER or  MAP_CUBEMAP
-        // as they are bound as cube maps
+        // Using MATERIAL_MAP_EMISSION as a spare slot to use for 2nd texture
+        // NOTE: Don't use MATERIAL_MAP_IRRADIANCE, MATERIAL_MAP_PREFILTER or  MATERIAL_MAP_CUBEMAP as they are bound as cube maps
         Texture2D texMask = LoadTexture("resources/mask.png");
 
         materials = model1.Materials;
@@ -85,7 +90,7 @@ public partial class SimpleMask
         locs[(int)ShaderLocationIndex.MapEmission] = GetShaderLocation(shader, "mask");
 
         // Frame is incremented each frame to animate the shader
-        int shaderFrame = GetShaderLocation(shader, "framesCounter");
+        int shaderFrame = GetShaderLocation(shader, "frame");
 
         // Apply the shader to the two models
         materials = model1.Materials;
@@ -95,18 +100,19 @@ public partial class SimpleMask
         materials[0].Shader = shader;
 
         int framesCounter = 0;
+        Vector3 rotation = new(0, 0, 0);    // Model rotation angles
 
-        // Model rotation angles
-        Vector3 rotation = new(0, 0, 0);
-
-        SetTargetFPS(60);
+        DisableCursor();                    // Limit cursor to relative movement inside the window
+        SetTargetFPS(60);                   // Set  to run at 60 frames-per-second
         //--------------------------------------------------------------------------------------
 
         // Main game loop
-        while (!WindowShouldClose())
+        while (!WindowShouldClose())        // Detect window close button or ESC key
         {
             // Update
             //----------------------------------------------------------------------------------
+            UpdateCamera(ref camera, CameraMode.FirstPerson);
+
             framesCounter++;
             rotation.X += 0.01f;
             rotation.Y += 0.005f;
@@ -117,8 +123,6 @@ public partial class SimpleMask
 
             // Rotate one of the models
             model1.Transform = MatrixRotateXYZ(rotation);
-
-            UpdateCamera(ref camera, CameraMode.Custom);
             //----------------------------------------------------------------------------------
 
             // Draw
@@ -131,7 +135,7 @@ public partial class SimpleMask
             DrawModel(model1, new Vector3(0.5f, 0, 0), 1, Color.White);
             DrawModelEx(model2, new Vector3(-.5f, 0, 0), new Vector3(1, 1, 0), 50, new Vector3(1, 1, 1), Color.White);
             DrawModel(model3, new Vector3(0, 0, -1.5f), 1, Color.White);
-            DrawGrid(10, 1.0f);
+            DrawGrid(10, 1.0f);        // Draw a grid
 
             EndMode3D();
 
@@ -151,12 +155,12 @@ public partial class SimpleMask
         UnloadModel(model2);
         UnloadModel(model3);
 
-        UnloadTexture(texDiffuse);
-        UnloadTexture(texMask);
+        UnloadTexture(texDiffuse);  // Unload default diffuse texture
+        UnloadTexture(texMask);     // Unload texture mask
 
-        UnloadShader(shader);
+        UnloadShader(shader);       // Unload shader
 
-        CloseWindow();
+        CloseWindow();              // Close window and OpenGL context
         //--------------------------------------------------------------------------------------
 
         return 0;

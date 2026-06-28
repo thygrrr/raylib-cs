@@ -129,6 +129,9 @@ public partial class CollisionArea : IExample
                 DrawText(text, GetScreenWidth() / 2 - 100, _screenUpperLimit + 10, 20, Color.Black);
             }
 
+            // Draw help instructions
+            DrawText("Press SPACE to PAUSE/RESUME", 20, GetScreenHeight() - 35, 20, Color.LightGray);
+
             DrawFPS(10, 10);
 
             EndDrawing();

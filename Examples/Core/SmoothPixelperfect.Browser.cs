@@ -30,10 +30,10 @@ public partial class SmoothPixelPerfect : IExample
         private const int screenWidth = 800;
         private const int screenHeight = 450;
 
-        private const int virtualscreenWidth = 160;
-        private const int virtualscreenHeight = 90;
+        private const int virtualScreenWidth = 160;
+        private const int virtualScreenHeight = 90;
 
-        private const float virtualRatio = (float)screenWidth / (float)virtualscreenWidth;
+        private const float virtualRatio = (float)screenWidth / (float)virtualScreenWidth;
 
         private Camera2D _worldSpaceCamera;
         private Camera2D _screenSpaceCamera;
@@ -50,6 +50,8 @@ public partial class SmoothPixelPerfect : IExample
         private float _rotation;
         private float _cameraX;
         private float _cameraY;
+        private bool _smoothOn;
+        private bool _overscan;
 
         public void Init()
         {
@@ -61,8 +63,8 @@ public partial class SmoothPixelPerfect : IExample
             _screenSpaceCamera = new();
             _screenSpaceCamera.Zoom = 1.0f;
 
-            // This is where we'll draw all our objects.
-            _target = LoadRenderTexture(virtualscreenWidth, virtualscreenHeight);
+            // Load render texture to draw all our objects
+            _target = LoadRenderTexture(virtualScreenWidth, virtualScreenHeight);
 
             _rec01 = new(70.0f, 35.0f, 20.0f, 20.0f);
             _rec02 = new(90.0f, 55.0f, 30.0f, 10.0f);
@@ -76,10 +78,10 @@ public partial class SmoothPixelPerfect : IExample
                 -(float)_target.Texture.Height
             );
             _destRec = new(
-                -virtualRatio,
-                -virtualRatio,
-                screenWidth + (virtualRatio * 2),
-                screenHeight + (virtualRatio * 2)
+                (screenWidth - screenWidth / 1.25f) / 2.0f,
+                (screenHeight - screenHeight / 1.25f) / 2.0f,
+                screenWidth / 1.25f,
+                screenHeight / 1.25f
             );
 
             _origin = new(0.0f, 0.0f);
@@ -88,6 +90,9 @@ public partial class SmoothPixelPerfect : IExample
 
             _cameraX = 0.0f;
             _cameraY = 0.0f;
+
+            _smoothOn = true;
+            _overscan = false;
         }
 
         public void Update()
@@ -102,13 +107,42 @@ public partial class SmoothPixelPerfect : IExample
             _screenSpaceCamera.Target = new Vector2(_cameraX, _cameraY);
 
             // Round worldSpace coordinates, keep decimals into screenSpace coordinates
-            _worldSpaceCamera.Target.X = (int)_screenSpaceCamera.Target.X;
+            _worldSpaceCamera.Target.X = MathF.Truncate(_screenSpaceCamera.Target.X);
             _screenSpaceCamera.Target.X -= _worldSpaceCamera.Target.X;
             _screenSpaceCamera.Target.X *= virtualRatio;
 
-            _worldSpaceCamera.Target.Y = (int)_screenSpaceCamera.Target.Y;
+            _worldSpaceCamera.Target.Y = MathF.Truncate(_screenSpaceCamera.Target.Y);
             _screenSpaceCamera.Target.Y -= _worldSpaceCamera.Target.Y;
             _screenSpaceCamera.Target.Y *= virtualRatio;
+
+            if (IsKeyPressed(KeyboardKey.S))
+            {
+                _smoothOn = !_smoothOn;
+            }
+
+            if (IsKeyPressed(KeyboardKey.O))
+            {
+                _overscan = !_overscan;
+            }
+
+            if (_overscan)
+            {
+                _destRec = new Rectangle(
+                    -virtualRatio,
+                    -virtualRatio,
+                    screenWidth + (virtualRatio * 2),
+                    screenHeight + (virtualRatio * 2)
+                );
+            }
+            else
+            {
+                _destRec = new Rectangle(
+                    (screenWidth - screenWidth / 1.25f) / 2.0f,
+                    (screenHeight - screenHeight / 1.25f) / 2.0f,
+                    screenWidth / 1.25f,
+                    screenHeight / 1.25f
+                );
+            }
 
             BeginTextureMode(_target);
             ClearBackground(Color.RayWhite);
@@ -118,18 +152,26 @@ public partial class SmoothPixelPerfect : IExample
             DrawRectanglePro(_rec02, _origin, -_rotation, Color.Red);
             DrawRectanglePro(_rec03, _origin, _rotation + 45.0f, Color.Blue);
             EndMode2D();
-
             EndTextureMode();
 
             BeginDrawing();
-            ClearBackground(Color.Red);
+            ClearBackground(Color.LightGray);
 
-            BeginMode2D(_screenSpaceCamera);
-            DrawTexturePro(_target.Texture, _sourceRec, _destRec, _origin, 0.0f, Color.White);
-            EndMode2D();
+            if (_smoothOn)
+            {
+                BeginMode2D(_screenSpaceCamera);
+                DrawTexturePro(_target.Texture, _sourceRec, _destRec, _origin, 0.0f, Color.White);
+                EndMode2D();
+            }
+            else
+            {
+                DrawTexturePro(_target.Texture, _sourceRec, _destRec, _origin, 0.0f, Color.White);
+            }
 
             DrawText($"Screen resolution: {screenWidth}x{screenHeight}", 10, 10, 20, Color.DarkBlue);
-            DrawText($"World resolution: {virtualscreenWidth}x{virtualscreenHeight}", 10, 40, 20, Color.DarkGreen);
+            DrawText($"World resolution: {virtualScreenWidth}x{virtualScreenHeight}", 10, 40, 20, Color.DarkGreen);
+            DrawText($"Smooth: {(_smoothOn ? "ON" : "OFF")}", 10, screenHeight - 60, 20, Color.Red);
+            DrawText($"Overscan: {(_overscan ? "ON" : "OFF")}", 10, screenHeight - 30, 20, Color.Red);
             DrawFPS(GetScreenWidth() - 95, 10);
             EndDrawing();
         }

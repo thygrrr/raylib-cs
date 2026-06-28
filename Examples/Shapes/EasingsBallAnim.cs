@@ -1,11 +1,15 @@
 /*******************************************************************************************
 *
-*   raylib [shapes] example - easings ball anim
+*   raylib [shapes] example - easings ball
 *
-*   This example has been created using raylib 2.5 (www.raylib.com)
-*   raylib is licensed under an unmodified zlib/libpng license (View raylib.h for details)
+*   Example complexity rating: [★★☆☆] 2/4
 *
-*   Copyright (c) 2014-2019 Ramon Santamaria (@raysan5)
+*   Example originally created with raylib 2.5, last time updated with raylib 2.5
+*
+*   Example licensed under an unmodified zlib/libpng license, which is an OSI-certified,
+*   BSD-like license that allows static linking with closed source software
+*
+*   Copyright (c) 2014-2025 Ramon Santamaria (@raysan5)
 *
 ********************************************************************************************/
 
@@ -23,7 +27,7 @@ public partial class EasingsBallAnim
         const int screenWidth = 800;
         const int screenHeight = 450;
 
-        InitWindow(screenWidth, screenHeight, "raylib [shapes] example - easings ball anim");
+        InitWindow(screenWidth, screenHeight, "raylib [shapes] example - easings ball");
 
         // Ball variable value to be animated with easings
         int ballPositionX = -100;
@@ -33,18 +37,18 @@ public partial class EasingsBallAnim
         int state = 0;
         int framesCounter = 0;
 
-        SetTargetFPS(60);
+        SetTargetFPS(60);                   // Set our game to run at 60 frames-per-second
         //--------------------------------------------------------------------------------------
 
         // Main game loop
-        while (!WindowShouldClose())
+        while (!WindowShouldClose())        // Detect window close button or ESC key
         {
             // Update
             //----------------------------------------------------------------------------------
             if (state == 0)             // Move ball position X with easing
             {
-                framesCounter += 1;
-                ballPositionX = (int)Easings.EaseElasticOut(framesCounter, -100, screenWidth / 2 + 100, 120);
+                framesCounter++;
+                ballPositionX = (int)Easings.EaseElasticOut(framesCounter, -100, screenWidth / 2.0f + 100, 120);
 
                 if (framesCounter >= 120)
                 {
@@ -52,10 +56,9 @@ public partial class EasingsBallAnim
                     state = 1;
                 }
             }
-            // Increase ball radius with easing
-            else if (state == 1)
+            else if (state == 1)        // Increase ball radius with easing
             {
-                framesCounter += 1;
+                framesCounter++;
                 ballRadius = (int)Easings.EaseElasticIn(framesCounter, 20, 500, 200);
 
                 if (framesCounter >= 200)
@@ -64,10 +67,9 @@ public partial class EasingsBallAnim
                     state = 2;
                 }
             }
-            // Change ball alpha with easing (background color blending)
-            else if (state == 2)
+            else if (state == 2)        // Change ball alpha with easing (background color blending)
             {
-                framesCounter += 1;
+                framesCounter++;
                 ballAlpha = Easings.EaseCubicOut(framesCounter, 0.0f, 1.0f, 200);
 
                 if (framesCounter >= 200)
@@ -76,8 +78,7 @@ public partial class EasingsBallAnim
                     state = 3;
                 }
             }
-            // Reset state to play again
-            else if (state == 3)
+            else if (state == 3)        // Reset state to play again
             {
                 if (IsKeyPressed(KeyboardKey.Enter))
                 {
@@ -105,7 +106,7 @@ public partial class EasingsBallAnim
                 DrawRectangle(0, 0, screenWidth, screenHeight, Color.Green);
             }
 
-            DrawCircle(ballPositionX, 200, ballRadius, ColorAlpha(Color.Red, 1.0f - ballAlpha));
+            DrawCircle(ballPositionX, 200, ballRadius, Fade(Color.Red, 1.0f - ballAlpha));
 
             if (state == 3)
             {
@@ -118,7 +119,7 @@ public partial class EasingsBallAnim
 
         // De-Initialization
         //--------------------------------------------------------------------------------------
-        CloseWindow();
+        CloseWindow();        // Close window and OpenGL context
         //--------------------------------------------------------------------------------------
 
         return 0;

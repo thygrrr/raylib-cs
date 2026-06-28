@@ -1,11 +1,15 @@
 /*******************************************************************************************
 *
-*   raylib [models] example - Cubicmap loading and drawing
+*   raylib [models] example - cubicmap rendering
 *
-*   This example has been created using raylib 1.8 (www.raylib.com)
-*   raylib is licensed under an unmodified zlib/libpng license (View raylib.h for details)
+*   Example complexity rating: [★★☆☆] 2/4
 *
-*   Copyright (c) 2015 Ramon Santamaria (@raysan5)
+*   Example originally created with raylib 1.8, last time updated with raylib 3.5
+*
+*   Example licensed under an unmodified zlib/libpng license, which is an OSI-certified,
+*   BSD-like license that allows static linking with closed source software
+*
+*   Copyright (c) 2015-2025 Ramon Santamaria (@raysan5)
 *
 ********************************************************************************************/
 
@@ -23,40 +27,51 @@ public partial class CubicmapDemo
         const int screenWidth = 800;
         const int screenHeight = 450;
 
-        InitWindow(screenWidth, screenHeight, "raylib [models] example - cubesmap loading and drawing");
+        InitWindow(screenWidth, screenHeight, "raylib [models] example - cubicmap rendering");
 
         // Define the camera to look into our 3d world
         Camera3D camera = new();
-        camera.Position = new Vector3(16.0f, 14.0f, 16.0f);
-        camera.Target = new Vector3(0.0f, 0.0f, 0.0f);
-        camera.Up = new Vector3(0.0f, 1.0f, 0.0f);
-        camera.FovY = 45.0f;
-        camera.Projection = CameraProjection.Perspective;
+        camera.Position = new Vector3(16.0f, 14.0f, 16.0f);     // Camera position
+        camera.Target = new Vector3(0.0f, 0.0f, 0.0f);          // Camera looking at point
+        camera.Up = new Vector3(0.0f, 1.0f, 0.0f);              // Camera up vector (rotation towards target)
+        camera.FovY = 45.0f;                                    // Camera field-of-view Y
+        camera.Projection = CameraProjection.Perspective;       // Camera projection type
 
-        Image image = LoadImage("resources/cubicmap.png");
-        Texture2D cubicmap = LoadTextureFromImage(image);
+        Image image = LoadImage("resources/cubicmap.png");      // Load cubicmap image (RAM)
+        Texture2D cubicmap = LoadTextureFromImage(image);       // Convert image to texture to display (VRAM)
 
         Mesh mesh = GenMeshCubicmap(image, new Vector3(1.0f, 1.0f, 1.0f));
         Model model = LoadModelFromMesh(mesh);
 
         // NOTE: By default each cube is mapped to one part of texture atlas
-        Texture2D texture = LoadTexture("resources/cubicmap_atlas.png");
+        Texture2D texture = LoadTexture("resources/cubicmap_atlas.png");    // Load map texture
 
         // Set map diffuse texture
         Raylib.SetMaterialTexture(ref model, 0, MaterialMapIndex.Albedo, ref texture);
 
-        Vector3 mapPosition = new(-16.0f, 0.0f, -8.0f);
-        UnloadImage(image);
+        Vector3 mapPosition = new(-16.0f, 0.0f, -8.0f);         // Set model position
 
-        SetTargetFPS(60);
+        UnloadImage(image);     // Unload cubesmap image from RAM, already uploaded to VRAM
+
+        bool pause = false;     // Pause camera orbital rotation (and zoom)
+
+        SetTargetFPS(60);                   // Set our game to run at 60 frames-per-second
         //--------------------------------------------------------------------------------------
 
         // Main game loop
-        while (!WindowShouldClose())
+        while (!WindowShouldClose())        // Detect window close button or ESC key
         {
             // Update
             //----------------------------------------------------------------------------------
-            UpdateCamera(ref camera, CameraMode.Orbital);
+            if (IsKeyPressed(KeyboardKey.P))
+            {
+                pause = !pause;
+            }
+
+            if (!pause)
+            {
+                UpdateCamera(ref camera, CameraMode.Orbital);
+            }
             //----------------------------------------------------------------------------------
 
             // Draw
@@ -91,11 +106,11 @@ public partial class CubicmapDemo
 
         // De-Initialization
         //--------------------------------------------------------------------------------------
-        UnloadTexture(cubicmap);
-        UnloadTexture(texture);
-        UnloadModel(model);
+        UnloadTexture(cubicmap);    // Unload cubicmap texture
+        UnloadTexture(texture);     // Unload map texture
+        UnloadModel(model);         // Unload map model
 
-        CloseWindow();
+        CloseWindow();              // Close window and OpenGL context
         //--------------------------------------------------------------------------------------
 
         return 0;

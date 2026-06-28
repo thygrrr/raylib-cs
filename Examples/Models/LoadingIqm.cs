@@ -34,33 +34,33 @@ public partial class LoadingIqm
         const int screenWidth = 800;
         const int screenHeight = 450;
 
-        InitWindow(screenWidth, screenHeight, "raylib [models] example - model animation");
+        InitWindow(screenWidth, screenHeight, "raylib [models] example - loading iqm");
 
         // Define the camera to look into our 3d world
         Camera3D camera = new();
-        camera.Position = new Vector3(10.0f, 10.0f, 10.0f);
-        camera.Target = new Vector3(0.0f, 4.0f, 0.0f);
-        camera.Up = new Vector3(0.0f, 1.0f, 0.0f);
-        camera.FovY = 45.0f;
-        camera.Projection = CameraProjection.Perspective;
+        camera.Position = new Vector3(10.0f, 10.0f, 10.0f); // Camera position
+        camera.Target = new Vector3(0.0f, 4.0f, 0.0f);      // Camera looking at point
+        camera.Up = new Vector3(0.0f, 1.0f, 0.0f);          // Camera up vector (rotation towards target)
+        camera.FovY = 45.0f;                                // Camera field-of-view Y
+        camera.Projection = CameraProjection.Perspective;   // Camera mode type
 
-        Model model = LoadModel("resources/models/iqm/guy.iqm");
-        Texture2D texture = LoadTexture("resources/models/iqm/guytex.png");
-        Raylib.SetMaterialTexture(ref model, 0, MaterialMapIndex.Diffuse, ref texture);
-        Vector3 position = new(0.0f, 0.0f, 0.0f);
+        Model model = LoadModel("resources/models/iqm/guy.iqm");                    // Load the animated model mesh and basic data
+        Texture2D texture = LoadTexture("resources/models/iqm/guytex.png");         // Load model texture and set material
+        Raylib.SetMaterialTexture(ref model, 0, MaterialMapIndex.Diffuse, ref texture);     // Set model material map texture
+        Vector3 position = new(0.0f, 0.0f, 0.0f); // Set model position
 
         // Load animation data
         var anims = LoadModelAnimations("resources/models/iqm/guyanim.iqm");
 
         // Animation playing variables
-        int animIndex = 0;
-        float animCurrentFrame = 0.0f;
+        int animIndex = 0;          // Current animation playing
+        float animCurrentFrame = 0.0f;      // Current animation frame (supporting interpolated frames)
 
-        SetTargetFPS(60);
+        SetTargetFPS(60);                   // Set our game to run at 60 frames-per-second
         //--------------------------------------------------------------------------------------
 
         // Main game loop
-        while (!WindowShouldClose())
+        while (!WindowShouldClose())        // Detect window close button or ESC key
         {
             // Update
             //----------------------------------------------------------------------------------
@@ -104,11 +104,11 @@ public partial class LoadingIqm
 
         // De-Initialization
         //--------------------------------------------------------------------------------------
-        UnloadTexture(texture);
-        UnloadModelAnimations(anims);
-        UnloadModel(model);
+        UnloadTexture(texture);                    // Unload texture
+        UnloadModelAnimations(anims);   // Unload model animations data
+        UnloadModel(model);                        // Unload model
 
-        CloseWindow();
+        CloseWindow();                  // Close window and OpenGL context
         //--------------------------------------------------------------------------------------
 
         return 0;

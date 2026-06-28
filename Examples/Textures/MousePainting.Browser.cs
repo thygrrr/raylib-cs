@@ -30,7 +30,7 @@ public partial class MousePainting : IExample
         private const int screenWidth = 800;
         private const int screenHeight = 450;
 
-        // Colours to choose from
+        // Colors to choose from
         private Color[] _colors;
 
         // Define colorsRecs data (for every rectangle)
@@ -39,7 +39,8 @@ public partial class MousePainting : IExample
         private int _colorSelected;
         private int _colorSelectedPrev;
         private int _colorMouseHover;
-        private int _brushSize;
+        private float _brushSize;
+        private bool _mouseWasPressed;
 
         private Rectangle _btnSaveRec;
         private bool _btnSaveMouseHover;
@@ -51,7 +52,7 @@ public partial class MousePainting : IExample
 
         public void Init()
         {
-            // Colours to choose from
+            // Colors to choose from
             _colors = new Color[] {
                 Color.RayWhite,
                 Color.Yellow,
@@ -92,7 +93,8 @@ public partial class MousePainting : IExample
             _colorSelected = 0;
             _colorSelectedPrev = _colorSelected;
             _colorMouseHover = 0;
-            _brushSize = 20;
+            _brushSize = 20.0f;
+            _mouseWasPressed = false;
 
             _btnSaveRec = new(750, 10, 40, 30);
             _btnSaveMouseHover = false;
@@ -152,7 +154,7 @@ public partial class MousePainting : IExample
             }
 
             // Change brush size
-            _brushSize += (int)(GetMouseWheelMove() * 5);
+            _brushSize += GetMouseWheelMove() * 5;
             if (_brushSize < 2)
             {
                 _brushSize = 2;
@@ -171,7 +173,7 @@ public partial class MousePainting : IExample
                 EndTextureMode();
             }
 
-            if (IsMouseButtonDown(MouseButton.Left))
+            if (IsMouseButtonDown(MouseButton.Left) || (GetGestureDetected() == Gesture.Drag))
             {
                 // Paint circle into render texture
                 // NOTE: To avoid discontinuous circles, we could store
@@ -184,9 +186,16 @@ public partial class MousePainting : IExample
 
                 EndTextureMode();
             }
-            else if (IsMouseButtonDown(MouseButton.Right))
+
+            if (IsMouseButtonDown(MouseButton.Right))
             {
-                _colorSelected = 0;
+                if (!_mouseWasPressed)
+                {
+                    _colorSelectedPrev = _colorSelected;
+                    _colorSelected = 0;
+                }
+
+                _mouseWasPressed = true;
 
                 // Erase circle from render texture
                 BeginTextureMode(_target);
@@ -197,9 +206,10 @@ public partial class MousePainting : IExample
 
                 EndTextureMode();
             }
-            else
+            else if (IsMouseButtonReleased(MouseButton.Right) && _mouseWasPressed)
             {
                 _colorSelected = _colorSelectedPrev;
+                _mouseWasPressed = false;
             }
 
             // Check mouse hover save button
@@ -247,7 +257,7 @@ public partial class MousePainting : IExample
             {
                 if (IsMouseButtonDown(MouseButton.Right))
                 {
-                    DrawCircleLines((int)mousePos.X, (int)mousePos.Y, _brushSize, _colors[_colorSelected]);
+                    DrawCircleLines((int)mousePos.X, (int)mousePos.Y, _brushSize, Color.Gray);
                 }
                 else
                 {
@@ -269,7 +279,7 @@ public partial class MousePainting : IExample
 
             if (_colorMouseHover >= 0)
             {
-                DrawRectangleRec(_colorsRecs[_colorMouseHover], ColorAlpha(Color.White, 0.6f));
+                DrawRectangleRec(_colorsRecs[_colorMouseHover], Fade(Color.White, 0.6f));
             }
 
             Rectangle rec = new(
@@ -287,9 +297,9 @@ public partial class MousePainting : IExample
             // Draw save image message
             if (_showSaveMessage)
             {
-                DrawRectangle(0, 0, GetScreenWidth(), GetScreenHeight(), ColorAlpha(Color.RayWhite, 0.8f));
+                DrawRectangle(0, 0, GetScreenWidth(), GetScreenHeight(), Fade(Color.RayWhite, 0.8f));
                 DrawRectangle(0, 150, GetScreenWidth(), 80, Color.Black);
-                DrawText("IMAGE SAVED:  my_amazing_texture_painting.png", 150, 180, 20, Color.RayWhite);
+                DrawText("IMAGE SAVED!", 150, 180, 20, Color.RayWhite);
             }
 
             EndDrawing();

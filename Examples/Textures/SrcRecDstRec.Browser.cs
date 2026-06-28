@@ -44,13 +44,13 @@ public partial class SrcRecDstRec : IExample
             int frameWidth = _scarfy.Width / 6;
             int frameHeight = _scarfy.Height;
 
-            // NOTE: Source rectangle (part of the texture to use for drawing)
+            // Source rectangle (part of the texture to use for drawing)
             _sourceRec = new(0, 0, frameWidth, frameHeight);
 
-            // NOTE: Destination rectangle (screen rectangle where drawing part of texture)
+            // Destination rectangle (screen rectangle where drawing part of texture)
             _destRec = new(screenWidth / 2, screenHeight / 2, frameWidth * 2, frameHeight * 2);
 
-            // NOTE: Origin of the texture (rotation/scale point), it's relative to destination rectangle size
+            // Origin of the texture (rotation/scale point), it's relative to destination rectangle size
             _origin = new(frameWidth, frameHeight);
 
             _rotation = 0;

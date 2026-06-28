@@ -1,11 +1,15 @@
 /*******************************************************************************************
 *
-*   raylib [text] example - Input Box
+*   raylib [text] example - input box
 *
-*   This example has been created using raylib 1.7 (www.raylib.com)
-*   raylib is licensed under an unmodified zlib/libpng license (View raylib.h for details)
+*   Example complexity rating: [★★☆☆] 2/4
 *
-*   Copyright (c) 2017 Ramon Santamaria (@raysan5)
+*   Example originally created with raylib 1.7, last time updated with raylib 3.5
+*
+*   Example licensed under an unmodified zlib/libpng license, which is an OSI-certified,
+*   BSD-like license that allows static linking with closed source software
+*
+*   Copyright (c) 2017-2025 Ramon Santamaria (@raysan5)
 *
 ********************************************************************************************/
 
@@ -26,8 +30,8 @@ public partial class InputBox
 
         InitWindow(screenWidth, screenHeight, "raylib [text] example - input box");
 
-        // NOTE: One extra space required for line ending char '\0'
-        char[] name = new char[MaxInputChars];
+        // NOTE: One extra space required for null terminator char '\0'
+        char[] name = new char[MaxInputChars + 1];
         int letterCount = 0;
 
         Rectangle textBox = new(screenWidth / 2 - 100, 180, 225, 50);
@@ -35,11 +39,11 @@ public partial class InputBox
 
         int framesCounter = 0;
 
-        SetTargetFPS(60);
+        SetTargetFPS(60);               // Set our game to run at 60 frames-per-second
         //--------------------------------------------------------------------------------------
 
         // Main game loop
-        while (!WindowShouldClose())
+        while (!WindowShouldClose())    // Detect window close button or ESC key
         {
             // Update
             //----------------------------------------------------------------------------------
@@ -57,20 +61,21 @@ public partial class InputBox
                 // Set the window's cursor to the I-Beam
                 SetMouseCursor(MouseCursor.IBeam);
 
-                // Check if more characters have been pressed on the same frame
+                // Get char pressed (unicode character) on the queue
                 int key = GetCharPressed();
 
+                // Check if more characters have been pressed on the same frame
                 while (key > 0)
                 {
                     // NOTE: Only allow keys in range [32..125]
                     if ((key >= 32) && (key <= 125) && (letterCount < MaxInputChars))
                     {
                         name[letterCount] = (char)key;
+                        name[letterCount + 1] = '\0'; // Add null terminator at the end of the string
                         letterCount++;
                     }
 
-                    // Check next character in the queue
-                    key = GetCharPressed();
+                    key = GetCharPressed();  // Check next character in the queue
                 }
 
                 if (IsKeyPressed(KeyboardKey.Backspace))

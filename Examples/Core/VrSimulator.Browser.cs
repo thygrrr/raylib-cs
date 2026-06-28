@@ -32,6 +32,8 @@ public partial class VrSimulator : IExample
         private VrStereoConfig _config;
         private Shader _distortion;
         private RenderTexture2D _target;
+        private Rectangle _sourceRec;
+        private Rectangle _destRec;
         private Camera3D _camera;
         private Vector3 _cubePosition;
 
@@ -50,9 +52,8 @@ public partial class VrSimulator : IExample
                 InterpupillaryDistance = 0.07f,
             };
 
-            // NOTE: CV1 uses a Fresnel-hybrid-asymmetric lenses with specific distortion compute shaders.
-            // Following parameters are an approximation to distortion stereo rendering but results differ from actual
-            // device.
+            // NOTE: CV1 uses fresnel-hybrid-asymmetric lenses with specific compute shaders
+            // Following parameters are just an approximation to CV1 distortion stereo rendering
             device.LensDistortionValues[0] = 1.0f;
             device.LensDistortionValues[1] = 0.22f;
             device.LensDistortionValues[2] = 0.24f;
@@ -122,7 +123,11 @@ public partial class VrSimulator : IExample
 
             // Initialize framebuffer for stereo rendering
             // NOTE: Screen size should match HMD aspect ratio
-            _target = LoadRenderTexture(GetScreenWidth(), GetScreenHeight());
+            _target = LoadRenderTexture(device.HResolution, device.VResolution);
+
+            // The target's height is flipped (in the source Rectangle), due to OpenGL reasons
+            _sourceRec = new Rectangle(0.0f, 0.0f, (float)_target.Texture.Width, -(float)_target.Texture.Height);
+            _destRec = new Rectangle(0.0f, 0.0f, (float)GetScreenWidth(), (float)GetScreenHeight());
 
             // Define the camera to look into our 3d world
             _camera = new();
@@ -139,12 +144,8 @@ public partial class VrSimulator : IExample
         {
             UpdateCamera(ref _camera, CameraMode.FirstPerson);
 
-            BeginDrawing();
-            ClearBackground(Color.RayWhite);
-
             BeginTextureMode(_target);
             ClearBackground(Color.RayWhite);
-
             BeginVrStereoMode(_config);
             BeginMode3D(_camera);
 
@@ -156,17 +157,12 @@ public partial class VrSimulator : IExample
             EndVrStereoMode();
             EndTextureMode();
 
+            BeginDrawing();
+            ClearBackground(Color.RayWhite);
             BeginShaderMode(_distortion);
-            DrawTextureRec(
-                _target.Texture,
-                new Rectangle(0, 0, (float)_target.Texture.Width, (float)-_target.Texture.Height),
-                new Vector2(0.0f, 0.0f),
-                Color.White
-            );
+            DrawTexturePro(_target.Texture, _sourceRec, _destRec, new Vector2(0.0f, 0.0f), 0.0f, Color.White);
             EndShaderMode();
-
             DrawFPS(10, 10);
-
             EndDrawing();
         }
 

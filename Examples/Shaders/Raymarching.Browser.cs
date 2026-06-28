@@ -54,6 +54,7 @@ public partial class Raymarching : IExample
             _camera.Target = new Vector3(0.0f, 0.0f, 0.7f);
             _camera.Up = new Vector3(0.0f, 1.0f, 0.0f);
             _camera.FovY = 65.0f;
+            _camera.Projection = CameraProjection.Perspective;
 
             // Load raymarching shader
             // NOTE: Defining 0 (NULL) for vertex shader forces usage of internal default vertex shader
@@ -73,16 +74,7 @@ public partial class Raymarching : IExample
 
         public void Update()
         {
-            // Check if screen is resized
-            if (IsWindowResized())
-            {
-                _screenWidth = GetScreenWidth();
-                _screenHeight = GetScreenHeight();
-                float[] resolution = new float[] { (float)_screenWidth, (float)_screenHeight };
-                Raylib.SetShaderValue(_shader, _resolutionLoc, resolution, ShaderUniformDataType.Vec2);
-            }
-
-            UpdateCamera(ref _camera, CameraMode.Free);
+            UpdateCamera(ref _camera, CameraMode.FirstPerson);
 
             float deltaTime = GetFrameTime();
             _runTime += deltaTime;
@@ -91,6 +83,15 @@ public partial class Raymarching : IExample
             Raylib.SetShaderValue(_shader, _viewEyeLoc, _camera.Position, ShaderUniformDataType.Vec3);
             Raylib.SetShaderValue(_shader, _viewCenterLoc, _camera.Target, ShaderUniformDataType.Vec3);
             Raylib.SetShaderValue(_shader, _runTimeLoc, _runTime, ShaderUniformDataType.Float);
+
+            // Check if screen is resized
+            if (IsWindowResized())
+            {
+                _screenWidth = GetScreenWidth();
+                _screenHeight = GetScreenHeight();
+                float[] resolution = new float[] { (float)_screenWidth, (float)_screenHeight };
+                Raylib.SetShaderValue(_shader, _resolutionLoc, resolution, ShaderUniformDataType.Vec2);
+            }
 
             BeginDrawing();
             ClearBackground(Color.RayWhite);

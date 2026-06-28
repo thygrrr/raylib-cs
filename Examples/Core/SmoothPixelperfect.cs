@@ -1,14 +1,18 @@
 /*******************************************************************************************
 *
-*   raylib [core] example - smooth pixel-perfect camera
+*   raylib [core] example - smooth pixelperfect
 *
-*   This example has been created using raylib 3.7 (www.raylib.com)
-*   raylib is licensed under an unmodified zlib/libpng license (View raylib.h for details)
+*   Example complexity rating: [★★★☆] 3/4
+*
+*   Example originally created with raylib 3.7, last time updated with raylib 4.0
 *
 *   Example contributed by Giancamillo Alessandroni (@NotManyIdeasDev) and
 *   reviewed by Ramon Santamaria (@raysan5)
 *
-*   Copyright (c) 2021 Giancamillo Alessandroni (@NotManyIdeasDev) and Ramon Santamaria (@raysan5)
+*   Example licensed under an unmodified zlib/libpng license, which is an OSI-certified,
+*   BSD-like license that allows static linking with closed source software
+*
+*   Copyright (c) 2021-2025 Giancamillo Alessandroni (@NotManyIdeasDev) and Ramon Santamaria (@raysan5)
 *
 ********************************************************************************************/
 
@@ -27,23 +31,21 @@ public partial class SmoothPixelPerfect
         const int screenWidth = 800;
         const int screenHeight = 450;
 
-        const int virtualscreenWidth = 160;
-        const int virtualscreenHeight = 90;
+        const int virtualScreenWidth = 160;
+        const int virtualScreenHeight = 90;
 
-        const float virtualRatio = (float)screenWidth / (float)virtualscreenWidth;
+        const float virtualRatio = (float)screenWidth / (float)virtualScreenWidth;
 
-        InitWindow(screenWidth, screenHeight, "raylib [core] example - smooth pixel-perfect camera");
+        InitWindow(screenWidth, screenHeight, "raylib [core] example - smooth pixelperfect");
 
-        // Game world camera
-        Camera2D worldSpaceCamera = new();
+        Camera2D worldSpaceCamera = new();  // Game world camera
         worldSpaceCamera.Zoom = 1.0f;
 
-        // Smoothing camera
-        Camera2D screenSpaceCamera = new();
+        Camera2D screenSpaceCamera = new(); // Smoothing camera
         screenSpaceCamera.Zoom = 1.0f;
 
-        // This is where we'll draw all our objects.
-        RenderTexture2D target = LoadRenderTexture(virtualscreenWidth, virtualscreenHeight);
+        // Load render texture to draw all our objects
+        RenderTexture2D target = LoadRenderTexture(virtualScreenWidth, virtualScreenHeight);
 
         Rectangle rec01 = new(70.0f, 35.0f, 20.0f, 20.0f);
         Rectangle rec02 = new(90.0f, 55.0f, 30.0f, 10.0f);
@@ -57,10 +59,10 @@ public partial class SmoothPixelPerfect
             -(float)target.Texture.Height
         );
         Rectangle destRec = new(
-            -virtualRatio,
-            -virtualRatio,
-            screenWidth + (virtualRatio * 2),
-            screenHeight + (virtualRatio * 2)
+            (screenWidth - screenWidth / 1.25f) / 2.0f,
+            (screenHeight - screenHeight / 1.25f) / 2.0f,
+            screenWidth / 1.25f,
+            screenHeight / 1.25f
         );
 
         Vector2 origin = new(0.0f, 0.0f);
@@ -70,11 +72,14 @@ public partial class SmoothPixelPerfect
         float cameraX = 0.0f;
         float cameraY = 0.0f;
 
+        bool smoothOn = true;
+        bool overscan = false;
+
         SetTargetFPS(60);
         //--------------------------------------------------------------------------------------
 
         // Main game loop
-        while (!WindowShouldClose())
+        while (!WindowShouldClose())    // Detect window close button or ESC key
         {
             // Update
             //----------------------------------------------------------------------------------
@@ -88,13 +93,42 @@ public partial class SmoothPixelPerfect
             screenSpaceCamera.Target = new Vector2(cameraX, cameraY);
 
             // Round worldSpace coordinates, keep decimals into screenSpace coordinates
-            worldSpaceCamera.Target.X = (int)screenSpaceCamera.Target.X;
+            worldSpaceCamera.Target.X = MathF.Truncate(screenSpaceCamera.Target.X);
             screenSpaceCamera.Target.X -= worldSpaceCamera.Target.X;
             screenSpaceCamera.Target.X *= virtualRatio;
 
-            worldSpaceCamera.Target.Y = (int)screenSpaceCamera.Target.Y;
+            worldSpaceCamera.Target.Y = MathF.Truncate(screenSpaceCamera.Target.Y);
             screenSpaceCamera.Target.Y -= worldSpaceCamera.Target.Y;
             screenSpaceCamera.Target.Y *= virtualRatio;
+
+            if (IsKeyPressed(KeyboardKey.S))
+            {
+                smoothOn = !smoothOn;
+            }
+
+            if (IsKeyPressed(KeyboardKey.O))
+            {
+                overscan = !overscan;
+            }
+
+            if (overscan)
+            {
+                destRec = new Rectangle(
+                    -virtualRatio,
+                    -virtualRatio,
+                    screenWidth + (virtualRatio * 2),
+                    screenHeight + (virtualRatio * 2)
+                );
+            }
+            else
+            {
+                destRec = new Rectangle(
+                    (screenWidth - screenWidth / 1.25f) / 2.0f,
+                    (screenHeight - screenHeight / 1.25f) / 2.0f,
+                    screenWidth / 1.25f,
+                    screenHeight / 1.25f
+                );
+            }
             //----------------------------------------------------------------------------------
 
             // Draw
@@ -107,18 +141,26 @@ public partial class SmoothPixelPerfect
             DrawRectanglePro(rec02, origin, -rotation, Color.Red);
             DrawRectanglePro(rec03, origin, rotation + 45.0f, Color.Blue);
             EndMode2D();
-
             EndTextureMode();
 
             BeginDrawing();
-            ClearBackground(Color.Red);
+            ClearBackground(Color.LightGray);
 
-            BeginMode2D(screenSpaceCamera);
-            DrawTexturePro(target.Texture, sourceRec, destRec, origin, 0.0f, Color.White);
-            EndMode2D();
+            if (smoothOn)
+            {
+                BeginMode2D(screenSpaceCamera);
+                DrawTexturePro(target.Texture, sourceRec, destRec, origin, 0.0f, Color.White);
+                EndMode2D();
+            }
+            else
+            {
+                DrawTexturePro(target.Texture, sourceRec, destRec, origin, 0.0f, Color.White);
+            }
 
             DrawText($"Screen resolution: {screenWidth}x{screenHeight}", 10, 10, 20, Color.DarkBlue);
-            DrawText($"World resolution: {virtualscreenWidth}x{virtualscreenHeight}", 10, 40, 20, Color.DarkGreen);
+            DrawText($"World resolution: {virtualScreenWidth}x{virtualScreenHeight}", 10, 40, 20, Color.DarkGreen);
+            DrawText($"Smooth: {(smoothOn ? "ON" : "OFF")}", 10, screenHeight - 60, 20, Color.Red);
+            DrawText($"Overscan: {(overscan ? "ON" : "OFF")}", 10, screenHeight - 30, 20, Color.Red);
             DrawFPS(GetScreenWidth() - 95, 10);
             EndDrawing();
             //----------------------------------------------------------------------------------
@@ -126,9 +168,9 @@ public partial class SmoothPixelPerfect
 
         // De-Initialization
         //--------------------------------------------------------------------------------------
-        UnloadRenderTexture(target);
+        UnloadRenderTexture(target);    // Unload render texture
 
-        CloseWindow();
+        CloseWindow();                  // Close window and OpenGL context
         //--------------------------------------------------------------------------------------
 
         return 0;

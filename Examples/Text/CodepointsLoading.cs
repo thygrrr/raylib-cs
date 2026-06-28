@@ -1,13 +1,15 @@
 /*******************************************************************************************
 *
-*   raylib [text] example - Codepoints loading
+*   raylib [text] example - codepoints loading
 *
-*   Example originally created with raylib 4.2, last time updated with raylib 2.5
+*   Example complexity rating: [★★★☆] 3/4
+*
+*   Example originally created with raylib 4.2, last time updated with raylib 4.2
 *
 *   Example licensed under an unmodified zlib/libpng license, which is an OSI-certified,
 *   BSD-like license that allows static linking with closed source software
 *
-*   Copyright (c) 2022-2023 Ramon Santamaria (@raysan5)
+*   Copyright (c) 2022-2025 Ramon Santamaria (@raysan5)
 *
 ********************************************************************************************/
 
@@ -54,13 +56,15 @@ partial class CodepointsLoading
         // Set bilinear scale filter for better font scaling
         SetTextureFilter(font.Texture, TextureFilter.Bilinear);
 
+        SetTextLineSpacing(20);         // Set line spacing for multiline text (when line breaks are included '\n')
+
         bool showFontAtlas = false;
 
-        SetTargetFPS(60);
+        SetTargetFPS(60);               // Set our game to run at 60 frames-per-second
         //--------------------------------------------------------------------------------------
 
         // Main game loop
-        while (!WindowShouldClose())
+        while (!WindowShouldClose())    // Detect window close button or ESC key
         {
             // Update
             //----------------------------------------------------------------------------------
@@ -94,7 +98,7 @@ partial class CodepointsLoading
             }
             else
             {
-                // Draw provided text with laoded font, containing all required codepoint glyphs
+                // Draw provided text with loaded font, containing all required codepoint glyphs
                 DrawTextEx(font, text, new Vector2(160, 110), 48, 5, Color.Black);
             }
 
@@ -106,9 +110,9 @@ partial class CodepointsLoading
 
         // De-Initialization
         //--------------------------------------------------------------------------------------
-        UnloadFont(font);
+        UnloadFont(font);     // Unload font
 
-        CloseWindow();
+        CloseWindow();        // Close window and OpenGL context
         //--------------------------------------------------------------------------------------
 
         return 0;

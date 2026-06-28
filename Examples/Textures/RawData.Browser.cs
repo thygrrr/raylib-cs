@@ -49,32 +49,38 @@ public partial class RawData : IExample
             UnloadImage(fudesumiRaw);
 
             // Generate a checked texture by code
-            int width = 960;
-            int height = 480;
+            int imWidth = 960;
+            int imHeight = 480;
 
-            // Store pixel data
-            Color* pixels = (Color*)MemAlloc((uint)(width * height * sizeof(Color)));
-            for (int y = 0; y < height; y++)
+            // Dynamic memory allocation to store pixels data (Color type)
+            // WARNING: Using raylib provided MemAlloc() that uses default raylib
+            // internal memory allocator, so this data can be freed using UnloadImage()
+            // that also uses raylib internal memory de-allocator
+            Color* pixels = (Color*)MemAlloc((uint)(imWidth * imHeight * sizeof(Color)));
+
+            for (int y = 0; y < imHeight; y++)
             {
-                for (int x = 0; x < width; x++)
+                for (int x = 0; x < imWidth; x++)
                 {
                     if (((x / 32 + y / 32) / 1) % 2 == 0)
                     {
-                        pixels[y * width + x] = Color.Orange;
+                        pixels[y * imWidth + x] = Color.Orange;
                     }
                     else
                     {
-                        pixels[y * width + x] = Color.Gold;
+                        pixels[y * imWidth + x] = Color.Gold;
                     }
                 }
             }
 
             // Load pixels data into an image structure and create texture
+            // NOTE: We can assign pixels directly to data because Color is R8G8B8A8
+            // data structure defining that pixelformat, format must be set properly
             Image checkedIm = new Image
             {
                 Data = pixels,
-                Width = width,
-                Height = height,
+                Width = imWidth,
+                Height = imHeight,
                 Format = PixelFormat.UncompressedR8G8B8A8,
                 Mipmaps = 1,
             };
@@ -89,7 +95,7 @@ public partial class RawData : IExample
 
             int x = screenWidth / 2 - _checkedTex.Width / 2;
             int y = screenHeight / 2 - _checkedTex.Height / 2;
-            DrawTexture(_checkedTex, x, y, ColorAlpha(Color.White, 0.5f));
+            DrawTexture(_checkedTex, x, y, Fade(Color.White, 0.5f));
             DrawTexture(_fudesumi, 430, -30, Color.White);
 
             DrawText("CHECKED TEXTURE ", 84, 85, 30, Color.Brown);

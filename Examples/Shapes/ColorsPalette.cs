@@ -1,11 +1,15 @@
 /*******************************************************************************************
 *
-*   raylib [shapes] example - Colors palette
+*   raylib [shapes] example - colors palette
 *
-*   This example has been created using raylib 2.5 (www.raylib.com)
-*   raylib is licensed under an unmodified zlib/libpng license (View raylib.h for details)
+*   Example complexity rating: [★★☆☆] 2/4
 *
-*   Copyright (c) 2014-2019 Ramon Santamaria (@raysan5)
+*   Example originally created with raylib 1.0, last time updated with raylib 2.5
+*
+*   Example licensed under an unmodified zlib/libpng license, which is an OSI-certified,
+*   BSD-like license that allows static linking with closed source software
+*
+*   Copyright (c) 2014-2025 Ramon Santamaria (@raysan5)
 *
 ********************************************************************************************/
 
@@ -16,6 +20,8 @@ namespace Examples.Shapes;
 
 public partial class ColorsPalette
 {
+    public const int MaxColorsCount = 21;   // Number of colors available
+
     public static int Main()
     {
         // Initialization
@@ -92,11 +98,11 @@ public partial class ColorsPalette
 
         Vector2 mousePoint = new(0.0f, 0.0f);
 
-        SetTargetFPS(60);
+        SetTargetFPS(60);               // Set our game to run at 60 frames-per-second
         //--------------------------------------------------------------------------------------
 
         // Main game loop
-        while (!WindowShouldClose())
+        while (!WindowShouldClose())    // Detect window close button or ESC key
         {
             // Update
             //----------------------------------------------------------------------------------
@@ -129,10 +135,9 @@ public partial class ColorsPalette
                 Color.Gray
             );
 
-            // Draw all rectangles
-            for (int i = 0; i < colorsRecs.Length; i++)
+            for (int i = 0; i < colorsRecs.Length; i++)    // Draw all rectangles
             {
-                DrawRectangleRec(colorsRecs[i], ColorAlpha(colors[i], colorState[i] != 0 ? 0.6f : 1.0f));
+                DrawRectangleRec(colorsRecs[i], Fade(colors[i], colorState[i] != 0 ? 0.6f : 1.0f));
 
                 if (IsKeyDown(KeyboardKey.Space) || colorState[i] != 0)
                 {
@@ -143,7 +148,7 @@ public partial class ColorsPalette
                         20,
                         Color.Black
                     );
-                    DrawRectangleLinesEx(colorsRecs[i], 6, ColorAlpha(Color.Black, 0.3f));
+                    DrawRectangleLinesEx(colorsRecs[i], 6, Fade(Color.Black, 0.3f));
                     DrawText(
                         colorNames[i],
                         (int)(colorsRecs[i].X + colorsRecs[i].Width - MeasureText(colorNames[i], 10) - 12),
@@ -160,7 +165,7 @@ public partial class ColorsPalette
 
         // De-Initialization
         //--------------------------------------------------------------------------------------
-        CloseWindow();
+        CloseWindow();                // Close window and OpenGL context
         //--------------------------------------------------------------------------------------
 
         return 0;

@@ -28,10 +28,10 @@ public partial class DrawRectangleRounded : IExample
         public string Name => "Shapes / Draw Rectangle Rounded";
 
         private float _roundness;
-        private int _width;
-        private int _height;
-        private int _segments;
-        private int _lineThick;
+        private float _width;
+        private float _height;
+        private float _segments;
+        private float _lineThick;
 
         private bool _drawRect;
         private bool _drawRoundedRect;
@@ -40,20 +40,20 @@ public partial class DrawRectangleRounded : IExample
         public void Init()
         {
             _roundness = 0.2f;
-            _width = 400;
-            _height = 200;
-            _segments = 0;
-            _lineThick = 10;
+            _width = 200.0f;
+            _height = 100.0f;
+            _segments = 0.0f;
+            _lineThick = 1.0f;
 
             _drawRect = false;
-            _drawRoundedRect = false;
-            _drawRoundedLines = true;
+            _drawRoundedRect = true;
+            _drawRoundedLines = false;
         }
 
         public void Update()
         {
             Rectangle rec = new(
-                (GetScreenWidth() - _width - 250) / 2.0f,
+                ((float)GetScreenWidth() - _width - 250) / 2,
                 (GetScreenHeight() - _height) / 2.0f,
                 (float)_width,
                 (float)_height
@@ -62,20 +62,20 @@ public partial class DrawRectangleRounded : IExample
             BeginDrawing();
             ClearBackground(Color.RayWhite);
 
-            DrawLine(560, 0, 560, GetScreenHeight(), ColorAlpha(Color.LightGray, 0.6f));
-            DrawRectangle(560, 0, GetScreenWidth() - 500, GetScreenHeight(), ColorAlpha(Color.LightGray, 0.3f));
+            DrawLine(560, 0, 560, GetScreenHeight(), Fade(Color.LightGray, 0.6f));
+            DrawRectangle(560, 0, GetScreenWidth() - 500, GetScreenHeight(), Fade(Color.LightGray, 0.3f));
 
             if (_drawRect)
             {
-                DrawRectangleRec(rec, ColorAlpha(Color.Gold, 0.6f));
+                DrawRectangleRec(rec, Fade(Color.Gold, 0.6f));
             }
             if (_drawRoundedRect)
             {
-                DrawRectangleRounded(rec, _roundness, _segments, ColorAlpha(Color.Maroon, 0.2f));
+                DrawRectangleRounded(rec, _roundness, (int)_segments, Fade(Color.Maroon, 0.2f));
             }
             if (_drawRoundedLines)
             {
-                DrawRectangleRoundedLinesEx(rec, _roundness, _segments, (float)_lineThick, ColorAlpha(Color.Maroon, 0.4f));
+                DrawRectangleRoundedLinesEx(rec, _roundness, (int)_segments, _lineThick, Fade(Color.Maroon, 0.4f));
             }
 
             string text = $"MODE: {((_segments >= 4) ? "MANUAL" : "AUTO")}";

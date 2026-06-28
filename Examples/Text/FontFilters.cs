@@ -1,15 +1,19 @@
 /*******************************************************************************************
 *
-*   raylib [text] example - Font filters
+*   raylib [text] example - font filters
 *
-*   After font loading, font texture atlas filter could be configured for a softer
+*   Example complexity rating: [★★☆☆] 2/4
+*
+*   NOTE: After font loading, font texture atlas filter could be configured for a softer
 *   display of the font when scaling it to different sizes, that way, it's not required
 *   to generate multiple fonts at multiple sizes (as long as the scaling is not very different)
 *
-*   This example has been created using raylib 1.3.0 (www.raylib.com)
-*   raylib is licensed under an unmodified zlib/libpng license (View raylib.h for details)
+*   Example originally created with raylib 1.3, last time updated with raylib 4.2
 *
-*   Copyright (c) 2015 Ramon Santamaria (@raysan5)
+*   Example licensed under an unmodified zlib/libpng license, which is an OSI-certified,
+*   BSD-like license that allows static linking with closed source software
+*
+*   Copyright (c) 2015-2025 Ramon Santamaria (@raysan5)
 *
 ********************************************************************************************/
 
@@ -37,7 +41,7 @@ public partial class FontFilters
         Font font = LoadFontEx("resources/fonts/KAISG.ttf", 96, null, 0);
 
         // Generate mipmap levels to use trilinear filtering
-        // NOTE: On 2D drawing it won't be noticeable, it looks like TEXTURE_FILTER_BILINEAR
+        // NOTE: On 2D drawing it won't be noticeable, it looks like FILTER_BILINEAR
         GenTextureMipmaps(ref font.Texture);
 
         float fontSize = font.BaseSize;
@@ -46,13 +50,13 @@ public partial class FontFilters
 
         // Setup texture scaling filter
         SetTextureFilter(font.Texture, TextureFilter.Point);
-        TextureFilter currentFontFilter = TextureFilter.Point;
+        TextureFilter currentFontFilter = TextureFilter.Point;      // TEXTURE_FILTER_POINT
 
-        SetTargetFPS(60);
+        SetTargetFPS(60);               // Set our game to run at 60 frames-per-second
         //--------------------------------------------------------------------------------------
 
         // Main game loop
-        while (!WindowShouldClose())
+        while (!WindowShouldClose())    // Detect window close button or ESC key
         {
             // Update
             //----------------------------------------------------------------------------------
@@ -113,14 +117,19 @@ public partial class FontFilters
 
             DrawTextEx(font, msg, fontPosition, fontSize, 0, Color.Black);
 
+            // TODO: It seems texSize measurement is not accurate due to chars offsets...
+            //DrawRectangleLines((int)fontPosition.X, (int)fontPosition.Y, (int)textSize.X, (int)textSize.Y, Color.Red);
+
             DrawRectangle(0, screenHeight - 80, screenWidth, 80, Color.LightGray);
+            DrawText($"Font size: {fontSize:00.00}", 20, screenHeight - 50, 10, Color.DarkGray);
+            DrawText($"Text size: [{textSize.X:00.00}, {textSize.Y:00.00}]", 20, screenHeight - 30, 10, Color.DarkGray);
             DrawText("CURRENT TEXTURE FILTER:", 250, 400, 20, Color.Gray);
 
             if (currentFontFilter == TextureFilter.Point)
             {
                 DrawText("POINT", 570, 400, 20, Color.Black);
             }
-            else if (currentFontFilter == TextureFilter.Point)
+            else if (currentFontFilter == TextureFilter.Bilinear)
             {
                 DrawText("BILINEAR", 570, 400, 20, Color.Black);
             }
@@ -135,9 +144,9 @@ public partial class FontFilters
 
         // De-Initialization
         //--------------------------------------------------------------------------------------
-        UnloadFont(font);
+        UnloadFont(font);           // Font unloading
 
-        CloseWindow();
+        CloseWindow();              // Close window and OpenGL context
         //--------------------------------------------------------------------------------------
 
         return 0;

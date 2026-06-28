@@ -55,7 +55,7 @@ public partial class EasingsBallAnim : IExample
             if (_state == 0)             // Move ball position X with easing
             {
                 _framesCounter += 1;
-                _ballPositionX = (int)EaseElasticOut(_framesCounter, -100, screenWidth / 2 + 100, 120);
+                _ballPositionX = (int)EaseElasticOut(_framesCounter, -100, screenWidth / 2.0f + 100, 120);
 
                 if (_framesCounter >= 120)
                 {
@@ -113,7 +113,7 @@ public partial class EasingsBallAnim : IExample
                 DrawRectangle(0, 0, screenWidth, screenHeight, Color.Green);
             }
 
-            DrawCircle(_ballPositionX, 200, _ballRadius, ColorAlpha(Color.Red, 1.0f - _ballAlpha));
+            DrawCircle(_ballPositionX, 200, _ballRadius, Fade(Color.Red, 1.0f - _ballAlpha));
 
             if (_state == 3)
             {

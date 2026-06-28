@@ -1,13 +1,15 @@
 /*******************************************************************************************
 *
-*   raylib [audio] example - Module playing (streaming)
+*   raylib [audio] example - module playing
 *
-*   NOTE: This example requires OpenAL Soft library installed
+*   Example complexity rating: [★☆☆☆] 1/4
 *
-*   This example has been created using raylib 1.5 (www.raylib.com)
-*   raylib is licensed under an unmodified zlib/libpng license (View raylib.h for details)
+*   Example originally created with raylib 1.5, last time updated with raylib 3.5
 *
-*   Copyright (c) 2016 Ramon Santamaria (@raysan5)
+*   Example licensed under an unmodified zlib/libpng license, which is an OSI-certified,
+*   BSD-like license that allows static linking with closed source software
+*
+*   Copyright (c) 2016-2025 Ramon Santamaria (@raysan5)
 *
 ********************************************************************************************/
 
@@ -36,11 +38,11 @@ public partial class ModulePlaying
         const int screenWidth = 800;
         const int screenHeight = 450;
 
-        SetConfigFlags(ConfigFlags.Msaa4xHint);      // NOTE: Try to enable MSAA 4X
+        SetConfigFlags(ConfigFlags.Msaa4xHint);  // NOTE: Try to enable MSAA 4X
 
-        InitWindow(screenWidth, screenHeight, "raylib [audio] example - module playing (streaming)");
+        InitWindow(screenWidth, screenHeight, "raylib [audio] example - module playing");
 
-        InitAudioDevice();
+        InitAudioDevice();                  // Initialize audio device
 
         Color[] colors = new Color[14] {
             Color.Orange,
@@ -59,7 +61,7 @@ public partial class ModulePlaying
             Color.Beige
         };
 
-        // Creates ome circles for visual effect
+        // Creates some circles for visual effect
         CircleWave[] circles = new CircleWave[MaxCircles];
 
         for (int i = MaxCircles - 1; i >= 0; i--)
@@ -68,7 +70,7 @@ public partial class ModulePlaying
             circles[i].Radius = GetRandomValue(10, 40);
             circles[i].Position.X = GetRandomValue((int)circles[i].Radius, screenWidth - (int)circles[i].Radius);
             circles[i].Position.Y = GetRandomValue((int)circles[i].Radius, screenHeight - (int)circles[i].Radius);
-            circles[i].Speed = (float)GetRandomValue(1, 100) / 20000.0f;
+            circles[i].Speed = (float)GetRandomValue(1, 100) / 2000.0f;
             circles[i].Color = colors[GetRandomValue(0, 13)];
         }
 
@@ -81,15 +83,15 @@ public partial class ModulePlaying
         float timePlayed = 0.0f;
         bool pause = false;
 
-        SetTargetFPS(60);
+        SetTargetFPS(60);               // Set our game to run at 60 frames-per-second
         //--------------------------------------------------------------------------------------
 
         // Main game loop
-        while (!WindowShouldClose())
+        while (!WindowShouldClose())    // Detect window close button or ESC key
         {
             // Update
             //----------------------------------------------------------------------------------
-            UpdateMusicStream(music);        // Update music buffer with new stream data
+            UpdateMusicStream(music);      // Update music buffer with new stream data
 
             // Restart music playing (stop and play)
             if (IsKeyPressed(KeyboardKey.Space))
@@ -166,7 +168,7 @@ public partial class ModulePlaying
                 DrawCircleV(
                     circles[i].Position,
                     circles[i].Radius,
-                    ColorAlpha(circles[i].Color, circles[i].Alpha)
+                    Fade(circles[i].Color, circles[i].Alpha)
                 );
             }
 
@@ -175,17 +177,25 @@ public partial class ModulePlaying
             DrawRectangle(20, screenHeight - 20 - 12, (int)timePlayed, 12, Color.Maroon);
             DrawRectangleLines(20, screenHeight - 20 - 12, screenWidth - 40, 12, Color.Gray);
 
+            // Draw help instructions
+            DrawRectangle(20, 20, 425, 145, Color.White);
+            DrawRectangleLines(20, 20, 425, 145, Color.Gray);
+            DrawText("PRESS SPACE TO RESTART MUSIC", 40, 40, 20, Color.Black);
+            DrawText("PRESS P TO PAUSE/RESUME", 40, 70, 20, Color.Black);
+            DrawText("PRESS UP/DOWN TO CHANGE SPEED", 40, 100, 20, Color.Black);
+            DrawText($"SPEED: {pitch:F6}", 40, 130, 20, Color.Maroon);
+
             EndDrawing();
             //----------------------------------------------------------------------------------
         }
 
         // De-Initialization
         //--------------------------------------------------------------------------------------
-        UnloadMusicStream(music);
+        UnloadMusicStream(music);          // Unload music stream buffers from RAM
 
-        CloseAudioDevice();
+        CloseAudioDevice();     // Close audio device (music streaming is automatically stopped)
 
-        CloseWindow();
+        CloseWindow();          // Close window and OpenGL context
         //--------------------------------------------------------------------------------------
 
         return 0;

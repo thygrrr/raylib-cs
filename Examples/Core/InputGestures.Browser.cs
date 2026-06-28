@@ -119,17 +119,17 @@ public partial class InputGestures : IExample
             DrawRectangleRec(_touchArea, Color.Gray);
             DrawRectangle(225, 15, screenWidth - 240, screenHeight - 30, Color.RayWhite);
 
-            DrawText("GESTURES TEST AREA", screenWidth - 270, screenHeight - 40, 20, ColorAlpha(Color.Gray, 0.5f));
+            DrawText("GESTURES TEST AREA", screenWidth - 270, screenHeight - 40, 20, Fade(Color.Gray, 0.5f));
 
             for (int i = 0; i < _gesturesCount; i++)
             {
                 if (i % 2 == 0)
                 {
-                    DrawRectangle(10, 30 + 20 * i, 200, 20, ColorAlpha(Color.LightGray, 0.5f));
+                    DrawRectangle(10, 30 + 20 * i, 200, 20, Fade(Color.LightGray, 0.5f));
                 }
                 else
                 {
-                    DrawRectangle(10, 30 + 20 * i, 200, 20, ColorAlpha(Color.LightGray, 0.3f));
+                    DrawRectangle(10, 30 + 20 * i, 200, 20, Fade(Color.LightGray, 0.3f));
                 }
 
                 if (i < _gesturesCount - 1)

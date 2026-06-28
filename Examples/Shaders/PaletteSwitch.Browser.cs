@@ -115,7 +115,7 @@ public partial class PaletteSwitch : IExample
                 _currentPalette = Palettes.Length - 1;
             }
 
-            // Send new value to the shader to be used on drawing.
+            // Send palette data to the shader to be used on drawing
             // NOTE: We are sending RGB triplets w/o the alpha channel
             Raylib.SetShaderValueV(
                 _shader,
