@@ -1,6 +1,6 @@
 <Project>
   <!-- Auto-imported by every project in the repo; referenced via $(RaylibCsVersion). -->
   <PropertyGroup>
-    <RaylibCsVersion>9.0.0</RaylibCsVersion>
+    <RaylibCsVersion>8.1.0</RaylibCsVersion>
   </PropertyGroup>
 </Project>
