@@ -29,14 +29,12 @@ public partial class InputMouse : IExample
     Vector2 ballPosition;
     Color ballColor;
 
-    // One-time setup (was the code before the original while loop, minus InitWindow).
     public void Init()
     {
         ballPosition = new(-100.0f, -100.0f);
         ballColor = Color.DarkBlue;
     }
 
-    // A single frame (was the body of the original while loop).
     public void Update()
     {
         // Update
@@ -108,7 +106,6 @@ public partial class InputMouse : IExample
         //----------------------------------------------------------------------------------
     }
 
-    // Free resources (was the code after the loop, minus CloseWindow).
     public void Unload()
     {
     }

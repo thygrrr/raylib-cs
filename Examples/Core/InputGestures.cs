@@ -36,7 +36,6 @@ public partial class InputGestures : IExample
 
     public string Name => "Core / Input Gestures";
 
-    // One-time setup (was the code before the original while loop, minus InitWindow).
     public void Init()
     {
         touchPosition = new(0, 0);
@@ -51,7 +50,6 @@ public partial class InputGestures : IExample
         // SetGesturesEnabled(0b0000000000001001);   // Enable only some gestures to be detected
     }
 
-    // A single frame (was the body of the original while loop).
     public void Update()
     {
         // Update
@@ -159,7 +157,6 @@ public partial class InputGestures : IExample
         //----------------------------------------------------------------------------------
     }
 
-    // Free resources (was the code after the loop, minus CloseWindow).
     public void Unload()
     {
     }

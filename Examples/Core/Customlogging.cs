@@ -56,7 +56,6 @@ public unsafe partial class CustomLogging : IExample
         // Console.ResetColor();
     }
 
-    // One-time setup (was the code before the original while loop, minus InitWindow).
     public void Init()
     {
         // First thing we do is setting our custom logger to ensure everything raylib logs
@@ -64,14 +63,8 @@ public unsafe partial class CustomLogging : IExample
         SetTraceLogCallback(&LogCustom);
     }
 
-    // A single frame (was the body of the original while loop).
     public void Update()
     {
-        // Update
-        //----------------------------------------------------------------------------------
-        // TODO: Update your variables here
-        //----------------------------------------------------------------------------------
-
         // Draw
         //----------------------------------------------------------------------------------
         BeginDrawing();
@@ -83,7 +76,6 @@ public unsafe partial class CustomLogging : IExample
         //----------------------------------------------------------------------------------
     }
 
-    // Free resources (was the code after the loop, minus CloseWindow).
     public void Unload()
     {
 #if !BROWSER

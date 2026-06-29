@@ -31,7 +31,6 @@ public partial class Picking3d : IExample
     Ray ray;                    // Picking line ray
     RayCollision collision;     // Ray collision hit info
 
-    // One-time setup (was the code before the original while loop, minus InitWindow).
     public void Init()
     {
         // Define the camera to look into our 3d world
@@ -49,7 +48,6 @@ public partial class Picking3d : IExample
         collision = new();              // Ray collision hit info
     }
 
-    // A single frame (was the body of the original while loop).
     public void Update()
     {
         // Update
@@ -133,7 +131,6 @@ public partial class Picking3d : IExample
         //----------------------------------------------------------------------------------
     }
 
-    // Free resources (was the code after the loop, minus CloseWindow).
     public void Unload()
     {
     }

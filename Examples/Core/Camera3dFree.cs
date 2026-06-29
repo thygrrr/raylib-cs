@@ -28,7 +28,6 @@ public partial class Camera3dFree : IExample
     Camera3D camera;
     Vector3 cubePosition;
 
-    // One-time setup (was the code before the original while loop, minus InitWindow).
     public void Init()
     {
         // Define the camera to look into our 3d world
@@ -42,7 +41,6 @@ public partial class Camera3dFree : IExample
         cubePosition = new(0.0f, 0.0f, 0.0f);
     }
 
-    // A single frame (was the body of the original while loop).
     public void Update()
     {
         // Update
@@ -81,7 +79,6 @@ public partial class Camera3dFree : IExample
         //----------------------------------------------------------------------------------
     }
 
-    // Free resources (was the code after the loop, minus CloseWindow).
     public void Unload()
     {
     }

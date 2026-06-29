@@ -36,7 +36,6 @@ public partial class StorageValues : IExample
     int hiscore = 0;
     int framesCounter = 0;
 
-    // One-time setup (was the code before the original while loop, minus InitWindow).
     public void Init()
     {
         score = 0;
@@ -44,7 +43,6 @@ public partial class StorageValues : IExample
         framesCounter = 0;
     }
 
-    // A single frame (was the body of the original while loop).
     public void Update()
     {
         // Update
@@ -88,7 +86,6 @@ public partial class StorageValues : IExample
         //----------------------------------------------------------------------------------
     }
 
-    // Free resources (was the code after the loop, minus CloseWindow).
     public void Unload()
     {
     }

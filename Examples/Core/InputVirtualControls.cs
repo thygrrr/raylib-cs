@@ -49,7 +49,6 @@ public partial class InputVirtualControls : IExample
     Vector2 playerPosition;
     float playerSpeed;
 
-    // One-time setup (was the code before the original while loop, minus InitWindow).
     public void Init()
     {
         padPosition = new Vector2(100, 350);
@@ -137,7 +136,6 @@ public partial class InputVirtualControls : IExample
         playerSpeed = 75f;
     }
 
-    // A single frame (was the body of the original while loop).
     public void Update()
     {
         // Update
@@ -220,7 +218,6 @@ public partial class InputVirtualControls : IExample
         //--------------------------------------------------------------------------
     }
 
-    // Free resources (was the code after the loop, minus CloseWindow).
     public void Unload()
     {
     }

@@ -34,7 +34,6 @@ public partial class WindowLetterbox : IExample
     RenderTexture2D target;
     Color[] colors;
 
-    // One-time setup (was the code before the original while loop, minus InitWindow).
     public void Init()
     {
         // Render texture initialization, used to hold the rendering result so we can easily resize it
@@ -48,7 +47,6 @@ public partial class WindowLetterbox : IExample
         }
     }
 
-    // A single frame (was the body of the original while loop).
     public void Update()
     {
         // Update
@@ -133,7 +131,6 @@ public partial class WindowLetterbox : IExample
         //--------------------------------------------------------------------------------------
     }
 
-    // Free resources (was the code after the loop, minus CloseWindow).
     public void Unload()
     {
         UnloadRenderTexture(target);        // Unload render texture

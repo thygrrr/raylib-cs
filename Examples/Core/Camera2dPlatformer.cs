@@ -71,7 +71,6 @@ public partial class Camera2dPlatformer : IExample
     int cameraUpdatersLength;
     string[] cameraDescriptions;
 
-    // One-time setup (was the code before the original while loop, minus InitWindow).
     public void Init()
     {
         player = new();
@@ -116,7 +115,6 @@ public partial class Camera2dPlatformer : IExample
         };
     }
 
-    // A single frame (was the body of the original while loop).
     public void Update()
     {
         // Update
@@ -183,7 +181,6 @@ public partial class Camera2dPlatformer : IExample
         //----------------------------------------------------------------------------------
     }
 
-    // Free resources (was the code after the loop, minus CloseWindow).
     public void Unload()
     {
     }

@@ -37,7 +37,6 @@ public partial class BasicScreenManager : IExample
     GameScreen currentScreen;
     int framesCounter;
 
-    // One-time setup (was the code before the original while loop, minus InitWindow).
     public void Init()
     {
         currentScreen = GameScreen.Logo;
@@ -47,7 +46,6 @@ public partial class BasicScreenManager : IExample
         framesCounter = 0;          // Useful to count frames
     }
 
-    // A single frame (was the body of the original while loop).
     public void Update()
     {
         // Update
@@ -156,7 +154,6 @@ public partial class BasicScreenManager : IExample
         //----------------------------------------------------------------------------------
     }
 
-    // Free resources (was the code after the loop, minus CloseWindow).
     public void Unload()
     {
         // TODO: Unload all loaded data (textures, fonts, audio) here!

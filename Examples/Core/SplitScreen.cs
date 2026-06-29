@@ -57,7 +57,6 @@ public partial class SplitScreen : IExample
         DrawCube(CameraPlayer2.Position, 1, 1, 1, Color.Blue);
     }
 
-    // One-time setup (was the code before the original while loop, minus InitWindow).
     public void Init()
     {
         // Setup player 1 camera and screen
@@ -87,7 +86,6 @@ public partial class SplitScreen : IExample
         );
     }
 
-    // A single frame (was the body of the original while loop).
     public void Update()
     {
         // Update
@@ -159,7 +157,6 @@ public partial class SplitScreen : IExample
         //----------------------------------------------------------------------------------
     }
 
-    // Free resources (was the code after the loop, minus CloseWindow).
     public void Unload()
     {
         UnloadRenderTexture(screenPlayer1); // Unload render texture

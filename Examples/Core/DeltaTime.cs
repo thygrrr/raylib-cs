@@ -38,7 +38,6 @@ public partial class DeltaTime : IExample
 
     public string Name => "Core / Delta Time";
 
-    // One-time setup (was the code before the original while loop, minus InitWindow).
     public void Init()
     {
         currentFps = 60;
@@ -48,7 +47,6 @@ public partial class DeltaTime : IExample
         frameCircle = new Vector2(0, (float)screenHeight * (2.0f / 3.0f));
     }
 
-    // A single frame (was the body of the original while loop).
     public void Update()
     {
         // Update
@@ -125,7 +123,6 @@ public partial class DeltaTime : IExample
         //----------------------------------------------------------------------------------
     }
 
-    // Free resources (was the code after the loop, minus CloseWindow).
     public void Unload()
     {
     }

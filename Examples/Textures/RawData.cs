@@ -89,11 +89,6 @@ public partial class RawData
         // Main game loop
         while (!WindowShouldClose())    // Detect window close button or ESC key
         {
-            // Update
-            //----------------------------------------------------------------------------------
-            // TODO: Update your variables here
-            //----------------------------------------------------------------------------------
-
             // Draw
             //----------------------------------------------------------------------------------
             BeginDrawing();

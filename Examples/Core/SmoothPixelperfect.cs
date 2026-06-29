@@ -52,7 +52,6 @@ public partial class SmoothPixelPerfect : IExample
     bool smoothOn;
     bool overscan;
 
-    // One-time setup (was the code before the original while loop, minus InitWindow).
     public void Init()
     {
         worldSpaceCamera = new();  // Game world camera
@@ -93,7 +92,6 @@ public partial class SmoothPixelPerfect : IExample
         overscan = false;
     }
 
-    // A single frame (was the body of the original while loop).
     public void Update()
     {
         // Update
@@ -181,7 +179,6 @@ public partial class SmoothPixelPerfect : IExample
         //----------------------------------------------------------------------------------
     }
 
-    // Free resources (was the code after the loop, minus CloseWindow).
     public void Unload()
     {
         UnloadRenderTexture(target);    // Unload render texture

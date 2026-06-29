@@ -27,7 +27,6 @@ public partial class RandomValues : IExample
     int randValue;   // Get a random integer number between -8 and 5 (both included)
     int framesCounter; // Variable used to count frames
 
-    // One-time setup (was the code before the original while loop, minus InitWindow).
     public void Init()
     {
         // SetRandomSeed(0xaabbccff);   // Set a custom random seed if desired, by default: "time(NULL)"
@@ -37,7 +36,6 @@ public partial class RandomValues : IExample
         framesCounter = 0; // Variable used to count frames
     }
 
-    // A single frame (was the body of the original while loop).
     public void Update()
     {
         // Update
@@ -65,7 +63,6 @@ public partial class RandomValues : IExample
         //----------------------------------------------------------------------------------
     }
 
-    // Free resources (was the code after the loop, minus CloseWindow).
     public void Unload()
     {
     }

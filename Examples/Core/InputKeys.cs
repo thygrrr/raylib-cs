@@ -27,13 +27,11 @@ public partial class InputKeys : IExample
 
     Vector2 ballPosition;
 
-    // One-time setup (was the code before the original while loop, minus InitWindow).
     public void Init()
     {
         ballPosition = new((float)screenWidth / 2, (float)screenHeight / 2);
     }
 
-    // A single frame (was the body of the original while loop).
     public void Update()
     {
         // Update
@@ -72,7 +70,6 @@ public partial class InputKeys : IExample
         //----------------------------------------------------------------------------------
     }
 
-    // Free resources (was the code after the loop, minus CloseWindow).
     public void Unload()
     {
     }

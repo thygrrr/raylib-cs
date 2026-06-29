@@ -53,7 +53,6 @@ public partial class InputGamepad : IExample
 
     public string Name => "Core / Input Gamepad";
 
-    // One-time setup (was the code before the original while loop, minus InitWindow).
     public void Init()
     {
         texPs3Pad = LoadTexture("resources/ps3.png");
@@ -64,7 +63,6 @@ public partial class InputGamepad : IExample
         gamepad = 0; // which gamepad to display
     }
 
-    // A single frame (was the body of the original while loop).
     public void Update()
     {
         // Update
@@ -500,7 +498,6 @@ public partial class InputGamepad : IExample
         //----------------------------------------------------------------------------------
     }
 
-    // Free resources (was the code after the loop, minus CloseWindow).
     public void Unload()
     {
         UnloadTexture(texPs3Pad);

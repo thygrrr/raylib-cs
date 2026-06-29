@@ -40,7 +40,6 @@ public partial class VrSimulator : IExample
     Camera3D camera;
     Vector3 cubePosition;
 
-    // One-time setup (was the code before the original while loop, minus InitWindow).
     public unsafe void Init()
     {
         // VR device parameters definition
@@ -144,7 +143,6 @@ public partial class VrSimulator : IExample
         cubePosition = new(0.0f, 0.0f, 0.0f);
     }
 
-    // A single frame (was the body of the original while loop).
     public void Update()
     {
         // Update
@@ -177,7 +175,6 @@ public partial class VrSimulator : IExample
         //----------------------------------------------------------------------------------
     }
 
-    // Free resources (was the code after the loop, minus CloseWindow).
     public void Unload()
     {
         UnloadVrStereoConfig(config);   // Unload stereo config

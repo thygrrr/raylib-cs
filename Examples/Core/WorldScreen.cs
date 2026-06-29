@@ -29,7 +29,6 @@ public partial class WorldScreen : IExample
     Vector3 cubePosition;
     Vector2 cubeScreenPosition = new(0.0f, 0.0f);
 
-    // One-time setup (was the code before the original while loop, minus InitWindow).
     public void Init()
     {
         // Define the camera to look into our 3d world
@@ -43,7 +42,6 @@ public partial class WorldScreen : IExample
         cubePosition = new(0.0f, 0.0f, 0.0f);
     }
 
-    // A single frame (was the body of the original while loop).
     public void Update()
     {
         // Update
@@ -92,7 +90,6 @@ public partial class WorldScreen : IExample
         //----------------------------------------------------------------------------------
     }
 
-    // Free resources (was the code after the loop, minus CloseWindow).
     public void Unload()
     {
     }

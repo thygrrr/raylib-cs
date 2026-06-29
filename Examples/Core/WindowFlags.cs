@@ -32,7 +32,6 @@ public partial class WindowFlags : IExample
 
     int framesCounter = 0;
 
-    // One-time setup (was the code before the original while loop, minus InitWindow).
     public void Init()
     {
         ballPosition = new(GetScreenWidth() / 2.0f, GetScreenHeight() / 2.0f);
@@ -42,7 +41,6 @@ public partial class WindowFlags : IExample
         framesCounter = 0;
     }
 
-    // A single frame (was the body of the original while loop).
     public void Update()
     {
         // Update
@@ -243,7 +241,6 @@ public partial class WindowFlags : IExample
         //-----------------------------------------------------
     }
 
-    // Free resources (was the code after the loop, minus CloseWindow).
     public void Unload()
     {
     }

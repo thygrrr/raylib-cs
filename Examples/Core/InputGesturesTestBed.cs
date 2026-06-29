@@ -63,7 +63,6 @@ public partial class InputGesturesTestBed : IExample
     Vector2 finalVector;
     Vector2 protractorPosition;
 
-    // One-time setup (was the code before the original while loop, minus InitWindow).
     public void Init()
     {
         messagePosition = new Vector2(160, 7);
@@ -103,7 +102,6 @@ public partial class InputGesturesTestBed : IExample
         protractorPosition = new Vector2(266.0f, 315.0f);
     }
 
-    // A single frame (was the body of the original while loop).
     public void Update()
     {
         // Update
@@ -425,7 +423,6 @@ public partial class InputGesturesTestBed : IExample
         //--------------------------------------------------------------------------------------
     }
 
-    // Free resources (was the code after the loop, minus CloseWindow).
     public void Unload()
     {
     }

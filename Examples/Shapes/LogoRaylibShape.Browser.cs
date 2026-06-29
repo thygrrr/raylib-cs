@@ -36,7 +36,6 @@ public partial class LogoRaylibShape : IExample
 
         public void Update()
         {
-            // TODO: Update your variables here
 
             BeginDrawing();
             ClearBackground(Color.RayWhite);

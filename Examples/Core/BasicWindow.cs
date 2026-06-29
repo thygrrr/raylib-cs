@@ -40,31 +40,21 @@ public partial class BasicWindow : IExample
 
     public string Name => "Core / Basic Window";
 
-    // One-time setup (was the code before the original while loop, minus InitWindow).
     public void Init()
     {
     }
 
-    // A single frame (was the body of the original while loop).
     public void Update()
     {
-        // Update
-        //----------------------------------------------------------------------------------
-        // TODO: Update your variables here
-        //----------------------------------------------------------------------------------
 
-        // Draw
-        //----------------------------------------------------------------------------------
         BeginDrawing();
         ClearBackground(Color.RayWhite);
 
         DrawText("Congrats! You created your first window!", 190, 200, 20, Color.LightGray);
 
         EndDrawing();
-        //----------------------------------------------------------------------------------
     }
 
-    // Free resources (was the code after the loop, minus CloseWindow).
     public void Unload()
     {
     }
@@ -76,7 +66,6 @@ public partial class BasicWindow : IExample
         InitWindow(screenWidth, screenHeight, "raylib [core] example - basic window");
 
         SetTargetFPS(60);               // Set our game to run at 60 frames-per-second
-        //--------------------------------------------------------------------------------------
 
         var game = new BasicWindow();
         game.Init();
@@ -92,7 +81,6 @@ public partial class BasicWindow : IExample
         // De-Initialization
         //--------------------------------------------------------------------------------------
         CloseWindow();        // Close window and OpenGL context
-        //--------------------------------------------------------------------------------------
 
         return 0;
     }
