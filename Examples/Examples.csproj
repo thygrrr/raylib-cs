@@ -50,8 +50,9 @@
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="Raylib-cs" Version="$(RaylibCsVersion)"/>
+        <ProjectReference Include="..\Raylib-cs\Raylib-cs.csproj"/>
     </ItemGroup>
+    <Import Project="..\Raylib-cs\Raylib-cs.targets"/>
 
     <ItemGroup Condition="'$(RuntimeIdentifier)' == 'browser-wasm'">
         <WasmExtraFilesToDeploy Include="Web/index.html" TargetPath="index.html"/>
