@@ -154,17 +154,6 @@
         <Copy SourceFiles="@(_NativeToCopy)" DestinationFolder="$(OutputPath)" SkipUnchangedFiles="true"/>
     </Target>
 
-    <!-- Stage libraylib.web.a as raylib.a for wasm linking (pinvoke module name must match LibraryImport). -->
-    <Target Name="_StageWasmNative" Condition="'$(RuntimeIdentifier)' == 'browser-wasm'">
-        <PropertyGroup>
-            <_WasmNativeSrc>$(NativesRoot)browser-wasm/raylib-$(TargetRaylibTag)_webassembly/lib/libraylib.web.a</_WasmNativeSrc>
-            <_WasmNativeDst>$(MSBuildThisFileDirectory)obj/browser-wasm/raylib.a</_WasmNativeDst>
-        </PropertyGroup>
-        <CallTarget Targets="_DownloadAndExtractInternal"/>
-        <MakeDir Directories="$(MSBuildThisFileDirectory)obj/browser-wasm"/>
-        <Copy SourceFiles="$(_WasmNativeSrc)" DestinationFiles="$(_WasmNativeDst)" SkipUnchangedFiles="true"/>
-    </Target>
-
     <!-- ================================================================== -->
     <!-- WORKER: DOWNLOADER -->
     <!-- ================================================================== -->

@@ -1,23 +1,9 @@
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-    <PropertyGroup Condition="'$(RuntimeIdentifier)' == 'browser-wasm'">
-        <TargetRaylibTag Condition="'$(TargetRaylibTag)' == ''">6.0</TargetRaylibTag>
-        <EmccFlags>$(EmccFlags) -sUSE_GLFW=3</EmccFlags>
-    </PropertyGroup>
-
-    <!-- NuGet layout: runtimes/browser-wasm/native/raylib.a -->
-    <ItemGroup Condition="'$(RuntimeIdentifier)' == 'browser-wasm' And Exists('$(MSBuildThisFileDirectory)..\runtimes\browser-wasm\native\raylib.a')">
+    <ItemGroup Condition="'$(RuntimeIdentifier)' == 'browser-wasm'">
         <NativeFileReference Include="$(MSBuildThisFileDirectory)..\runtimes\browser-wasm\native\raylib.a"/>
     </ItemGroup>
 
-    <!-- ProjectReference / local build: stage via Raylib-cs.csproj -->
-    <Target Name="_StageRaylibWasmNative"
-            BeforeTargets="_PrepareForBrowserWasmBuildNative"
-            Condition="'$(RuntimeIdentifier)' == 'browser-wasm' And !Exists('$(MSBuildThisFileDirectory)..\runtimes\browser-wasm\native\raylib.a')">
-        <MSBuild Projects="$(MSBuildThisFileDirectory)Raylib-cs.csproj"
-                 Targets="_StageWasmNative"
-                 Properties="RuntimeIdentifier=browser-wasm;TargetFramework=$(TargetFramework);TargetRaylibTag=$(TargetRaylibTag)"/>
-        <ItemGroup>
-            <NativeFileReference Include="$(MSBuildThisFileDirectory)obj\browser-wasm\raylib.a"/>
-        </ItemGroup>
-    </Target>
+    <PropertyGroup Condition="'$(RuntimeIdentifier)' == 'browser-wasm'">
+        <EmccFlags>$(EmccFlags) -sUSE_GLFW=3</EmccFlags>
+    </PropertyGroup>
 </Project>
