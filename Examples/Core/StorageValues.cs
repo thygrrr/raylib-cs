@@ -17,8 +17,12 @@ using static Raylib_cs.Raylib;
 
 namespace Examples.Core;
 
-public partial class StorageValues
+public partial class StorageValues : IExample
 {
+    const int screenWidth = 800;
+    const int screenHeight = 450;
+    const string storageDataFile = "storage.data";
+
     // NOTE: Storage positions must start with 0, directly related to file memory layout
     enum StorageData
     {
@@ -26,66 +30,88 @@ public partial class StorageValues
         HiScore
     }
 
+    public string Name => "Core / Storage Values";
+
+    int score = 0;
+    int hiscore = 0;
+    int framesCounter = 0;
+
+    // One-time setup (was the code before the original while loop, minus InitWindow).
+    public void Init()
+    {
+        score = 0;
+        hiscore = 0;
+        framesCounter = 0;
+    }
+
+    // A single frame (was the body of the original while loop).
+    public void Update()
+    {
+        // Update
+        //----------------------------------------------------------------------------------
+        if (IsKeyPressed(KeyboardKey.R))
+        {
+            score = GetRandomValue(1000, 2000);
+            hiscore = GetRandomValue(2000, 4000);
+        }
+
+        if (IsKeyPressed(KeyboardKey.Enter))
+        {
+            SaveStorageValue(storageDataFile, (int)StorageData.Score, score);
+            SaveStorageValue(storageDataFile, (int)StorageData.HiScore, hiscore);
+        }
+        else if (IsKeyPressed(KeyboardKey.Space))
+        {
+            // NOTE: If requested position could not be found, value 0 is returned
+            score = LoadStorageValue(storageDataFile, (int)StorageData.Score);
+            hiscore = LoadStorageValue(storageDataFile, (int)StorageData.HiScore);
+        }
+
+        framesCounter++;
+        //----------------------------------------------------------------------------------
+
+        // Draw
+        //----------------------------------------------------------------------------------
+        BeginDrawing();
+        ClearBackground(Color.RayWhite);
+
+        DrawText($"SCORE: {score}", 280, 130, 40, Color.Maroon);
+        DrawText($"HI-SCORE: {hiscore}", 210, 200, 50, Color.Black);
+
+        DrawText($"frames: {framesCounter}", 10, 10, 20, Color.Lime);
+
+        DrawText("Press R to generate random numbers", 220, 40, 20, Color.LightGray);
+        DrawText("Press ENTER to SAVE values", 250, 310, 20, Color.LightGray);
+        DrawText("Press SPACE to LOAD values", 252, 350, 20, Color.LightGray);
+
+        EndDrawing();
+        //----------------------------------------------------------------------------------
+    }
+
+    // Free resources (was the code after the loop, minus CloseWindow).
+    public void Unload()
+    {
+    }
+
     public static int Main()
     {
         // Initialization
         //--------------------------------------------------------------------------------------
-        const int screenWidth = 800;
-        const int screenHeight = 450;
-        const string storageDataFile = "storage.data";
-
         InitWindow(screenWidth, screenHeight, "raylib [core] example - storage values");
-
-        int score = 0;
-        int hiscore = 0;
-        int framesCounter = 0;
 
         SetTargetFPS(60);               // Set our game to run at 60 frames-per-second
         //--------------------------------------------------------------------------------------
 
+        var game = new StorageValues();
+        game.Init();
+
         // Main game loop
         while (!WindowShouldClose())    // Detect window close button or ESC key
         {
-            // Update
-            //----------------------------------------------------------------------------------
-            if (IsKeyPressed(KeyboardKey.R))
-            {
-                score = GetRandomValue(1000, 2000);
-                hiscore = GetRandomValue(2000, 4000);
-            }
-
-            if (IsKeyPressed(KeyboardKey.Enter))
-            {
-                SaveStorageValue(storageDataFile, (int)StorageData.Score, score);
-                SaveStorageValue(storageDataFile, (int)StorageData.HiScore, hiscore);
-            }
-            else if (IsKeyPressed(KeyboardKey.Space))
-            {
-                // NOTE: If requested position could not be found, value 0 is returned
-                score = LoadStorageValue(storageDataFile, (int)StorageData.Score);
-                hiscore = LoadStorageValue(storageDataFile, (int)StorageData.HiScore);
-            }
-
-            framesCounter++;
-            //----------------------------------------------------------------------------------
-
-            // Draw
-            //----------------------------------------------------------------------------------
-            BeginDrawing();
-            ClearBackground(Color.RayWhite);
-
-            DrawText($"SCORE: {score}", 280, 130, 40, Color.Maroon);
-            DrawText($"HI-SCORE: {hiscore}", 210, 200, 50, Color.Black);
-
-            DrawText($"frames: {framesCounter}", 10, 10, 20, Color.Lime);
-
-            DrawText("Press R to generate random numbers", 220, 40, 20, Color.LightGray);
-            DrawText("Press ENTER to SAVE values", 250, 310, 20, Color.LightGray);
-            DrawText("Press SPACE to LOAD values", 252, 350, 20, Color.LightGray);
-
-            EndDrawing();
-            //----------------------------------------------------------------------------------
+            game.Update();
         }
+
+        game.Unload();
 
         // De-Initialization
         //--------------------------------------------------------------------------------------

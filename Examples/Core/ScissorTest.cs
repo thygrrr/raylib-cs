@@ -19,64 +19,89 @@ using static Raylib_cs.Raylib;
 
 namespace Examples.Core;
 
-public partial class ScissorTest
+public partial class ScissorTest : IExample
 {
+    const int screenWidth = 800;
+    const int screenHeight = 450;
+
+    public string Name => "Core / Scissor Test";
+
+    Rectangle scissorArea;
+    bool scissorMode;
+
+    // One-time setup (was the code before the original while loop, minus InitWindow).
+    public void Init()
+    {
+        scissorArea = new(0, 0, 300, 300);
+        scissorMode = true;
+    }
+
+    // A single frame (was the body of the original while loop).
+    public void Update()
+    {
+        // Update
+        //----------------------------------------------------------------------------------
+        if (IsKeyPressed(KeyboardKey.S))
+        {
+            scissorMode = !scissorMode;
+        }
+
+        // Centre the scissor area around the mouse position
+        scissorArea.X = GetMouseX() - scissorArea.Width / 2;
+        scissorArea.Y = GetMouseY() - scissorArea.Height / 2;
+        //----------------------------------------------------------------------------------
+
+        // Draw
+        //----------------------------------------------------------------------------------
+        BeginDrawing();
+        ClearBackground(Color.RayWhite);
+
+        if (scissorMode)
+        {
+            BeginScissorMode((int)scissorArea.X, (int)scissorArea.Y, (int)scissorArea.Width, (int)scissorArea.Height);
+        }
+
+        // Draw full screen rectangle and some text
+        // NOTE: Only part defined by scissor area will be rendered
+        DrawRectangle(0, 0, GetScreenWidth(), GetScreenHeight(), Color.Red);
+        DrawText("Move the mouse around to reveal this text!", 190, 200, 20, Color.LightGray);
+
+        if (scissorMode)
+        {
+            EndScissorMode();
+        }
+
+        DrawRectangleLinesEx(scissorArea, 1, Color.Black);
+        DrawText("Press S to toggle scissor test", 10, 10, 20, Color.Black);
+
+        EndDrawing();
+        //----------------------------------------------------------------------------------
+    }
+
+    // Free resources (was the code after the loop, minus CloseWindow).
+    public void Unload()
+    {
+    }
+
     public static int Main()
     {
         // Initialization
         //--------------------------------------------------------------------------------------
-        const int screenWidth = 800;
-        const int screenHeight = 450;
-
         InitWindow(screenWidth, screenHeight, "raylib [core] example - scissor test");
-
-        Rectangle scissorArea = new(0, 0, 300, 300);
-        bool scissorMode = true;
 
         SetTargetFPS(60);               // Set our game to run at 60 frames-per-second
         //--------------------------------------------------------------------------------------
 
+        var game = new ScissorTest();
+        game.Init();
+
         // Main game loop
         while (!WindowShouldClose())    // Detect window close button or ESC key
         {
-            // Update
-            //----------------------------------------------------------------------------------
-            if (IsKeyPressed(KeyboardKey.S))
-            {
-                scissorMode = !scissorMode;
-            }
-
-            // Centre the scissor area around the mouse position
-            scissorArea.X = GetMouseX() - scissorArea.Width / 2;
-            scissorArea.Y = GetMouseY() - scissorArea.Height / 2;
-            //----------------------------------------------------------------------------------
-
-            // Draw
-            //----------------------------------------------------------------------------------
-            BeginDrawing();
-            ClearBackground(Color.RayWhite);
-
-            if (scissorMode)
-            {
-                BeginScissorMode((int)scissorArea.X, (int)scissorArea.Y, (int)scissorArea.Width, (int)scissorArea.Height);
-            }
-
-            // Draw full screen rectangle and some text
-            // NOTE: Only part defined by scissor area will be rendered
-            DrawRectangle(0, 0, GetScreenWidth(), GetScreenHeight(), Color.Red);
-            DrawText("Move the mouse around to reveal this text!", 190, 200, 20, Color.LightGray);
-
-            if (scissorMode)
-            {
-                EndScissorMode();
-            }
-
-            DrawRectangleLinesEx(scissorArea, 1, Color.Black);
-            DrawText("Press S to toggle scissor test", 10, 10, 20, Color.Black);
-
-            EndDrawing();
-            //----------------------------------------------------------------------------------
+            game.Update();
         }
+
+        game.Unload();
 
         // De-Initialization
         //--------------------------------------------------------------------------------------

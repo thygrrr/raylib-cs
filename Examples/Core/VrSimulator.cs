@@ -19,20 +19,30 @@ using static Raylib_cs.Raylib;
 
 namespace Examples.Core;
 
-public partial class VrSimulator
+public partial class VrSimulator : IExample
 {
+    const int screenWidth = 800;
+    const int screenHeight = 450;
+
+#if BROWSER
+    const int GlslVersion = 100;    // WebGL1 needs GLSL ES 100
+#else
     const int GlslVersion = 330;
+#endif
 
-    public static int Main()
+    public string Name => "Core / VR Simulator";
+
+    VrStereoConfig config;
+    Shader distortion;
+    RenderTexture2D target;
+    Rectangle sourceRec;
+    Rectangle destRec;
+    Camera3D camera;
+    Vector3 cubePosition;
+
+    // One-time setup (was the code before the original while loop, minus InitWindow).
+    public unsafe void Init()
     {
-        // Initialization
-        //--------------------------------------------------------------------------------------
-        const int screenWidth = 800;
-        const int screenHeight = 450;
-
-        // NOTE: screenWidth/screenHeight should match VR device aspect ratio
-        InitWindow(screenWidth, screenHeight, "raylib [core] example - vr simulator");
-
         // VR device parameters definition
         VrDeviceInfo device = new VrDeviceInfo
         {
@@ -48,23 +58,20 @@ public partial class VrSimulator
 
         // NOTE: CV1 uses fresnel-hybrid-asymmetric lenses with specific compute shaders
         // Following parameters are just an approximation to CV1 distortion stereo rendering
-        unsafe
-        {
-            device.LensDistortionValues[0] = 1.0f;      // Lens distortion constant parameter 0
-            device.LensDistortionValues[1] = 0.22f;     // Lens distortion constant parameter 1
-            device.LensDistortionValues[2] = 0.24f;     // Lens distortion constant parameter 2
-            device.LensDistortionValues[3] = 0.0f;      // Lens distortion constant parameter 3
-            device.ChromaAbCorrection[0] = 0.996f;      // Chromatic aberration correction parameter 0
-            device.ChromaAbCorrection[1] = -0.004f;     // Chromatic aberration correction parameter 1
-            device.ChromaAbCorrection[2] = 1.014f;      // Chromatic aberration correction parameter 2
-            device.ChromaAbCorrection[3] = 0.0f;        // Chromatic aberration correction parameter 3
-        }
+        device.LensDistortionValues[0] = 1.0f;      // Lens distortion constant parameter 0
+        device.LensDistortionValues[1] = 0.22f;     // Lens distortion constant parameter 1
+        device.LensDistortionValues[2] = 0.24f;     // Lens distortion constant parameter 2
+        device.LensDistortionValues[3] = 0.0f;      // Lens distortion constant parameter 3
+        device.ChromaAbCorrection[0] = 0.996f;      // Chromatic aberration correction parameter 0
+        device.ChromaAbCorrection[1] = -0.004f;     // Chromatic aberration correction parameter 1
+        device.ChromaAbCorrection[2] = 1.014f;      // Chromatic aberration correction parameter 2
+        device.ChromaAbCorrection[3] = 0.0f;        // Chromatic aberration correction parameter 3
 
         // Load VR stereo config for VR device parameteres (Oculus Rift CV1 parameters)
-        VrStereoConfig config = LoadVrStereoConfig(device);
+        config = LoadVrStereoConfig(device);
 
         // Distortion shader (uses device lens distortion and chroma)
-        Shader distortion = LoadShader(null, $"resources/shaders/glsl{GlslVersion}/distortion.fs");
+        distortion = LoadShader(null, $"resources/shaders/glsl{GlslVersion}/distortion.fs");
 
         // Update distortion shader with lens and distortion-scale parameters
         Raylib.SetShaderValue(
@@ -105,85 +112,105 @@ public partial class VrSimulator
             ShaderUniformDataType.Vec2
         );
 
-        unsafe
-        {
-            SetShaderValue(
-                distortion,
-                GetShaderLocation(distortion, "deviceWarpParam"),
-                device.LensDistortionValues,
-                ShaderUniformDataType.Vec4
-            );
-            SetShaderValue(
-                distortion,
-                GetShaderLocation(distortion, "chromaAbParam"),
-                device.ChromaAbCorrection,
-                ShaderUniformDataType.Vec4
-            );
-        }
+        SetShaderValue(
+            distortion,
+            GetShaderLocation(distortion, "deviceWarpParam"),
+            device.LensDistortionValues,
+            ShaderUniformDataType.Vec4
+        );
+        SetShaderValue(
+            distortion,
+            GetShaderLocation(distortion, "chromaAbParam"),
+            device.ChromaAbCorrection,
+            ShaderUniformDataType.Vec4
+        );
 
         // Initialize framebuffer for stereo rendering
         // NOTE: Screen size should match HMD aspect ratio
-        RenderTexture2D target = LoadRenderTexture(device.HResolution, device.VResolution);
+        target = LoadRenderTexture(device.HResolution, device.VResolution);
 
         // The target's height is flipped (in the source Rectangle), due to OpenGL reasons
-        Rectangle sourceRec = new(0.0f, 0.0f, (float)target.Texture.Width, -(float)target.Texture.Height);
-        Rectangle destRec = new(0.0f, 0.0f, (float)GetScreenWidth(), (float)GetScreenHeight());
+        sourceRec = new(0.0f, 0.0f, (float)target.Texture.Width, -(float)target.Texture.Height);
+        destRec = new(0.0f, 0.0f, (float)GetScreenWidth(), (float)GetScreenHeight());
 
         // Define the camera to look into our 3d world
-        Camera3D camera;
+        camera = new();
         camera.Position = new Vector3(5.0f, 2.0f, 5.0f);    // Camera position
         camera.Target = new Vector3(0.0f, 2.0f, 0.0f);      // Camera looking at point
         camera.Up = new Vector3(0.0f, 1.0f, 0.0f);          // Camera up vector
         camera.FovY = 60.0f;                                // Camera field-of-view Y
         camera.Projection = CameraProjection.Perspective;   // Camera projection type
 
-        Vector3 cubePosition = new(0.0f, 0.0f, 0.0f);
+        cubePosition = new(0.0f, 0.0f, 0.0f);
+    }
+
+    // A single frame (was the body of the original while loop).
+    public void Update()
+    {
+        // Update
+        //----------------------------------------------------------------------------------
+        UpdateCamera(ref camera, CameraMode.FirstPerson);
+        //----------------------------------------------------------------------------------
+
+        // Draw
+        //----------------------------------------------------------------------------------
+        BeginTextureMode(target);
+        ClearBackground(Color.RayWhite);
+        BeginVrStereoMode(config);
+        BeginMode3D(camera);
+
+        DrawCube(cubePosition, 2.0f, 2.0f, 2.0f, Color.Red);
+        DrawCubeWires(cubePosition, 2.0f, 2.0f, 2.0f, Color.Maroon);
+        DrawGrid(40, 1.0f);
+
+        EndMode3D();
+        EndVrStereoMode();
+        EndTextureMode();
+
+        BeginDrawing();
+        ClearBackground(Color.RayWhite);
+        BeginShaderMode(distortion);
+        DrawTexturePro(target.Texture, sourceRec, destRec, new Vector2(0.0f, 0.0f), 0.0f, Color.White);
+        EndShaderMode();
+        DrawFPS(10, 10);
+        EndDrawing();
+        //----------------------------------------------------------------------------------
+    }
+
+    // Free resources (was the code after the loop, minus CloseWindow).
+    public void Unload()
+    {
+        UnloadVrStereoConfig(config);   // Unload stereo config
+
+        UnloadRenderTexture(target);    // Unload stereo render fbo
+        UnloadShader(distortion);       // Unload distortion shader
+    }
+
+    public static int Main()
+    {
+        // Initialization
+        //--------------------------------------------------------------------------------------
+        // NOTE: screenWidth/screenHeight should match VR device aspect ratio
+        InitWindow(screenWidth, screenHeight, "raylib [core] example - vr simulator");
 
         DisableCursor();                    // Limit cursor to relative movement inside the window
 
         SetTargetFPS(60);                   // Set our game to run at 60 frames-per-second
         //--------------------------------------------------------------------------------------
 
+        var game = new VrSimulator();
+        game.Init();
+
         // Main game loop
         while (!WindowShouldClose())        // Detect window close button or ESC key
         {
-            // Update
-            //----------------------------------------------------------------------------------
-            UpdateCamera(ref camera, CameraMode.FirstPerson);
-            //----------------------------------------------------------------------------------
-
-            // Draw
-            //----------------------------------------------------------------------------------
-            BeginTextureMode(target);
-            ClearBackground(Color.RayWhite);
-            BeginVrStereoMode(config);
-            BeginMode3D(camera);
-
-            DrawCube(cubePosition, 2.0f, 2.0f, 2.0f, Color.Red);
-            DrawCubeWires(cubePosition, 2.0f, 2.0f, 2.0f, Color.Maroon);
-            DrawGrid(40, 1.0f);
-
-            EndMode3D();
-            EndVrStereoMode();
-            EndTextureMode();
-
-            BeginDrawing();
-            ClearBackground(Color.RayWhite);
-            BeginShaderMode(distortion);
-            DrawTexturePro(target.Texture, sourceRec, destRec, new Vector2(0.0f, 0.0f), 0.0f, Color.White);
-            EndShaderMode();
-            DrawFPS(10, 10);
-            EndDrawing();
-            //----------------------------------------------------------------------------------
+            game.Update();
         }
+
+        game.Unload();
 
         // De-Initialization
         //--------------------------------------------------------------------------------------
-        UnloadVrStereoConfig(config);   // Unload stereo config
-
-        UnloadRenderTexture(target);    // Unload stereo render fbo
-        UnloadShader(distortion);       // Unload distortion shader
-
         CloseWindow();                  // Close window and OpenGL context
         //--------------------------------------------------------------------------------------
 

@@ -18,59 +18,84 @@ using static Raylib_cs.Raylib;
 
 namespace Examples.Core;
 
-public partial class Camera3dMode
+public partial class Camera3dMode : IExample
 {
-    public static int Main()
+    const int screenWidth = 800;
+    const int screenHeight = 450;
+
+    Camera3D camera;
+    Vector3 cubePosition;
+
+    public string Name => "Core / Camera 3D Mode";
+
+    // One-time setup (was the code before the original while loop, minus InitWindow).
+    public void Init()
     {
-        // Initialization
-        //--------------------------------------------------------------------------------------
-        const int screenWidth = 800;
-        const int screenHeight = 450;
-
-        InitWindow(screenWidth, screenHeight, "raylib [core] example - 3d camera mode");
-
         // Define the camera to look into our 3d world
-        Camera3D camera = new();
+        camera = new();
         camera.Position = new Vector3(0.0f, 10.0f, 10.0f);  // Camera position
         camera.Target = new Vector3(0.0f, 0.0f, 0.0f);      // Camera looking at point
         camera.Up = new Vector3(0.0f, 1.0f, 0.0f);          // Camera up vector (rotation towards target)
         camera.FovY = 45.0f;                                // Camera field-of-view Y
         camera.Projection = CameraProjection.Perspective;   // Camera mode type
 
-        Vector3 cubePosition = new(0.0f, 0.0f, 0.0f);
+        cubePosition = new(0.0f, 0.0f, 0.0f);
+    }
+
+    // A single frame (was the body of the original while loop).
+    public void Update()
+    {
+        // Update
+        //----------------------------------------------------------------------------------
+        // TODO: Update your variables here
+        //----------------------------------------------------------------------------------
+
+        // Draw
+        //----------------------------------------------------------------------------------
+        BeginDrawing();
+        ClearBackground(Color.RayWhite);
+
+        BeginMode3D(camera);
+
+        DrawCube(cubePosition, 2.0f, 2.0f, 2.0f, Color.Red);
+        DrawCubeWires(cubePosition, 2.0f, 2.0f, 2.0f, Color.Maroon);
+
+        DrawGrid(10, 1.0f);
+
+        EndMode3D();
+
+        DrawText("Welcome to the third dimension!", 10, 40, 20, Color.DarkGray);
+
+        DrawFPS(10, 10);
+
+        EndDrawing();
+        //----------------------------------------------------------------------------------
+    }
+
+    // Free resources (was the code after the loop, minus CloseWindow).
+    public void Unload()
+    {
+    }
+
+    public static int Main()
+    {
+        // Initialization
+        //--------------------------------------------------------------------------------------
+        InitWindow(screenWidth, screenHeight, "raylib [core] example - 3d camera mode");
 
         SetTargetFPS(60);               // Set our game to run at 60 frames-per-second
         //--------------------------------------------------------------------------------------
 
+        var game = new Camera3dMode();
+        game.Init();
+
         // Main game loop
         while (!WindowShouldClose())    // Detect window close button or ESC key
         {
-            // Update
-            //----------------------------------------------------------------------------------
-            // TODO: Update your variables here
-            //----------------------------------------------------------------------------------
-
-            // Draw
-            //----------------------------------------------------------------------------------
-            BeginDrawing();
-            ClearBackground(Color.RayWhite);
-
-            BeginMode3D(camera);
-
-            DrawCube(cubePosition, 2.0f, 2.0f, 2.0f, Color.Red);
-            DrawCubeWires(cubePosition, 2.0f, 2.0f, 2.0f, Color.Maroon);
-
-            DrawGrid(10, 1.0f);
-
-            EndMode3D();
-
-            DrawText("Welcome to the third dimension!", 10, 40, 20, Color.DarkGray);
-
-            DrawFPS(10, 10);
-
-            EndDrawing();
-            //----------------------------------------------------------------------------------
+            game.Update();
         }
+
+        game.Unload();
 
         // De-Initialization
         //--------------------------------------------------------------------------------------

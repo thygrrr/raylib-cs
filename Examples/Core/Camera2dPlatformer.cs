@@ -22,11 +22,16 @@ using static Raylib_cs.Raymath;
 
 namespace Examples.Core;
 
-public partial class Camera2dPlatformer
+public partial class Camera2dPlatformer : IExample
 {
+    const int screenWidth = 800;
+    const int screenHeight = 450;
+
     const int G = 400;
     const float PlayerJumpSpeed = 350.0f;
     const float PlayerHorSpeed = 200.0f;
+
+    public string Name => "Core / 2D Camera Platformer";
 
     struct Player
     {
@@ -58,21 +63,23 @@ public partial class Camera2dPlatformer
         int height
     );
 
-    public static int Main()
+    Player player;
+    EnvItem[] envItems;
+    Camera2D camera;
+    CameraUpdaterCallback[] cameraUpdaters;
+    int cameraOption;
+    int cameraUpdatersLength;
+    string[] cameraDescriptions;
+
+    // One-time setup (was the code before the original while loop, minus InitWindow).
+    public void Init()
     {
-        // Initialization
-        //--------------------------------------------------------------------------------------
-        const int screenWidth = 800;
-        const int screenHeight = 450;
-
-        InitWindow(screenWidth, screenHeight, "raylib [core] example - 2d camera platformer");
-
-        Player player = new();
+        player = new();
         player.Position = new Vector2(400, 280);
         player.Speed = 0;
         player.CanJump = false;
 
-        EnvItem[] envItems = new EnvItem[]
+        envItems = new EnvItem[]
         {
             new EnvItem(new Rectangle(0, 0, 1000, 400), 0, Color.LightGray),
             new EnvItem(new Rectangle(0, 400, 1000, 200), 1, Color.Gray),
@@ -81,14 +88,14 @@ public partial class Camera2dPlatformer
             new EnvItem(new Rectangle(650, 300, 100, 10), 1, Color.Gray)
         };
 
-        Camera2D camera = new();
+        camera = new();
         camera.Target = player.Position;
         camera.Offset = new Vector2(screenWidth / 2.0f, screenHeight / 2.0f);
         camera.Rotation = 0.0f;
         camera.Zoom = 1.0f;
 
         // Store pointers to the multiple update camera functions
-        CameraUpdaterCallback[] cameraUpdaters = new CameraUpdaterCallback[]
+        cameraUpdaters = new CameraUpdaterCallback[]
         {
             UpdateCameraCenter,
             UpdateCameraCenterInsideMap,
@@ -97,93 +104,88 @@ public partial class Camera2dPlatformer
             UpdateCameraPlayerBoundsPush
         };
 
-        int cameraOption = 0;
-        int cameraUpdatersLength = cameraUpdaters.Length;
+        cameraOption = 0;
+        cameraUpdatersLength = cameraUpdaters.Length;
 
-        string[] cameraDescriptions = new string[]{
+        cameraDescriptions = new string[]{
             "Follow player center",
             "Follow player center, but clamp to map edges",
             "Follow player center; smoothed",
             "Follow player center horizontally; update player center vertically after landing",
             "Player push camera on getting too close to screen edge"
         };
+    }
 
-        SetTargetFPS(60);
-        //--------------------------------------------------------------------------------------
+    // A single frame (was the body of the original while loop).
+    public void Update()
+    {
+        // Update
+        //----------------------------------------------------------------------------------
+        float deltaTime = GetFrameTime();
 
-        // Main game loop
-        while (!WindowShouldClose())
+        UpdatePlayer(ref player, envItems, deltaTime);
+
+        camera.Zoom += ((float)GetMouseWheelMove() * 0.05f);
+
+        if (camera.Zoom > 3.0f)
         {
-            // Update
-            //----------------------------------------------------------------------------------
-            float deltaTime = GetFrameTime();
-
-            UpdatePlayer(ref player, envItems, deltaTime);
-
-            camera.Zoom += ((float)GetMouseWheelMove() * 0.05f);
-
-            if (camera.Zoom > 3.0f)
-            {
-                camera.Zoom = 3.0f;
-            }
-            else if (camera.Zoom < 0.25f)
-            {
-                camera.Zoom = 0.25f;
-            }
-
-            if (IsKeyPressed(KeyboardKey.R))
-            {
-                camera.Zoom = 1.0f;
-                player.Position = new Vector2(400, 280);
-            }
-
-            if (IsKeyPressed(KeyboardKey.C))
-            {
-                cameraOption = (cameraOption + 1) % cameraUpdatersLength;
-            }
-
-            // Call update camera function by its pointer
-            cameraUpdaters[cameraOption](ref camera, ref player, envItems, deltaTime, screenWidth, screenHeight);
-            //----------------------------------------------------------------------------------
-
-            // Draw
-            //----------------------------------------------------------------------------------
-            BeginDrawing();
-            ClearBackground(Color.LightGray);
-
-            BeginMode2D(camera);
-
-            for (int i = 0; i < envItems.Length; i++)
-            {
-                DrawRectangleRec(envItems[i].Rect, envItems[i].Color);
-            }
-
-            Rectangle playerRect = new(player.Position.X - 20, player.Position.Y - 40, 40.0f, 40.0f);
-            DrawRectangleRec(playerRect, Color.Red);
-
-            DrawCircleV(player.Position, 5.0f, Color.Gold);
-
-            EndMode2D();
-
-            DrawText("Controls:", 20, 20, 10, Color.Black);
-            DrawText("- Right/Left to move", 40, 40, 10, Color.DarkGray);
-            DrawText("- Space to jump", 40, 60, 10, Color.DarkGray);
-            DrawText("- Mouse Wheel to Zoom in-out", 40, 80, 10, Color.DarkGray);
-            DrawText("- R to reset position + zoom", 40, 100, 10, Color.DarkGray);
-            DrawText("- C to change camera mode", 40, 120, 10, Color.DarkGray);
-            DrawText("Current camera mode:", 20, 140, 10, Color.Black);
-            DrawText(cameraDescriptions[cameraOption], 40, 160, 10, Color.DarkGray);
-
-            EndDrawing();
-            //----------------------------------------------------------------------------------
+            camera.Zoom = 3.0f;
+        }
+        else if (camera.Zoom < 0.25f)
+        {
+            camera.Zoom = 0.25f;
         }
 
-        // De-Initialization
-        //--------------------------------------------------------------------------------------
-        CloseWindow();        // Close window and OpenGL context
-        //--------------------------------------------------------------------------------------
+        if (IsKeyPressed(KeyboardKey.R))
+        {
+            camera.Zoom = 1.0f;
+            player.Position = new Vector2(400, 280);
+        }
 
-        return 0;
+        if (IsKeyPressed(KeyboardKey.C))
+        {
+            cameraOption = (cameraOption + 1) % cameraUpdatersLength;
+        }
+
+        // Call update camera function by its pointer
+        cameraUpdaters[cameraOption](ref camera, ref player, envItems, deltaTime, screenWidth, screenHeight);
+        //----------------------------------------------------------------------------------
+
+        // Draw
+        //----------------------------------------------------------------------------------
+        BeginDrawing();
+        ClearBackground(Color.LightGray);
+
+        BeginMode2D(camera);
+
+        for (int i = 0; i < envItems.Length; i++)
+        {
+            DrawRectangleRec(envItems[i].Rect, envItems[i].Color);
+        }
+
+        Rectangle playerRect = new(player.Position.X - 20, player.Position.Y - 40, 40.0f, 40.0f);
+        DrawRectangleRec(playerRect, Color.Red);
+
+        DrawCircleV(player.Position, 5.0f, Color.Gold);
+
+        EndMode2D();
+
+        DrawText("Controls:", 20, 20, 10, Color.Black);
+        DrawText("- Right/Left to move", 40, 40, 10, Color.DarkGray);
+        DrawText("- Space to jump", 40, 60, 10, Color.DarkGray);
+        DrawText("- Mouse Wheel to Zoom in-out", 40, 80, 10, Color.DarkGray);
+        DrawText("- R to reset position + zoom", 40, 100, 10, Color.DarkGray);
+        DrawText("- C to change camera mode", 40, 120, 10, Color.DarkGray);
+        DrawText("Current camera mode:", 20, 140, 10, Color.Black);
+        DrawText(cameraDescriptions[cameraOption], 40, 160, 10, Color.DarkGray);
+
+        EndDrawing();
+        //----------------------------------------------------------------------------------
+    }
+
+    // Free resources (was the code after the loop, minus CloseWindow).
+    public void Unload()
+    {
     }
 
     static void UpdatePlayer(ref Player player, EnvItem[] envItems, float delta)
@@ -406,5 +408,33 @@ public partial class Camera2dPlatformer
         {
             camera.Target.Y = bboxWorldMin.Y + (player.Position.Y - bboxWorldMax.Y);
         }
+    }
+
+    public static int Main()
+    {
+        // Initialization
+        //--------------------------------------------------------------------------------------
+        InitWindow(screenWidth, screenHeight, "raylib [core] example - 2d camera platformer");
+
+        SetTargetFPS(60);
+        //--------------------------------------------------------------------------------------
+
+        var game = new Camera2dPlatformer();
+        game.Init();
+
+        // Main game loop
+        while (!WindowShouldClose())
+        {
+            game.Update();
+        }
+
+        game.Unload();
+
+        // De-Initialization
+        //--------------------------------------------------------------------------------------
+        CloseWindow();        // Close window and OpenGL context
+        //--------------------------------------------------------------------------------------
+
+        return 0;
     }
 }

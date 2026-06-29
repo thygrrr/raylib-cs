@@ -20,13 +20,22 @@ using static Raylib_cs.Raylib;
 
 namespace Examples.Core;
 
-public partial class SplitScreen
+public partial class SplitScreen : IExample
 {
-    static Camera3D CameraPlayer1;
-    static Camera3D CameraPlayer2;
+    const int screenWidth = 800;
+    const int screenHeight = 450;
+
+    Camera3D CameraPlayer1;
+    Camera3D CameraPlayer2;
+
+    RenderTexture2D screenPlayer1;
+    RenderTexture2D screenPlayer2;
+    Rectangle splitScreenRect;
+
+    public string Name => "Core / Split Screen";
 
     // Scene drawing
-    static void DrawScene()
+    void DrawScene()
     {
         int count = 5;
         float spacing = 4;
@@ -48,15 +57,9 @@ public partial class SplitScreen
         DrawCube(CameraPlayer2.Position, 1, 1, 1, Color.Blue);
     }
 
-    public static int Main()
+    // One-time setup (was the code before the original while loop, minus InitWindow).
+    public void Init()
     {
-        // Initialization
-        //--------------------------------------------------------------------------------------
-        const int screenWidth = 800;
-        const int screenHeight = 450;
-
-        InitWindow(screenWidth, screenHeight, "raylib [core] example - 3d camera split screen");
-
         // Setup player 1 camera and screen
         CameraPlayer1.FovY = 45.0f;
         CameraPlayer1.Up.Y = 1.0f;
@@ -64,7 +67,7 @@ public partial class SplitScreen
         CameraPlayer1.Position.Z = -3.0f;
         CameraPlayer1.Position.Y = 1.0f;
 
-        RenderTexture2D screenPlayer1 = LoadRenderTexture(screenWidth / 2, screenHeight);
+        screenPlayer1 = LoadRenderTexture(screenWidth / 2, screenHeight);
 
         // Setup player two camera and screen
         CameraPlayer2.FovY = 45.0f;
@@ -73,99 +76,121 @@ public partial class SplitScreen
         CameraPlayer2.Position.X = -3.0f;
         CameraPlayer2.Position.Y = 3.0f;
 
-        RenderTexture2D screenPlayer2 = LoadRenderTexture(screenWidth / 2, screenHeight);
+        screenPlayer2 = LoadRenderTexture(screenWidth / 2, screenHeight);
 
         // Build a flipped rectangle the size of the split view to use for drawing later
-        Rectangle splitScreenRect = new(
+        splitScreenRect = new(
             0.0f,
             0.0f,
             (float)screenPlayer1.Texture.Width,
             (float)-screenPlayer1.Texture.Height
         );
+    }
+
+    // A single frame (was the body of the original while loop).
+    public void Update()
+    {
+        // Update
+        //----------------------------------------------------------------------------------
+        // If anyone moves this frame, how far will they move based on the time since the last frame
+        // this moves things at 10 world units per second, regardless of the actual FPS
+        float offsetThisFrame = 10.0f * GetFrameTime();
+
+        // Move Player1 forward and backwards (no turning)
+        if (IsKeyDown(KeyboardKey.W))
+        {
+            CameraPlayer1.Position.Z += offsetThisFrame;
+            CameraPlayer1.Target.Z += offsetThisFrame;
+        }
+        else if (IsKeyDown(KeyboardKey.S))
+        {
+            CameraPlayer1.Position.Z -= offsetThisFrame;
+            CameraPlayer1.Target.Z -= offsetThisFrame;
+        }
+
+        // Move Player2 forward and backwards (no turning)
+        if (IsKeyDown(KeyboardKey.Up))
+        {
+            CameraPlayer2.Position.X += offsetThisFrame;
+            CameraPlayer2.Target.X += offsetThisFrame;
+        }
+        else if (IsKeyDown(KeyboardKey.Down))
+        {
+            CameraPlayer2.Position.X -= offsetThisFrame;
+            CameraPlayer2.Target.X -= offsetThisFrame;
+        }
+        //----------------------------------------------------------------------------------
+
+        // Draw
+        //----------------------------------------------------------------------------------
+        // Draw Player1 view to the render texture
+        BeginTextureMode(screenPlayer1);
+        ClearBackground(Color.SkyBlue);
+
+        BeginMode3D(CameraPlayer1);
+        DrawScene();
+        EndMode3D();
+
+        DrawRectangle(0, 0, GetScreenWidth() / 2, 40, Fade(Color.RayWhite, 0.8f));
+        DrawText("PLAYER1: W/S to move", 10, 10, 20, Color.Maroon);
+        EndTextureMode();
+
+        // Draw Player2 view to the render texture
+        BeginTextureMode(screenPlayer2);
+        ClearBackground(Color.SkyBlue);
+
+        BeginMode3D(CameraPlayer2);
+        DrawScene();
+        EndMode3D();
+
+        DrawRectangle(0, 0, GetScreenWidth() / 2, 40, Fade(Color.RayWhite, 0.8f));
+        DrawText("PLAYER2: UP/DOWN to move", 10, 10, 20, Color.DarkBlue);
+        EndTextureMode();
+
+        // Draw both views render textures to the screen side by side
+        BeginDrawing();
+        ClearBackground(Color.Black);
+
+        DrawTextureRec(screenPlayer1.Texture, splitScreenRect, new Vector2(0, 0), Color.White);
+        DrawTextureRec(screenPlayer2.Texture, splitScreenRect, new Vector2(screenWidth / 2.0f, 0), Color.White);
+
+        DrawRectangle(GetScreenWidth() / 2 - 2, 0, 4, GetScreenHeight(), Color.LightGray);
+        EndDrawing();
+        //----------------------------------------------------------------------------------
+    }
+
+    // Free resources (was the code after the loop, minus CloseWindow).
+    public void Unload()
+    {
+        UnloadRenderTexture(screenPlayer1); // Unload render texture
+        UnloadRenderTexture(screenPlayer2); // Unload render texture
+    }
+
+    public static int Main()
+    {
+        // Initialization
+        //--------------------------------------------------------------------------------------
+        InitWindow(screenWidth, screenHeight, "raylib [core] example - 3d camera split screen");
 
         SetTargetFPS(60);               // Set our game to run at 60 frames-per-second
         //--------------------------------------------------------------------------------------
 
+        var game = new SplitScreen();
+        game.Init();
+
         // Main game loop
         while (!WindowShouldClose())    // Detect window close button or ESC key
         {
-            // Update
-            //----------------------------------------------------------------------------------
-            // If anyone moves this frame, how far will they move based on the time since the last frame
-            // this moves things at 10 world units per second, regardless of the actual FPS
-            float offsetThisFrame = 10.0f * GetFrameTime();
-
-            // Move Player1 forward and backwards (no turning)
-            if (IsKeyDown(KeyboardKey.W))
-            {
-                CameraPlayer1.Position.Z += offsetThisFrame;
-                CameraPlayer1.Target.Z += offsetThisFrame;
-            }
-            else if (IsKeyDown(KeyboardKey.S))
-            {
-                CameraPlayer1.Position.Z -= offsetThisFrame;
-                CameraPlayer1.Target.Z -= offsetThisFrame;
-            }
-
-            // Move Player2 forward and backwards (no turning)
-            if (IsKeyDown(KeyboardKey.Up))
-            {
-                CameraPlayer2.Position.X += offsetThisFrame;
-                CameraPlayer2.Target.X += offsetThisFrame;
-            }
-            else if (IsKeyDown(KeyboardKey.Down))
-            {
-                CameraPlayer2.Position.X -= offsetThisFrame;
-                CameraPlayer2.Target.X -= offsetThisFrame;
-            }
-            //----------------------------------------------------------------------------------
-
-            // Draw
-            //----------------------------------------------------------------------------------
-            // Draw Player1 view to the render texture
-            BeginTextureMode(screenPlayer1);
-            ClearBackground(Color.SkyBlue);
-
-            BeginMode3D(CameraPlayer1);
-            DrawScene();
-            EndMode3D();
-
-            DrawRectangle(0, 0, GetScreenWidth() / 2, 40, Fade(Color.RayWhite, 0.8f));
-            DrawText("PLAYER1: W/S to move", 10, 10, 20, Color.Maroon);
-            EndTextureMode();
-
-            // Draw Player2 view to the render texture
-            BeginTextureMode(screenPlayer2);
-            ClearBackground(Color.SkyBlue);
-
-            BeginMode3D(CameraPlayer2);
-            DrawScene();
-            EndMode3D();
-
-            DrawRectangle(0, 0, GetScreenWidth() / 2, 40, Fade(Color.RayWhite, 0.8f));
-            DrawText("PLAYER2: UP/DOWN to move", 10, 10, 20, Color.DarkBlue);
-            EndTextureMode();
-
-            // Draw both views render textures to the screen side by side
-            BeginDrawing();
-            ClearBackground(Color.Black);
-
-            DrawTextureRec(screenPlayer1.Texture, splitScreenRect, new Vector2(0, 0), Color.White);
-            DrawTextureRec(screenPlayer2.Texture, splitScreenRect, new Vector2(screenWidth / 2.0f, 0), Color.White);
-
-            DrawRectangle(GetScreenWidth() / 2 - 2, 0, 4, GetScreenHeight(), Color.LightGray);
-            EndDrawing();
+            game.Update();
         }
+
+        game.Unload();
 
         // De-Initialization
         //--------------------------------------------------------------------------------------
-        UnloadRenderTexture(screenPlayer1); // Unload render texture
-        UnloadRenderTexture(screenPlayer2); // Unload render texture
-
         CloseWindow();                      // Close window and OpenGL context
         //--------------------------------------------------------------------------------------
 
         return 0;
     }
 }
-

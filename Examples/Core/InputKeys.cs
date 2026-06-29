@@ -18,60 +18,84 @@ using static Raylib_cs.Raylib;
 
 namespace Examples.Core;
 
-public partial class InputKeys
+public partial class InputKeys : IExample
 {
+    const int screenWidth = 800;
+    const int screenHeight = 450;
+
+    public string Name => "Core / Input Keys";
+
+    Vector2 ballPosition;
+
+    // One-time setup (was the code before the original while loop, minus InitWindow).
+    public void Init()
+    {
+        ballPosition = new((float)screenWidth / 2, (float)screenHeight / 2);
+    }
+
+    // A single frame (was the body of the original while loop).
+    public void Update()
+    {
+        // Update
+        //----------------------------------------------------------------------------------
+        if (IsKeyDown(KeyboardKey.Right))
+        {
+            ballPosition.X += 2.0f;
+        }
+
+        if (IsKeyDown(KeyboardKey.Left))
+        {
+            ballPosition.X -= 2.0f;
+        }
+
+        if (IsKeyDown(KeyboardKey.Up))
+        {
+            ballPosition.Y -= 2.0f;
+        }
+
+        if (IsKeyDown(KeyboardKey.Down))
+        {
+            ballPosition.Y += 2.0f;
+        }
+        //----------------------------------------------------------------------------------
+
+        // Draw
+        //----------------------------------------------------------------------------------
+        BeginDrawing();
+        ClearBackground(Color.RayWhite);
+
+        DrawText("move the ball with arrow keys", 10, 10, 20, Color.DarkGray);
+
+        DrawCircleV(ballPosition, 50, Color.Maroon);
+
+        EndDrawing();
+        //----------------------------------------------------------------------------------
+    }
+
+    // Free resources (was the code after the loop, minus CloseWindow).
+    public void Unload()
+    {
+    }
+
     public static int Main()
     {
         // Initialization
         //--------------------------------------------------------------------------------------
-        const int screenWidth = 800;
-        const int screenHeight = 450;
-
         InitWindow(screenWidth, screenHeight, "raylib [core] example - input keys");
-
-        Vector2 ballPosition = new((float)screenWidth / 2, (float)screenHeight / 2);
 
         SetTargetFPS(60);               // Set our game to run at 60 frames-per-second
         //--------------------------------------------------------------------------------------
 
+        var game = new InputKeys();
+        game.Init();
+
         // Main game loop
         while (!WindowShouldClose())    // Detect window close button or ESC key
         {
-            // Update
-            //----------------------------------------------------------------------------------
-            if (IsKeyDown(KeyboardKey.Right))
-            {
-                ballPosition.X += 2.0f;
-            }
-
-            if (IsKeyDown(KeyboardKey.Left))
-            {
-                ballPosition.X -= 2.0f;
-            }
-
-            if (IsKeyDown(KeyboardKey.Up))
-            {
-                ballPosition.Y -= 2.0f;
-            }
-
-            if (IsKeyDown(KeyboardKey.Down))
-            {
-                ballPosition.Y += 2.0f;
-            }
-            //----------------------------------------------------------------------------------
-
-            // Draw
-            //----------------------------------------------------------------------------------
-            BeginDrawing();
-            ClearBackground(Color.RayWhite);
-
-            DrawText("move the ball with arrow keys", 10, 10, 20, Color.DarkGray);
-
-            DrawCircleV(ballPosition, 50, Color.Maroon);
-
-            EndDrawing();
-            //----------------------------------------------------------------------------------
+            game.Update();
         }
+
+        game.Unload();
 
         // De-Initialization
         //--------------------------------------------------------------------------------------

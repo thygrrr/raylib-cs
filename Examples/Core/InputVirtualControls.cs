@@ -32,21 +32,30 @@ public enum PadButton
     BUTTON_MAX
 }
 
-public partial class InputVirtualControls
+public partial class InputVirtualControls : IExample
 {
-    public static int Main()
+    const int screenWidth = 800;
+    const int screenHeight = 450;
+
+    public string Name => "Core / Input Virtual Controls";
+
+    Vector2 padPosition;
+    float buttonRadius;
+    Vector2[] buttonPositions;
+    Vector2[][] arrowTris;
+    Color[] buttonLabelColors;
+    int pressedButton;
+    Vector2 inputPosition;
+    Vector2 playerPosition;
+    float playerSpeed;
+
+    // One-time setup (was the code before the original while loop, minus InitWindow).
+    public void Init()
     {
-        // Initialization
-        //--------------------------------------------------------------------------------------
-        const int screenWidth = 800;
-        const int screenHeight = 450;
+        padPosition = new Vector2(100, 350);
+        buttonRadius = 30;
 
-        InitWindow(screenWidth, screenHeight, "raylib [core] example - input virtual controls");
-
-        Vector2 padPosition = new Vector2(100, 350);
-        float buttonRadius = 30;
-
-        Vector2[] buttonPositions =
+        buttonPositions =
         [
             new Vector2(
                 padPosition.X,padPosition.Y - buttonRadius * 1.5f
@@ -62,7 +71,7 @@ public partial class InputVirtualControls
             ) // Down
         ];
 
-        Vector2[][] arrowTris = [
+        arrowTris = [
             // Up
             [
                 new Vector2(
@@ -114,104 +123,127 @@ public partial class InputVirtualControls
         ]
         ;
 
-        Color[] buttonLabelColors = [
+        buttonLabelColors = [
             Color.Yellow, // Up
             Color.Blue, // Left
             Color.Red, // Right
             Color.Green // Down
         ];
 
-        int pressedButton = (int)PadButton.BUTTON_NONE;
-        Vector2 inputPosition = new Vector2(0, 0);
+        pressedButton = (int)PadButton.BUTTON_NONE;
+        inputPosition = new Vector2(0, 0);
 
-        Vector2 playerPosition = new Vector2((float)screenWidth / 2, (float)screenHeight / 2);
-        float playerSpeed = 75f;
+        playerPosition = new Vector2((float)screenWidth / 2, (float)screenHeight / 2);
+        playerSpeed = 75f;
+    }
+
+    // A single frame (was the body of the original while loop).
+    public void Update()
+    {
+        // Update
+        //--------------------------------------------------------------------------
+        if ((GetTouchPointCount() > 0))
+        {
+            inputPosition = GetTouchPosition(0); // Use touch position
+        }
+        else
+        {
+            inputPosition = GetMousePosition(); // Use mouse position
+        }
+
+        // Reset pressed button to none
+        pressedButton = (int)PadButton.BUTTON_NONE;
+
+        // Make sure user is pressing left mouse button if they're from desktop
+        if ((GetTouchPointCount() > 0) ||
+            ((GetTouchPointCount() == 0) && IsMouseButtonDown(MouseButton.Left)))
+        {
+            // Find nearest D-Pad button to the input position
+            for (int i = 0; i < (int)PadButton.BUTTON_MAX; i++)
+            {
+                float distX = MathF.Abs(buttonPositions[i].X - inputPosition.X);
+                float distY = MathF.Abs(buttonPositions[i].Y - inputPosition.Y);
+
+                if ((distX + distY < buttonRadius))
+                {
+                    pressedButton = i;
+                    break;
+                }
+            }
+        }
+
+        // Move player according to pressed button
+        switch ((PadButton)pressedButton)
+        {
+            case PadButton.BUTTON_UP:
+                playerPosition.Y -= playerSpeed * GetFrameTime();
+                break;
+            case PadButton.BUTTON_LEFT:
+                playerPosition.X -= playerSpeed * GetFrameTime();
+                break;
+            case PadButton.BUTTON_RIGHT:
+                playerPosition.X += playerSpeed * GetFrameTime();
+                break;
+            case PadButton.BUTTON_DOWN:
+                playerPosition.Y += playerSpeed * GetFrameTime();
+                break;
+            default:
+                break;
+        }
+        //--------------------------------------------------------------------------
+
+        // Draw
+        //--------------------------------------------------------------------------
+        BeginDrawing();
+
+        ClearBackground(Color.RayWhite);
+
+        // Draw world
+        DrawCircleV(playerPosition, 50, Color.Maroon);
+
+        // Draw GUI
+        for (int i = 0; i < (int)PadButton.BUTTON_MAX; i++)
+        {
+            DrawCircleV(buttonPositions[i], buttonRadius, (i == pressedButton) ? Color.DarkGray : Color.Black);
+
+            DrawTriangle(
+                arrowTris[i][0],
+                arrowTris[i][1],
+                arrowTris[i][2],
+                buttonLabelColors[i]
+            );
+        }
+
+        DrawText("move the player with D-Pad buttons", 10, 10, 20, Color.DarkGray);
+
+        EndDrawing();
+        //--------------------------------------------------------------------------
+    }
+
+    // Free resources (was the code after the loop, minus CloseWindow).
+    public void Unload()
+    {
+    }
+
+    public static int Main()
+    {
+        // Initialization
+        //--------------------------------------------------------------------------------------
+        InitWindow(screenWidth, screenHeight, "raylib [core] example - input virtual controls");
 
         SetTargetFPS(60);
         //--------------------------------------------------------------------------------------
 
+        var game = new InputVirtualControls();
+        game.Init();
+
         // Main game loop
         while (!WindowShouldClose()) // Detect window close button or ESC key
         {
-            // Update
-            //--------------------------------------------------------------------------
-            if ((GetTouchPointCount() > 0))
-            {
-                inputPosition = GetTouchPosition(0); // Use touch position
-            }
-            else
-            {
-                inputPosition = GetMousePosition(); // Use mouse position
-            }
-
-            // Reset pressed button to none
-            pressedButton = (int)PadButton.BUTTON_NONE;
-
-            // Make sure user is pressing left mouse button if they're from desktop
-            if ((GetTouchPointCount() > 0) ||
-                ((GetTouchPointCount() == 0) && IsMouseButtonDown(MouseButton.Left)))
-            {
-                // Find nearest D-Pad button to the input position
-                for (int i = 0; i < (int)PadButton.BUTTON_MAX; i++)
-                {
-                    float distX = MathF.Abs(buttonPositions[i].X - inputPosition.X);
-                    float distY = MathF.Abs(buttonPositions[i].Y - inputPosition.Y);
-
-                    if ((distX + distY < buttonRadius))
-                    {
-                        pressedButton = i;
-                        break;
-                    }
-                }
-            }
-
-            // Move player according to pressed button
-            switch ((PadButton)pressedButton)
-            {
-                case PadButton.BUTTON_UP:
-                    playerPosition.Y -= playerSpeed * GetFrameTime();
-                    break;
-                case PadButton.BUTTON_LEFT:
-                    playerPosition.X -= playerSpeed * GetFrameTime();
-                    break;
-                case PadButton.BUTTON_RIGHT:
-                    playerPosition.X += playerSpeed * GetFrameTime();
-                    break;
-                case PadButton.BUTTON_DOWN:
-                    playerPosition.Y += playerSpeed * GetFrameTime();
-                    break;
-                default:
-                    break;
-            }
-            //--------------------------------------------------------------------------
-
-            // Draw
-            //--------------------------------------------------------------------------
-            BeginDrawing();
-
-            ClearBackground(Color.RayWhite);
-
-            // Draw world
-            DrawCircleV(playerPosition, 50, Color.Maroon);
-
-            // Draw GUI
-            for (int i = 0; i < (int)PadButton.BUTTON_MAX; i++)
-            {
-                DrawCircleV(buttonPositions[i], buttonRadius, (i == pressedButton) ? Color.DarkGray : Color.Black);
-
-                DrawTriangle(
-                    arrowTris[i][0],
-                    arrowTris[i][1],
-                    arrowTris[i][2],
-                    buttonLabelColors[i]
-                );
-            }
-
-            DrawText("move the player with D-Pad buttons", 10, 10, 20, Color.DarkGray);
-
-            EndDrawing();
-            //--------------------------------------------------------------------------
+            game.Update();
         }
+
+        game.Unload();
 
         // De-Initialization
         //--------------------------------------------------------------------------------------

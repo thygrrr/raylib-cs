@@ -21,11 +21,21 @@ using static Raylib_cs.Raylib;
 
 namespace Examples.Core;
 
-public unsafe partial class CustomLogging
+public unsafe partial class CustomLogging : IExample
 {
+    const int screenWidth = 800;
+    const int screenHeight = 450;
+
+    public string Name => "Core / Custom Logging";
+
     [UnmanagedCallersOnly(CallConvs = new[] { typeof(System.Runtime.CompilerServices.CallConvCdecl) })]
     private static void LogCustom(int logLevel, sbyte* text, sbyte* args)
     {
+#if BROWSER
+        // WebAssembly can't invoke the C varargs vsprintf/vsnprintf that Logging.GetLogMessage relies on
+        // (the wasm runtime traps with "function signature mismatch"), so log the raw, unformatted text.
+        string message = Marshal.PtrToStringUTF8(new IntPtr(text)) ?? string.Empty;
+#else
         var message = Logging.GetLogMessage(new IntPtr(text), new IntPtr(args));
 
         /*Console.ForegroundColor = (TraceLogLevel)logLevel switch
@@ -40,50 +50,72 @@ public unsafe partial class CustomLogging
             TraceLogLevel.LOG_NONE => ConsoleColor.White,
             _ => throw new ArgumentOutOfRangeException(nameof(logLevel), logLevel, null)
         };*/
+#endif
 
         Console.WriteLine($"Custom " + message);
         // Console.ResetColor();
+    }
+
+    // One-time setup (was the code before the original while loop, minus InitWindow).
+    public void Init()
+    {
+        // First thing we do is setting our custom logger to ensure everything raylib logs
+        // will use our own logger instead of its internal one
+        SetTraceLogCallback(&LogCustom);
+    }
+
+    // A single frame (was the body of the original while loop).
+    public void Update()
+    {
+        // Update
+        //----------------------------------------------------------------------------------
+        // TODO: Update your variables here
+        //----------------------------------------------------------------------------------
+
+        // Draw
+        //----------------------------------------------------------------------------------
+        BeginDrawing();
+        ClearBackground(Color.RayWhite);
+
+        DrawText("Check out the console output to see the custom logger in action!", 60, 200, 20, Color.LightGray);
+
+        EndDrawing();
+        //----------------------------------------------------------------------------------
+    }
+
+    // Free resources (was the code after the loop, minus CloseWindow).
+    public void Unload()
+    {
+#if !BROWSER
+        // Restore the default formatting logger on desktop. On WebAssembly we leave the (wasm-safe)
+        // custom logger in place — Logging.LogConsole formats via vsprintf, which traps on wasm.
+        SetTraceLogCallback(&Logging.LogConsole);
+#endif
     }
 
     public static int Main()
     {
         // Initialization
         //--------------------------------------------------------------------------------------
-        const int screenWidth = 800;
-        const int screenHeight = 450;
-
-        // First thing we do is setting our custom logger to ensure everything raylib logs
-        // will use our own logger instead of its internal one
-        SetTraceLogCallback(&LogCustom);
-
         InitWindow(screenWidth, screenHeight, "raylib [core] example - custom logging");
 
         SetTargetFPS(60);               // Set our game to run at 60 frames-per-second
         //--------------------------------------------------------------------------------------
 
+        var game = new CustomLogging();
+        game.Init();
+
         // Main game loop
         while (!WindowShouldClose())    // Detect window close button or ESC key
         {
-            // Update
-            //----------------------------------------------------------------------------------
-            // TODO: Update your variables here
-            //----------------------------------------------------------------------------------
-
-            // Draw
-            //----------------------------------------------------------------------------------
-            BeginDrawing();
-            ClearBackground(Color.RayWhite);
-
-            DrawText("Check out the console output to see the custom logger in action!", 60, 200, 20, Color.LightGray);
-
-            EndDrawing();
-            //----------------------------------------------------------------------------------
+            game.Update();
         }
+
+        game.Unload();
 
         // De-Initialization
         //--------------------------------------------------------------------------------------
         CloseWindow();        // Close window and OpenGL context
-        SetTraceLogCallback(&Logging.LogConsole);
         //--------------------------------------------------------------------------------------
 
         return 0;
