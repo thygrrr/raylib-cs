@@ -156,15 +156,12 @@ public partial class HybridRender : IExample
         {
             RenderTexture2D target = new();
 
-            Console.WriteLine("MARK before LoadFramebuffer");
             // Load an empty framebuffer
             target.Id = Rlgl.LoadFramebuffer();
-            Console.WriteLine("MARK after LoadFramebuffer id=" + target.Id);
 
             if (target.Id > 0)
             {
                 Rlgl.EnableFramebuffer(target.Id);
-                Console.WriteLine("MARK after EnableFramebuffer");
 
                 // Create color texture (default to RGBA)
                 target.Texture.Id = Rlgl.LoadTexture(
@@ -174,22 +171,18 @@ public partial class HybridRender : IExample
                     PixelFormat.UncompressedR8G8B8A8,
                     1
                 );
-                Console.WriteLine("MARK after LoadTexture id=" + target.Texture.Id);
                 target.Texture.Width = width;
                 target.Texture.Height = height;
                 target.Texture.Format = PixelFormat.UncompressedR8G8B8A8;
                 target.Texture.Mipmaps = 1;
 
-                Console.WriteLine("MARK before LoadTextureDepth");
                 // Create depth texture buffer (instead of raylib default renderbuffer)
                 target.Depth.Id = Rlgl.LoadTextureDepth(width, height, false);
-                Console.WriteLine("MARK after LoadTextureDepth id=" + target.Depth.Id);
                 target.Depth.Width = width;
                 target.Depth.Height = height;
                 target.Depth.Format = PixelFormat.CompressedPvrtRgba;
                 target.Depth.Mipmaps = 1;
 
-                Console.WriteLine("MARK before FramebufferAttach color");
                 // Attach color texture and depth texture to FBO
                 Rlgl.FramebufferAttach(
                     target.Id,
@@ -198,7 +191,6 @@ public partial class HybridRender : IExample
                     FramebufferAttachTextureType.Texture2D,
                     0
                 );
-                Console.WriteLine("MARK before FramebufferAttach depth");
                 Rlgl.FramebufferAttach(
                     target.Id,
                     target.Depth.Id,
@@ -207,9 +199,8 @@ public partial class HybridRender : IExample
                     0
                 );
 
-                Console.WriteLine("MARK before FramebufferComplete");
                 // Check if fbo is complete with attachments (valid)
-                if (Rlgl.FramebufferComplete(target.Id))
+                if (Rlgl.FramebufferComplete(target.Id) != 0)
                 {
                     TraceLog(TraceLogLevel.Info, $"FBO: [ID {target.Id}] Framebuffer object created successfully");
                 }

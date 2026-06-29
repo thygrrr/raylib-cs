@@ -250,7 +250,7 @@ public class SkyboxDemo
         );
 
         // Check if framebuffer is complete with attachments (valid)
-        if (Rlgl.FramebufferComplete(fbo))
+        if (Rlgl.FramebufferComplete(fbo) != 0)
         {
             Console.WriteLine($"FBO: [ID {fbo}] Framebuffer object created successfully");
         }

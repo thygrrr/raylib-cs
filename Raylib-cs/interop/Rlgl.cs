@@ -744,7 +744,7 @@ public static unsafe partial class Rlgl
     /// <summary>Load depth texture/renderbuffer (to be attached to fbo)</summary>
     [LibraryImport(NativeLibName, EntryPoint = "rlLoadTextureDepth")]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial uint LoadTextureDepth(int width, int height, CBool useRenderBuffer);
+    public static partial uint LoadTextureDepth(int width, int height, int useRenderBuffer);
 
     /// <summary>Load texture cubemap data</summary>
     [LibraryImport(NativeLibName, EntryPoint = "rlLoadTextureCubemap")]
@@ -813,15 +813,15 @@ public static unsafe partial class Rlgl
     public static partial void FramebufferAttach(
         uint fboId,
         uint texId,
-        FramebufferAttachType attachType,
-        FramebufferAttachTextureType texType,
+        int attachType,
+        int texType,
         int mipLevel
     );
 
     /// <summary>Verify framebuffer is complete</summary>
     [LibraryImport(NativeLibName, EntryPoint = "rlFramebufferComplete")]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial CBool FramebufferComplete(uint id);
+    public static partial int FramebufferComplete(uint id);
 
     /// <summary>Delete framebuffer from GPU</summary>
     [LibraryImport(NativeLibName, EntryPoint = "rlUnloadFramebuffer")]

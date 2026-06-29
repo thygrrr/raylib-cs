@@ -154,7 +154,7 @@ public partial class WriteDepth
             );
 
             // Check if fbo is complete with attachments (valid)
-            if (Rlgl.FramebufferComplete(target.Id))
+            if (Rlgl.FramebufferComplete(target.Id) != 0)
             {
                 TraceLog(TraceLogLevel.Info, $"FBO: [ID {target.Id}] Framebuffer object created successfully");
             }

@@ -1,5 +1,6 @@
 #if BROWSER
 using Examples;
+
 namespace Examples.Shaders;
 
 public partial class WriteDepth : IExample
@@ -145,7 +146,7 @@ public partial class WriteDepth : IExample
                 );
 
                 // Check if fbo is complete with attachments (valid)
-                if (Rlgl.FramebufferComplete(target.Id))
+                if (Rlgl.FramebufferComplete(target.Id) != 0)
                 {
                     TraceLog(TraceLogLevel.Info, $"FBO: [ID {target.Id}] Framebuffer object created successfully");
                 }
