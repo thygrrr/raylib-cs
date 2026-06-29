@@ -20,4 +20,33 @@
             <NativeFileReference Include="$(MSBuildThisFileDirectory)obj\browser-wasm\raylib.a"/>
         </ItemGroup>
     </Target>
+
+    <!-- ProjectReference: copy raylib next to the app (NuGet does this automatically for PackageReference). -->
+    <Target Name="_CopyRaylibNativeToConsumerOutput"
+            AfterTargets="Build"
+            Condition="'$(RuntimeIdentifier)' != 'browser-wasm' And '$(MSBuildProjectName)' != 'Raylib-cs'">
+        <PropertyGroup>
+            <TargetRaylibTag Condition="'$(TargetRaylibTag)' == ''">6.0</TargetRaylibTag>
+            <_RaylibNativeRid Condition="'$(RuntimeIdentifier)' != ''">$(RuntimeIdentifier)</_RaylibNativeRid>
+            <_RaylibNativeRid Condition="'$(_RaylibNativeRid)' == '' And '$(OS)' == 'Windows_NT' And '$(PROCESSOR_ARCHITECTURE)' == 'AMD64'">win-x64</_RaylibNativeRid>
+            <_RaylibNativeRid Condition="'$(_RaylibNativeRid)' == '' And '$(OS)' == 'Windows_NT' And '$(PROCESSOR_ARCHITECTURE)' == 'x86'">win-x86</_RaylibNativeRid>
+            <_RaylibNativeRid Condition="'$(_RaylibNativeRid)' == '' And '$(OS)' == 'Windows_NT' And '$(PROCESSOR_ARCHITECTURE)' == 'ARM64'">win-x64</_RaylibNativeRid>
+            <_RaylibNativeRid Condition="'$(_RaylibNativeRid)' == '' And $([MSBuild]::IsOsPlatform('Linux'))">linux-x64</_RaylibNativeRid>
+            <_RaylibNativeRid Condition="'$(_RaylibNativeRid)' == '' And $([MSBuild]::IsOsPlatform('OSX'))">osx-x64</_RaylibNativeRid>
+            <_RaylibNativeOutputDir>$(OutputPath)runtimes\$(_RaylibNativeRid)\native\</_RaylibNativeOutputDir>
+        </PropertyGroup>
+        <MSBuild Projects="$(MSBuildThisFileDirectory)Raylib-cs.csproj"
+                 Targets="_PrepareNativeLibrary"
+                 Properties="RuntimeIdentifier=$(_RaylibNativeRid);TargetFramework=$(TargetFramework);TargetRaylibTag=$(TargetRaylibTag)">
+            <Output TaskParameter="TargetOutputs" ItemName="_RaylibNativeLibrary"/>
+        </MSBuild>
+        <MakeDir Directories="$(_RaylibNativeOutputDir)"/>
+        <Copy SourceFiles="@(_RaylibNativeLibrary)"
+              DestinationFolder="$(_RaylibNativeOutputDir)"
+              SkipUnchangedFiles="true"/>
+        <!-- Also copy to the app root so NativeLibrary.TryLoad("raylib") succeeds. -->
+        <Copy SourceFiles="@(_RaylibNativeLibrary)"
+              DestinationFolder="$(OutputPath)"
+              SkipUnchangedFiles="true"/>
+    </Target>
 </Project>

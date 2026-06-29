@@ -154,6 +154,19 @@
         <Copy SourceFiles="@(_NativeToCopy)" DestinationFolder="$(OutputPath)" SkipUnchangedFiles="true"/>
     </Target>
 
+    <!-- Resolve and download the native library for a given RID (used by ProjectReference consumers). -->
+    <Target Name="_PrepareNativeLibrary" Outputs="@(_RaylibNativeLibraryItem)">
+        <PropertyGroup>
+            <TargetRaylibTag Condition="'$(TargetRaylibTag)' == ''">6.0</TargetRaylibTag>
+            <_RaylibNativesDir>$([System.IO.Path]::GetFullPath('$(MSBuildProjectDirectory)/$(NativesRoot)'))</_RaylibNativesDir>
+        </PropertyGroup>
+        <CallTarget Targets="_DownloadAndExtractInternal"/>
+        <ItemGroup>
+            <_NativeCandidate Include="$(_RaylibNativesDir)$(RuntimeIdentifier)/**/$(LibPattern)"/>
+            <_RaylibNativeLibraryItem Include="@(_NativeCandidate)"/>
+        </ItemGroup>
+    </Target>
+
     <!-- Stage libraylib.web.a as raylib.a for wasm linking (pinvoke module name must match LibraryImport). -->
     <Target Name="_StageWasmNative" Condition="'$(RuntimeIdentifier)' == 'browser-wasm'">
         <PropertyGroup>
