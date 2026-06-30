@@ -5,7 +5,6 @@
         <RootNamespace>Raylib_cs</RootNamespace>
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
         <LangVersion>12</LangVersion>
-        <PackageRids>win-x64;win-x86;linux-x64;osx-x64;osx-arm64;browser-wasm</PackageRids>
     </PropertyGroup>
 
     <PropertyGroup>
@@ -14,7 +13,6 @@
 
     <PropertyGroup>
         <PackageId>Raylib-cs</PackageId>
-        <Version>8.0.0</Version>
         <Description>C# bindings for raylib</Description>
         <RepositoryUrl>https://github.com/raylib-cs/raylib-cs/</RepositoryUrl>
         <Authors>raylib-cs</Authors>
@@ -49,93 +47,52 @@
         <NativesRoot>$(BaseIntermediateOutputPath)natives/</NativesRoot>
     </PropertyGroup>
 
-    <Choose>
-        <When Condition="'$(RuntimeIdentifier)' == 'win-x64'">
-            <PropertyGroup>
-                <RaylibPackageName>raylib-$(TargetRaylibTag)_win64_msvc16</RaylibPackageName>
-                <ArchiveExt>.zip</ArchiveExt>
-                <LibPattern>raylib.dll</LibPattern>
-            </PropertyGroup>
-        </When>
-        <When Condition="'$(RuntimeIdentifier)' == 'win-x86'">
-            <PropertyGroup>
-                <RaylibPackageName>raylib-$(TargetRaylibTag)_win32_msvc16</RaylibPackageName>
-                <ArchiveExt>.zip</ArchiveExt>
-                <LibPattern>raylib.dll</LibPattern>
-            </PropertyGroup>
-        </When>
-        <When Condition="'$(RuntimeIdentifier)' == 'linux-x64'">
-            <PropertyGroup>
-                <RaylibPackageName>raylib-$(TargetRaylibTag)_linux_amd64</RaylibPackageName>
-                <ArchiveExt>.tar.gz</ArchiveExt>
-                <LibPattern>libraylib.so*</LibPattern>
-            </PropertyGroup>
-        </When>
-        <When Condition="'$(RuntimeIdentifier)' == 'osx-x64'">
-            <PropertyGroup>
-                <RaylibPackageName>raylib-$(TargetRaylibTag)_macos</RaylibPackageName>
-                <ArchiveExt>.tar.gz</ArchiveExt>
-                <LibPattern>libraylib.dylib</LibPattern>
-            </PropertyGroup>
-        </When>
-        <When Condition="'$(RuntimeIdentifier)' == 'osx-arm64'">
-            <PropertyGroup>
-                <RaylibPackageName>raylib-$(TargetRaylibTag)_macos</RaylibPackageName>
-                <ArchiveExt>.tar.gz</ArchiveExt>
-                <LibPattern>libraylib.dylib</LibPattern>
-            </PropertyGroup>
-        </When>
-        <When Condition="'$(RuntimeIdentifier)' == 'browser-wasm'">
-            <PropertyGroup>
-                <RaylibPackageName>raylib-$(TargetRaylibTag)_webassembly</RaylibPackageName>
-                <ArchiveExt>.zip</ArchiveExt>
-                <LibPattern>libraylib.web.a</LibPattern>
-            </PropertyGroup>
-        </When>
-    </Choose>
+    <!-- Mappings: RID -> raylib release archive + library file.
+         - Pkg/Ext name the upstream release asset; 
+         - Lib is the download-time copy glob (libraylib.so* catches the versioned .so); 
+         - Pack is the exact file name packed into the nupkg; 
+         - PackAs renames it inside the package (wasm: libraylib.web.a -> raylib.a)
+         -->
+    <ItemGroup>
+        <RaylibRid Include="win-x64"      Pkg="raylib-$(TargetRaylibTag)_win64_msvc16" Ext=".zip"    Lib="raylib.dll"      Pack="raylib.dll"/>
+        <RaylibRid Include="win-x86"      Pkg="raylib-$(TargetRaylibTag)_win32_msvc16" Ext=".zip"    Lib="raylib.dll"      Pack="raylib.dll"/>
+        <RaylibRid Include="linux-x64"    Pkg="raylib-$(TargetRaylibTag)_linux_amd64"  Ext=".tar.gz" Lib="libraylib.so*"   Pack="libraylib.so"/>
+        <RaylibRid Include="osx-x64"      Pkg="raylib-$(TargetRaylibTag)_macos"        Ext=".tar.gz" Lib="libraylib.dylib" Pack="libraylib.dylib"/>
+        <RaylibRid Include="osx-arm64"    Pkg="raylib-$(TargetRaylibTag)_macos"        Ext=".tar.gz" Lib="libraylib.dylib" Pack="libraylib.dylib"/>
+        <RaylibRid Include="browser-wasm" Pkg="raylib-$(TargetRaylibTag)_webassembly"  Ext=".zip"    Lib="libraylib.web.a" Pack="libraylib.web.a" PackAs="raylib.a"/>
+    </ItemGroup>
+
+    <!-- Resolve the active RID's archive metadata from the table. Runs as a dependency
+         (execution phase) because properties can't read items during evaluation. -->
+    <Target Name="_ResolveRaylibNative">
+        <PropertyGroup>
+            <RaylibPackageName>@(RaylibRid->WithMetadataValue('Identity','$(RuntimeIdentifier)')->'%(Pkg)')</RaylibPackageName>
+            <ArchiveExt>@(RaylibRid->WithMetadataValue('Identity','$(RuntimeIdentifier)')->'%(Ext)')</ArchiveExt>
+            <LibPattern>@(RaylibRid->WithMetadataValue('Identity','$(RuntimeIdentifier)')->'%(Lib)')</LibPattern>
+        </PropertyGroup>
+    </Target>
 
     <!-- ================================================================== -->
     <!-- TARGET: PACKING -->
     <!-- ================================================================== -->
     <Target Name="PrepareNativesForPack" BeforeTargets="_GetPackageFiles">
-        <ItemGroup>
-            <_TargetRids Include="$(PackageRids)"/>
-        </ItemGroup>
-
         <MSBuild Projects="$(MSBuildThisFileFullPath)"
                  Targets="_DownloadAndExtractInternal"
-                 Properties="RuntimeIdentifier=%(_TargetRids.Identity);TargetFramework=$(TargetFramework);TargetRaylibTag=$(TargetRaylibTag)"
+                 Properties="RuntimeIdentifier=%(RaylibRid.Identity);TargetFramework=$(TargetFramework);TargetRaylibTag=$(TargetRaylibTag)"
                  BuildInParallel="false"/>
 
-        <!-- Direct injection into _PackageFiles -->
+        <!-- Direct injection into _PackageFiles, derived from the RID table.
+             RIDs without PackAs keep their file name in runtimes/<rid>/native/;
+             RIDs with PackAs (wasm) are renamed via an explicit file path. -->
         <ItemGroup>
-            <_PackageFiles Include="$(NativesRoot)win-x64/raylib-$(TargetRaylibTag)_win64_msvc16/lib/raylib.dll">
-                <PackagePath>runtimes/win-x64/native/</PackagePath>
+            <_PackageFiles Include="@(RaylibRid->'$(NativesRoot)%(Identity)/%(Pkg)/lib/%(Pack)')"
+                           Condition="'%(RaylibRid.PackAs)' == ''">
+                <PackagePath>runtimes/%(RaylibRid.Identity)/native/</PackagePath>
                 <BuildAction>None</BuildAction>
             </_PackageFiles>
-
-            <_PackageFiles Include="$(NativesRoot)win-x86/raylib-$(TargetRaylibTag)_win32_msvc16/lib/raylib.dll">
-                <PackagePath>runtimes/win-x86/native/</PackagePath>
-                <BuildAction>None</BuildAction>
-            </_PackageFiles>
-
-            <_PackageFiles Include="$(NativesRoot)linux-x64/raylib-$(TargetRaylibTag)_linux_amd64/lib/libraylib.so">
-                <PackagePath>runtimes/linux-x64/native/</PackagePath>
-                <BuildAction>None</BuildAction>
-            </_PackageFiles>
-
-            <_PackageFiles Include="$(NativesRoot)osx-x64/raylib-$(TargetRaylibTag)_macos/lib/libraylib.dylib">
-                <PackagePath>runtimes/osx-x64/native/</PackagePath>
-                <BuildAction>None</BuildAction>
-            </_PackageFiles>
-
-            <_PackageFiles Include="$(NativesRoot)osx-arm64/raylib-$(TargetRaylibTag)_macos/lib/libraylib.dylib">
-                <PackagePath>runtimes/osx-arm64/native/</PackagePath>
-                <BuildAction>None</BuildAction>
-            </_PackageFiles>
-
-            <_PackageFiles Include="$(NativesRoot)browser-wasm/raylib-$(TargetRaylibTag)_webassembly/lib/libraylib.web.a">
-                <PackagePath>runtimes/browser-wasm/native/raylib.a</PackagePath>
+            <_PackageFiles Include="@(RaylibRid->'$(NativesRoot)%(Identity)/%(Pkg)/lib/%(Pack)')"
+                           Condition="'%(RaylibRid.PackAs)' != ''">
+                <PackagePath>runtimes/%(RaylibRid.Identity)/native/%(RaylibRid.PackAs)</PackagePath>
                 <BuildAction>None</BuildAction>
             </_PackageFiles>
         </ItemGroup>
@@ -145,53 +102,65 @@
     <!-- TARGET: LOCAL DEVELOPMENT -->
     <!-- ================================================================== -->
 
-    <Target Name="CopyNativeToOutput" AfterTargets="Build"
-            Condition="'$(GeneratePackageOnBuild)' != 'true' AND '$(RuntimeIdentifier)' != ''">
-
+    <!-- Resolve and download the native library for a given RID (used by ProjectReference consumers). -->
+    <Target Name="_PrepareNativeLibrary" DependsOnTargets="_ResolveRaylibNative" Outputs="@(_RaylibNativeLibraryItem)">
+        <PropertyGroup>
+            <_RaylibNativesDir>$([System.IO.Path]::GetFullPath('$(MSBuildProjectDirectory)/$(NativesRoot)'))</_RaylibNativesDir>
+        </PropertyGroup>
         <CallTarget Targets="_DownloadAndExtractInternal"/>
         <ItemGroup>
-            <_NativeToCopy Include="$(NativesRoot)$(RuntimeIdentifier)/**/$(LibPattern)"/>
+            <_NativeCandidate Include="$(_RaylibNativesDir)$(RuntimeIdentifier)/**/$(LibPattern)"/>
+            <_RaylibNativeLibraryItem Include="@(_NativeCandidate)"/>
         </ItemGroup>
-        <Copy SourceFiles="@(_NativeToCopy)" DestinationFolder="$(OutputPath)" SkipUnchangedFiles="true"/>
+    </Target>
+
+    <!-- Stage libraylib.web.a as raylib.a for wasm linking (pinvoke module name must match LibraryImport). -->
+    <Target Name="_StageWasmNative" DependsOnTargets="_ResolveRaylibNative"
+            Condition="'$(RuntimeIdentifier)' == 'browser-wasm'">
+        <PropertyGroup>
+            <_WasmNativeSrc>$(NativesRoot)browser-wasm/$(RaylibPackageName)/lib/libraylib.web.a</_WasmNativeSrc>
+            <_WasmNativeDst>$(MSBuildThisFileDirectory)obj/browser-wasm/raylib.a</_WasmNativeDst>
+        </PropertyGroup>
+        <CallTarget Targets="_DownloadAndExtractInternal"/>
+        <MakeDir Directories="$(MSBuildThisFileDirectory)obj/browser-wasm"/>
+        <Copy SourceFiles="$(_WasmNativeSrc)" DestinationFiles="$(_WasmNativeDst)" SkipUnchangedFiles="true"/>
     </Target>
 
     <!-- ================================================================== -->
     <!-- WORKER: DOWNLOADER -->
     <!-- ================================================================== -->
 
-    <Target Name="_DownloadAndExtractInternal" Condition="'$(RaylibPackageName)' != ''">
+    <!-- Resolves the archive metadata first (properties can't read items at eval time, so the
+         RID -> package mapping must be applied here in the execution phase via DependsOnTargets).
+         Tasks are guarded on RaylibPackageName so an unknown RID is a no-op. -->
+    <Target Name="_DownloadAndExtractInternal" DependsOnTargets="_ResolveRaylibNative">
         <PropertyGroup>
             <_WorkDir>$(NativesRoot)$(RuntimeIdentifier)/</_WorkDir>
             <_ArchiveFile>$(_WorkDir)$(RaylibPackageName)$(ArchiveExt)</_ArchiveFile>
             <_ExtractMarker>$(_WorkDir).extracted</_ExtractMarker>
         </PropertyGroup>
 
-        <Message Text="=== _DownloadAndExtractInternal ===" Importance="high"/>
-        <Message Text="RID = $(RuntimeIdentifier)" Importance="high"/>
-        <Message Text="Archive = $(_ArchiveFile)" Importance="high"/>
-        <Message Text="Marker = $(_ExtractMarker)" Importance="high"/>
+        <Message Text="Downloading raylib $(TargetRaylibTag) native for $(RuntimeIdentifier)"
+                 Importance="normal" Condition="'$(RaylibPackageName)' != ''"/>
 
-        <MakeDir Directories="$(_WorkDir)"/>
+        <MakeDir Directories="$(_WorkDir)" Condition="'$(RaylibPackageName)' != ''"/>
 
         <DownloadFile
                 SourceUrl="https://github.com/raysan5/raylib/releases/download/$(TargetRaylibTag)/$(RaylibPackageName)$(ArchiveExt)"
                 DestinationFolder="$(_WorkDir)"
                 DestinationFileName="$(RaylibPackageName)$(ArchiveExt)"
-                Condition="!Exists('$(_ArchiveFile)')"
+                Condition="'$(RaylibPackageName)' != '' AND !Exists('$(_ArchiveFile)')"
                 Retries="3"/>
 
-        <Message Text="unZIPping" Importance="high" Condition="'$(ArchiveExt)' == '.zip' AND !Exists('$(_ExtractMarker)')"/>
         <Unzip SourceFiles="$(_ArchiveFile)"
                DestinationFolder="$(_WorkDir)"
                OverwriteReadOnlyFiles="true"
                Condition="'$(ArchiveExt)' == '.zip' AND !Exists('$(_ExtractMarker)')"/>
 
-        <Message Text="unTARing" Importance="high" Condition="'$(ArchiveExt)' == '.tar.gz' AND !Exists('$(_ExtractMarker)')"/>
         <Exec Command="tar -xzf &quot;$(RaylibPackageName)$(ArchiveExt)&quot;"
               WorkingDirectory="$(_WorkDir)"
               Condition="'$(ArchiveExt)' == '.tar.gz' AND !Exists('$(_ExtractMarker)')"/>
 
-        <Touch Files="$(_ExtractMarker)" AlwaysCreate="true"/>
-        <Message Text="Extraction complete" Importance="high"/>
+        <Touch Files="$(_ExtractMarker)" AlwaysCreate="true" Condition="'$(RaylibPackageName)' != ''"/>
     </Target>
 </Project>

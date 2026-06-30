@@ -26,7 +26,14 @@ public static unsafe partial class Raylib
 
     static Raylib()
     {
-        NativeLibrary.SetDllImportResolver(Assembly.GetExecutingAssembly(), ResolveDllImport);
+        // On WebAssembly (browser) the native library is statically linked into the main
+        // module, and P/Invokes are resolved by the runtime's built-in static-linking table.
+        // A custom resolver would override that and fail (there is no library to load), so we
+        // only install it on platforms where raylib is a separate dynamic library.
+        if (!OperatingSystem.IsBrowser())
+        {
+            NativeLibrary.SetDllImportResolver(Assembly.GetExecutingAssembly(), ResolveDllImport);
+        }
     }
 
     public static IntPtr ResolveDllImport(string libraryName, Assembly assembly, DllImportSearchPath? searchPath)

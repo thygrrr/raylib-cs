@@ -1,10 +1,54 @@
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-    <ItemGroup Condition="'$(RuntimeIdentifier)' == 'browser-wasm'">
-        <!-- WASM build needs explicit native reference due to semi-static linkage (?) -->
-        <NativeFileReference Include="$(MSBuildThisFileDirectory)..\runtimes\browser-wasm\native\raylib.a"/>
-    </ItemGroup>
+    <!-- Default raylib release tag for consumers (Package/ProjectReference) that don't import Build.props. -->
+    <PropertyGroup>
+        <TargetRaylibTag Condition="'$(TargetRaylibTag)' == ''">6.0</TargetRaylibTag>
+    </PropertyGroup>
 
     <PropertyGroup Condition="'$(RuntimeIdentifier)' == 'browser-wasm'">
         <EmccFlags>$(EmccFlags) -sUSE_GLFW=3</EmccFlags>
     </PropertyGroup>
+
+    <!-- NuGet layout: runtimes/browser-wasm/native/raylib.a -->
+    <ItemGroup Condition="'$(RuntimeIdentifier)' == 'browser-wasm' And Exists('$(MSBuildThisFileDirectory)..\runtimes\browser-wasm\native\raylib.a')">
+        <NativeFileReference Include="$(MSBuildThisFileDirectory)..\runtimes\browser-wasm\native\raylib.a"/>
+    </ItemGroup>
+
+    <!-- ProjectReference / local build: stage via Raylib-cs.csproj -->
+    <Target Name="_StageRaylibWasmNative"
+            BeforeTargets="_PrepareForBrowserWasmBuildNative"
+            Condition="'$(RuntimeIdentifier)' == 'browser-wasm' And !Exists('$(MSBuildThisFileDirectory)..\runtimes\browser-wasm\native\raylib.a')">
+        <MSBuild Projects="$(MSBuildThisFileDirectory)Raylib-cs.csproj"
+                 Targets="_StageWasmNative"
+                 Properties="RuntimeIdentifier=browser-wasm;TargetFramework=$(TargetFramework);TargetRaylibTag=$(TargetRaylibTag)"/>
+        <ItemGroup>
+            <NativeFileReference Include="$(MSBuildThisFileDirectory)obj\browser-wasm\raylib.a"/>
+        </ItemGroup>
+    </Target>
+
+    <!-- ProjectReference: copy raylib next to the app (NuGet does this automatically for PackageReference).
+         Guarded on the sibling csproj existing: present for ProjectReference (targets imported from source),
+         absent for PackageReference (targets shipped alone in buildTransitive/). -->
+    <Target Name="_CopyRaylibNativeToConsumerOutput"
+            AfterTargets="Build"
+            Condition="'$(RuntimeIdentifier)' != 'browser-wasm' And '$(MSBuildProjectName)' != 'Raylib-cs' And Exists('$(MSBuildThisFileDirectory)Raylib-cs.csproj')">
+        <PropertyGroup>
+            <!-- Use the explicit RID if set, else the host RID the SDK resolves (covers osx-arm64). -->
+            <_RaylibNativeRid Condition="'$(_RaylibNativeRid)' == ''">$(RuntimeIdentifier)</_RaylibNativeRid>
+            <_RaylibNativeRid Condition="'$(_RaylibNativeRid)' == ''">$(NETCoreSdkPortableRuntimeIdentifier)</_RaylibNativeRid>
+            <_RaylibNativeOutputDir>$(OutputPath)runtimes\$(_RaylibNativeRid)\native\</_RaylibNativeOutputDir>
+        </PropertyGroup>
+        <MSBuild Projects="$(MSBuildThisFileDirectory)Raylib-cs.csproj"
+                 Targets="_PrepareNativeLibrary"
+                 Properties="RuntimeIdentifier=$(_RaylibNativeRid);TargetFramework=$(TargetFramework);TargetRaylibTag=$(TargetRaylibTag)">
+            <Output TaskParameter="TargetOutputs" ItemName="_RaylibNativeLibrary"/>
+        </MSBuild>
+        <MakeDir Directories="$(_RaylibNativeOutputDir)"/>
+        <Copy SourceFiles="@(_RaylibNativeLibrary)"
+              DestinationFolder="$(_RaylibNativeOutputDir)"
+              SkipUnchangedFiles="true"/>
+        <!-- Also copy to the app root so NativeLibrary.TryLoad("raylib") succeeds. -->
+        <Copy SourceFiles="@(_RaylibNativeLibrary)"
+              DestinationFolder="$(OutputPath)"
+              SkipUnchangedFiles="true"/>
+    </Target>
 </Project>

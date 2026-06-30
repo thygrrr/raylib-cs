@@ -186,6 +186,14 @@ public static unsafe partial class Raylib
     /// <summary>Show trace log messages (LOG_DEBUG, LOG_INFO, LOG_WARNING, LOG_ERROR)</summary>
     public static void TraceLog(TraceLogLevel logLevel, string text)
     {
+        // raylib's TraceLog is variadic (const char *text, ...). WebAssembly cannot invoke
+        // variadic C functions from managed code (traps with "function signature mismatch").
+        if (OperatingSystem.IsBrowser())
+        {
+            Console.WriteLine(text);
+            return;
+        }
+
         using Utf8Buffer str1 = text.ToUtf8Buffer();
         TraceLog(logLevel, str1.AsPointer());
     }
